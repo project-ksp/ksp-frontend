@@ -21,6 +21,7 @@ module.exports = {
       highlighter: "#FF7300",
       mainBg: "#F4F5F7",
       white: colors.white,
+      black: colors.black,
       transparent: colors.transparent,
       "filled-color": "#90A5BB",
       "green-status": {
