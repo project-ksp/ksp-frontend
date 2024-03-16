@@ -63,7 +63,7 @@ export default function Home() {
             <p className="text-white text-base font-medium ">Account Block</p>
           </div>
         </div>
-        <div className="flex flex-col mb-[30px]">
+        <div className="flex flex-col">
           <button className="bg-white/10  mb-[16px] py-[14px] px-[16px] flex items-center rounded-md">
             <svg
               width="24"
@@ -77,27 +77,27 @@ export default function Home() {
                 d="M8.3335 16.1673L12.5002 12.0007L8.3335 7.83398"
                 stroke="white"
                 strokeWidth="2"
-                strokeLineCap="round"
-                strokeLineJoin="round"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               />
               <path
                 d="M12.5 12H2.5"
                 stroke="white"
                 strokeWidth="2"
-                strokeLineCap="round"
-                strokeLineJoin="round"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               />
               <path
                 d="M12.5 4.5H15.8333C16.2754 4.5 16.6993 4.67559 17.0118 4.98816C17.3244 5.30072 17.5 5.72464 17.5 6.16667V17.8333C17.5 18.2754 17.3244 18.6993 17.0118 19.0118C16.6993 19.3244 16.2754 19.5 15.8333 19.5H12.5"
                 stroke="white"
                 strokeWidth="2"
-                strokeLineCap="round"
-                strokeLineJoin="round"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               />
             </svg>
             <p className="text-mainBg text-base font-bold">Keluar</p>
           </button>
-          <button className="flex items-center border-t border-white/10 py-[5px] justify-between">
+          <button className="flex items-center border-t border-white/10 pt-[15px] justify-between">
             <div className="flex items-center">
               <Image
                 src={"/images/Image.png"}
