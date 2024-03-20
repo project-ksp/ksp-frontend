@@ -145,20 +145,20 @@ export default function Home() {
               <path
                 d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19Z"
                 stroke="#525256"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               />
               <path
                 d="M21.0004 21.0004L16.6504 16.6504"
                 stroke="#525256"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               />
             </svg>
           </div>
-          <button className="w-1/5 bg-primary px-[30px] py-[12px] flex justify-center items-center text-white rounded-md">
+          <button className="w-1/5 bg-primary px-[15px] py-[8px] flex justify-center items-center text-white rounded-md">
             <svg
               width="16"
               height="16"
@@ -206,12 +206,8 @@ export default function Home() {
                     y2="80.2764"
                     gradientUnits="userSpaceOnUse"
                   >
-                    <stop stop-color="#B3D6FF" />
-                    <stop
-                      offset="0.729"
-                      stop-color="#c0deff"
-                      stop-opacity="0"
-                    />
+                    <stop stopColor="#B3D6FF" />
+                    <stop offset="0.729" stopColor="#c0deff" stopOpacity="0" />
                   </linearGradient>
                 </defs>
               </svg>
@@ -230,10 +226,10 @@ export default function Home() {
                 xmlns="http://www.w3.org/2000/svg"
                 className="absolute -right-[5px] -bottom-[15px] -rotate-[15deg]"
               >
-                <g clip-path="url(#clip0_309_18574)">
+                <g clipPath="url(#clip0_309_18574)">
                   <path
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
+                    fillRule="evenodd"
+                    clipRule="evenodd"
                     d="M55.9863 40.666C60.2507 43.5716 63.2358 47.5082 63.2273 52.757L63.2122 62.1298H72.5606C74.2744 62.1298 75.679 60.7239 75.6818 59.0055L75.6919 52.757C75.7029 45.946 64.5848 41.9157 55.9863 40.666Z"
                     fill="url(#paint0_linear_309_18574)"
                   />
@@ -242,8 +238,8 @@ export default function Home() {
                     fill="url(#paint1_linear_309_18574)"
                   />
                   <path
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
+                    fillRule="evenodd"
+                    clipRule="evenodd"
                     d="M50.7885 37.1348C57.6752 37.1348 63.2621 31.5424 63.2733 24.6377C63.2845 17.7331 57.7157 12.1406 50.829 12.1406C49.3644 12.1406 47.9928 12.4531 46.6833 12.8905C49.3595 16.2154 50.8156 20.3619 50.8087 24.6377C50.8018 28.9136 49.3322 33.0601 46.6453 36.385C47.9534 36.8224 49.324 37.1348 50.7885 37.1348ZM32.0867 40.2591C23.7666 40.2591 7.15081 44.4457 7.13735 52.7562L7.12723 59.0048C7.12445 60.7231 8.52443 62.1291 10.2383 62.1291H53.8642C55.5781 62.1291 56.9826 60.7231 56.9854 59.0048L56.9955 52.7562C57.009 44.4457 40.4068 40.2591 32.0867 40.2591Z"
                     fill="url(#paint2_linear_309_18574)"
                   />
@@ -257,8 +253,8 @@ export default function Home() {
                     y2="135.918"
                     gradientUnits="userSpaceOnUse"
                   >
-                    <stop stop-color="#baffc1" />
-                    <stop offset="1" stop-color="white" stop-opacity="0" />
+                    <stop stopColor="#baffc1" />
+                    <stop offset="1" stopColor="white" stopOpacity="0" />
                   </linearGradient>
                   <linearGradient
                     id="paint1_linear_309_18574"
@@ -268,8 +264,8 @@ export default function Home() {
                     y2="83.0802"
                     gradientUnits="userSpaceOnUse"
                   >
-                    <stop stop-color="#baffc1" />
-                    <stop offset="1" stop-color="white" stop-opacity="0" />
+                    <stop stopColor="#baffc1" />
+                    <stop offset="1" stopColor="white" stopOpacity="0" />
                   </linearGradient>
                   <linearGradient
                     id="paint2_linear_309_18574"
@@ -279,8 +275,8 @@ export default function Home() {
                     y2="93.6656"
                     gradientUnits="userSpaceOnUse"
                   >
-                    <stop stop-color="#baffc1" />
-                    <stop offset="1" stop-color="white" stop-opacity="0" />
+                    <stop stopColor="#baffc1" />
+                    <stop offset="1" stopColor="white" stopOpacity="0" />
                   </linearGradient>
                   <clipPath id="clip0_309_18574">
                     <rect
@@ -308,8 +304,8 @@ export default function Home() {
                 className="absolute -right-[5px] -bottom-[15px] -rotate-[15deg]"
               >
                 <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
+                  fillRule="evenodd"
+                  clipRule="evenodd"
                   d="M52.7461 41.8718C57.0105 44.7774 59.9956 48.7139 59.9871 53.9627L59.9719 63.3356H69.3203C71.0342 63.3356 72.4387 61.9296 72.4415 60.2113L72.4516 53.9627C72.4627 47.1518 61.3446 43.1215 52.7461 41.8718Z"
                   fill="url(#paint0_linear_309_19038)"
                 />
@@ -318,8 +314,8 @@ export default function Home() {
                   fill="url(#paint1_linear_309_19038)"
                 />
                 <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
+                  fillRule="evenodd"
+                  clipRule="evenodd"
                   d="M47.5483 38.3406C54.435 38.3406 60.0219 32.7481 60.0331 25.8434C60.0443 18.9388 54.4754 13.3463 47.5888 13.3463C46.1242 13.3463 44.7526 13.6588 43.4431 14.0962C46.1192 17.4211 47.5754 21.5676 47.5684 25.8434C47.5615 30.1193 46.0919 34.2658 43.4051 37.5907C44.7131 38.0281 46.0837 38.3406 47.5483 38.3406ZM28.8464 41.4648C20.5264 41.4648 3.91057 45.6514 3.89712 53.9619L3.887 60.2105C3.88421 61.9288 5.2842 63.3348 6.99807 63.3348H50.624C52.3378 63.3348 53.7424 61.9288 53.7452 60.2105L53.7553 53.9619C53.7687 45.6514 37.1665 41.4648 28.8464 41.4648Z"
                   fill="url(#paint2_linear_309_19038)"
                 />
@@ -332,8 +328,8 @@ export default function Home() {
                     y2="63.2561"
                     gradientUnits="userSpaceOnUse"
                   >
-                    <stop stop-color="#FF9691" />
-                    <stop offset="1" stop-color="white" stop-opacity="0" />
+                    <stop stopColor="#FF9691" />
+                    <stop offset="1" stopColor="white" stopOpacity="0" />
                   </linearGradient>
                   <linearGradient
                     id="paint1_linear_309_19038"
@@ -343,8 +339,8 @@ export default function Home() {
                     y2="57.0088"
                     gradientUnits="userSpaceOnUse"
                   >
-                    <stop stop-color="#FF8982" />
-                    <stop offset="1" stop-color="#FFFEFE" stop-opacity="0" />
+                    <stop stopColor="#FF8982" />
+                    <stop offset="1" stopColor="#FFFEFE" stopOpacity="0" />
                   </linearGradient>
                   <linearGradient
                     id="paint2_linear_309_19038"
@@ -354,8 +350,8 @@ export default function Home() {
                     y2="68.114"
                     gradientUnits="userSpaceOnUse"
                   >
-                    <stop stop-color="#FC554A" />
-                    <stop offset="1" stop-color="white" stop-opacity="0" />
+                    <stop stopColor="#FC554A" />
+                    <stop offset="1" stopColor="white" stopOpacity="0" />
                   </linearGradient>
                 </defs>
               </svg>
@@ -363,27 +359,6 @@ export default function Home() {
           </div>
         </div>
         <div className="bg-white p-[20px] rounded-xl">
-          <div className="flex justify-between py-1">
-            <h3 className="text-xl text-black font-bold">Daftar Cabang</h3>
-            <button className="bg-primary px-[25px] py-[8px] flex justify-center items-center text-white rounded-md">
-              <svg
-                width="18"
-                height="12"
-                viewBox="0 0 18 12"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M4 6H14M1.5 1H16.5M6.5 11H11.5"
-                  stroke="white"
-                  strokeWidth="1.67"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-              <p className="ml-5 text-base font-regular">Filter</p>
-            </button>
-          </div>
           <table className="table-fixed w-full text-left">
             <thead>
               <tr>
