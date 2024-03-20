@@ -361,8 +361,8 @@ export default function Home() {
         <div className="bg-white p-[20px] rounded-xl">
           <table className="table-fixed w-full text-left">
             <thead>
-              <tr>
-                <th className="w-[7%] font-semibold">ID Cabang</th>
+              <tr className="border-b border-[#DDE1E6]">
+                <th className="w-[7%] font-semibold py-[13px]">ID Cabang</th>
                 <th className="w-[10%] font-semibold">Lokasi Cabang</th>
                 <th className="w-[13%] font-semibold">Nama Ketua Cabang</th>
                 <th className="w-[9%] font-semibold">Jumlah Anggota Aktif</th>
@@ -377,8 +377,8 @@ export default function Home() {
               </tr>
             </thead>
             <tbody>
-              <tr className="h-[48px]">
-                <td>01</td>
+              <tr className=" border-b border-[#DDE1E6]">
+                <td className="py-[13px]">01</td>
                 <td>Mojokerto</td>
                 <td>M.Ikhsan M</td>
                 <td>999,999</td>
@@ -397,8 +397,8 @@ export default function Home() {
                   </div>
                 </td>
               </tr>
-              <tr className="h-[48px]">
-                <td>01</td>
+              <tr className=" border-b border-[#DDE1E6]">
+                <td className="py-[13px]">01</td>
                 <td>Mojokerto</td>
                 <td>M.Ikhsan M</td>
                 <td>999,999</td>
@@ -417,8 +417,8 @@ export default function Home() {
                   </div>
                 </td>
               </tr>
-              <tr className="h-[48px]">
-                <td>01</td>
+              <tr className=" border-b border-[#DDE1E6]">
+                <td className="py-[13px]">01</td>
                 <td>Mojokerto</td>
                 <td>M.Ikhsan M</td>
                 <td>999,999</td>
@@ -437,8 +437,8 @@ export default function Home() {
                   </div>
                 </td>
               </tr>
-              <tr className="h-[48px]">
-                <td>01</td>
+              <tr className=" border-b border-[#DDE1E6]">
+                <td className="py-[13px]">01</td>
                 <td>Mojokerto</td>
                 <td>M.Ikhsan M</td>
                 <td>999,999</td>
@@ -457,8 +457,8 @@ export default function Home() {
                   </div>
                 </td>
               </tr>
-              <tr className="h-[48px]">
-                <td>01</td>
+              <tr className=" border-b border-[#DDE1E6]">
+                <td className="py-[13px]">01</td>
                 <td>Mojokerto</td>
                 <td>M.Ikhsan M</td>
                 <td>999,999</td>
@@ -477,8 +477,8 @@ export default function Home() {
                   </div>
                 </td>
               </tr>
-              <tr className="h-[48px]">
-                <td>01</td>
+              <tr className=" border-b border-[#DDE1E6]">
+                <td className="py-[13px]">01</td>
                 <td>Mojokerto</td>
                 <td>M.Ikhsan M</td>
                 <td>999,999</td>
@@ -497,8 +497,8 @@ export default function Home() {
                   </div>
                 </td>
               </tr>
-              <tr className="h-[48px]">
-                <td>01</td>
+              <tr className=" border-b border-[#DDE1E6]">
+                <td className="py-[13px]">01</td>
                 <td>Mojokerto</td>
                 <td>M.Ikhsan M</td>
                 <td>999,999</td>
@@ -517,8 +517,8 @@ export default function Home() {
                   </div>
                 </td>
               </tr>
-              <tr className="h-[48px]">
-                <td>01</td>
+              <tr className=" border-b border-[#DDE1E6]">
+                <td className="py-[13px]">01</td>
                 <td>Mojokerto</td>
                 <td>M.Ikhsan M</td>
                 <td>999,999</td>
@@ -537,8 +537,8 @@ export default function Home() {
                   </div>
                 </td>
               </tr>
-              <tr className="h-[48px]">
-                <td>01</td>
+              <tr className=" border-b border-[#DDE1E6]">
+                <td className="py-[13px]">01</td>
                 <td>Mojokerto</td>
                 <td>M.Ikhsan M</td>
                 <td>999,999</td>
@@ -557,8 +557,8 @@ export default function Home() {
                   </div>
                 </td>
               </tr>
-              <tr className="h-[48px]">
-                <td>01</td>
+              <tr className=" border-b border-[#DDE1E6]">
+                <td className="py-[13px]">01</td>
                 <td>Mojokerto</td>
                 <td>M.Ikhsan M</td>
                 <td>999,999</td>
@@ -577,8 +577,28 @@ export default function Home() {
                   </div>
                 </td>
               </tr>
-              <tr className="h-[48px]">
-                <td>01</td>
+              <tr className=" border-b border-[#DDE1E6]">
+                <td className="py-[13px]">01</td>
+                <td>Mojokerto</td>
+                <td>M.Ikhsan M</td>
+                <td>999,999</td>
+                <td>99,999</td>
+                <td>Rp. 99,999,999</td>
+                <td>Rp. 99,999,999</td>
+                <td>99</td>
+                <td>
+                  <div className="bg-filled-color mx-[10px] my-[3px] text-black rounded-lg text-center">
+                    Atur
+                  </div>
+                </td>
+                <td>
+                  <div className="bg-filled-color mx-[10px] my-[3px] text-black rounded-lg text-center">
+                    Akses
+                  </div>
+                </td>
+              </tr>
+              <tr className=" border-b border-[#DDE1E6]">
+                <td className="py-[13px]">01</td>
                 <td>Mojokerto</td>
                 <td>M.Ikhsan M</td>
                 <td>999,999</td>
