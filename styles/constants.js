@@ -5,7 +5,7 @@ import AccountBlock from "@/components/icons/AccountBlock";
 export const SIDENAV_ITEMS = [
   {
     title: "Dashboard",
-    path: "/",
+    path: "/dashboard",
     icon: <Grid color="white" />,
     iconSecondary: <Grid color="black" />,
   },
