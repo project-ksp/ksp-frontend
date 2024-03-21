@@ -1,8 +1,9 @@
+import Link from "next/link";
 import React from "react";
 
 const Dashboard = () => {
   return (
-    <>
+    <div className="flex flex-col gap-[20px]">
       <div className="flex h-[48px] gap-[36px]">
         <div className="w-4/5 relative">
           <input
@@ -35,7 +36,10 @@ const Dashboard = () => {
             />
           </svg>
         </div>
-        <button className="w-1/5 bg-primary px-[15px] py-[8px] flex justify-center items-center text-white rounded-md">
+        <Link
+          href={`/dashboard/buat-akun-cabang`}
+          className="w-1/5 bg-primary px-[15px] py-[8px] flex justify-center items-center text-white rounded-md"
+        >
           <svg
             width="16"
             height="16"
@@ -49,7 +53,7 @@ const Dashboard = () => {
             />
           </svg>
           <p className="ml-5 text-base font-regular">Tambah Cabang</p>
-        </button>
+        </Link>
       </div>
       <div className="bg-white p-[20px] rounded-xl">
         <h3 className="text-black text-lg font-bold my-[12px]">
@@ -495,7 +499,7 @@ const Dashboard = () => {
           </tbody>
         </table>
       </div>
-    </>
+    </div>
   );
 };
 

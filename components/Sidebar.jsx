@@ -37,13 +37,13 @@ const MenuItem = ({ item }) => {
     <Link
       href={item.path}
       className={`mb-[16px] py-[14px] px-[16px] flex items-center rounded-md hover:bg-secondary ${
-        item.path === pathname ? "bg-[#d9d9d9]" : ""
+        pathname.includes(item.path) ? "bg-[#d9d9d9]" : ""
       }`}
     >
-      {item.path === pathname ? item.iconSecondary : item.icon}
+      {pathname.includes(item.path) ? item.iconSecondary : item.icon}
       <p
         className={`${
-          item.path === pathname ? "text-black" : "text-white"
+          pathname.includes(item.path) ? "text-black" : "text-white"
         } text-base font-medium ml-[13px]`}
       >
         {item.title}
