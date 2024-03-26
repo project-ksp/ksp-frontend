@@ -4,7 +4,7 @@ const Modal = ({ isVisible, onClose, children }) => {
   if (!isVisible) return null;
   return (
     <div
-      className="fixed inset-0 bg-[#022B94] bg-opacity-20 backdrop-blur-sm flex justify-center items-center"
+      className="absolute inset-0 bg-[#022B94] bg-opacity-20 backdrop-blur-sm flex justify-center items-center"
       onClick={() => onClose()}
     >
       <div
@@ -12,7 +12,7 @@ const Modal = ({ isVisible, onClose, children }) => {
         onClick={(e) => e.stopPropagation()}
       >
         <p
-          className="text-[40px] text-[#525256] rotate-45 absolute right-5 top-0"
+          className="text-[40px] text-[#525256] rotate-45 absolute right-5 top-0 cursor-pointer"
           onClick={() => onClose()}
         >
           +

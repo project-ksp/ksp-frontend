@@ -583,8 +583,9 @@ const Dashboard = () => {
             <input
               id="cabang"
               type="text"
-              className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-xl mt-[5px] bg-white focus:outline-none"
-              placeholder="ID Cabang"
+              className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-xl mt-[5px] bg-white focus:outline-none italic"
+              placeholder="Auto Generated"
+              disabled
             />
           </div>
           <div className="flex-col w-1/2">
@@ -592,8 +593,9 @@ const Dashboard = () => {
             <input
               id="jumlahAnggota"
               type="text"
-              className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-xl mt-[5px] bg-white focus:outline-none"
-              placeholder="Jumlah Anggota"
+              className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-xl mt-[5px] bg-white focus:outline-none italic"
+              placeholder="Auto Generated"
+              disabled
             />
           </div>
         </div>
@@ -603,8 +605,9 @@ const Dashboard = () => {
             <input
               id="jumlahAnggotaAktif"
               type="text"
-              className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-xl mt-[5px] bg-white focus:outline-none"
-              placeholder="Jumlah Anggota Aktif"
+              className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-xl mt-[5px] bg-white focus:outline-none italic"
+              placeholder="Auto Generated"
+              disabled
             />
           </div>
           <div className="flex-col w-1/2">
@@ -614,8 +617,9 @@ const Dashboard = () => {
             <input
               id="jumlahAnggotaTidakAktif"
               type="text"
-              className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-xl mt-[5px] bg-white focus:outline-none"
-              placeholder="Jumlah Anggota Tidak Aktif"
+              className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-xl mt-[5px] bg-white focus:outline-none italic"
+              placeholder="Auto Generated"
+              disabled
             />
           </div>
         </div>

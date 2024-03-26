@@ -4,7 +4,7 @@ import React from "react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { SIDENAV_ITEMS } from "@/styles/constants";
+import { SIDENAV_ITEMS } from "@/data/constants";
 
 const Sidebar = () => {
   return (
