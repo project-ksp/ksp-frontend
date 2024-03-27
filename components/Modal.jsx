@@ -4,7 +4,7 @@ const Modal = ({ isVisible, onClose, children }) => {
   if (!isVisible) return null;
   return (
     <div
-      className="absolute inset-0 bg-[#022B94] bg-opacity-20 backdrop-blur-sm flex justify-center items-center"
+      className="absolute inset-0 bg-[#022B94] bg-opacity-20 backdrop-blur-sm flex justify-center items-center -m-[30px] min-h-screen"
       onClick={() => onClose()}
     >
       <div
