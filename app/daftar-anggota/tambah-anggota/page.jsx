@@ -2,119 +2,114 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-
-import Modal from "@/components/Modal";
+import Link from "next/link";
 import DropdownSelector from "@/components/DropdownSelector";
 
-const BuatAkunCabang = () => {
-  const [showProsesData, setProsesData] = useState(false);
-  const [showBerhasil, setBerhasil] = useState(false);
-  const [statusPernikahanOpen, setStatusPernikahanOpen] = useState(false);
-  const [agamaOpen, setAgamaOpen] = useState(false);
-  const [pendidikanOpen, setPendidikanOpen] = useState(false);
-  const [jenisKelaminOpen, setJenisKelaminOpen] = useState(false);
+const TambahAnggota = () => {
+  const [idCabang, setIdCabang] = useState("Pilih Cabang");
   const [statusPernikahan, setStatusPernikahan] = useState("Pilih Status");
+  const [jenisKelamin, setJenisKelamin] = useState("Pilih Jenis Kelamin");
   const [agama, setAgama] = useState("Pilih Agama");
   const [pendidikan, setPendidikan] = useState("Pilih Pendidikan Terakhir");
-  const [jenisKelamin, setJenisKelamin] = useState("Pilih Jenis Kelamin");
   const [fotoDiri, setFotoDiri] = useState(null);
   const [fotoKtp, setFotoKtp] = useState(null);
+  const [pendidikanOpen, setPendidikanOpen] = useState(false);
+  const [agamaOpen, setAgamaOpen] = useState(false);
+  const [jenisKelaminOpen, setJenisKelaminOpen] = useState(false);
+  const [statusPernikahanOpen, setStatusPernikahanOpen] = useState(false);
+  const [idCabangOpen, setIdCabangOpen] = useState(false);
 
   return (
     <form action="">
-      <div className="flex flex-col gap-[10px]">
-        <h2 className="text-2xl font-bold text-black">Buat Akun Cabang</h2>
+      <div className="flex flex-col gap-2">
+        <h2 className="text-2xl font-bold text-black">Tambah Anggota</h2>
+        <div className="flex gap-5">
+          <button className="bg-primary text-white w-[228px] h-[48px] rounded-md text-center">
+            Anggota Baru
+          </button>
+          <button className="bg-white text-primary w-[228px] h-[48px] rounded-md text-center">
+            Anggota Lama
+          </button>
+        </div>
         <div className="bg-white p-[20px] rounded-xl">
           <p className="text-black font-regular text-lg mb-[10px]">
             Silahkan lengkapi form berikut dengan benar.
           </p>
           <div className="flex flex-col gap-2">
-            <div className="flex-1">
-              <label htmlFor="idCabang">ID Cabang</label>
-              <input
-                type="text"
-                id="idCabang"
-                name="idCabang"
-                placeholder="Auto generate"
-                className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] italic bg-white"
-                disabled
-              />
-            </div>
-            <div className="flex gap-3">
-              <div className="w-2/5">
+            <div className="flex w-full gap-2">
+              <div className="w-1/3">
                 <div>
-                  <label htmlFor="alamatCabang">Alamat Lengkap Cabang</label>
-                  <input
-                    type="text"
-                    id="alamatCabang"
-                    name="alamatCabang"
-                    placeholder="Isi alamat lengkap cabang"
-                    className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
-                  />
+                  <label htmlFor="idCabang">Cabang</label>
+                  <button
+                    type="button"
+                    name="idCabang"
+                    id="idCabang"
+                    className={`w-full flex justify-between py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] text-start text-[#d9d9d9] bg-transparent focus:outline-none ${
+                      idCabang === "Pilih Cabang"
+                        ? "text-[#d9d9d9]"
+                        : "text-primary"
+                    }`}
+                    onClick={() => setIdCabangOpen(!idCabangOpen)}
+                  >
+                    {idCabang}
+                    <svg
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M17.2902 9.31002C17.1977 9.21732 17.0878 9.14377 16.9668 9.09359C16.8459 9.04341 16.7162 9.01758 16.5852 9.01758C16.4543 9.01758 16.3246 9.04341 16.2036 9.09359C16.0826 9.14377 15.9727 9.21732 15.8802 9.31002L12.0002 13.19L8.12022 9.31002C7.93324 9.12304 7.67965 9.018 7.41522 9.018C7.1508 9.018 6.8972 9.12304 6.71022 9.31002C6.52324 9.497 6.4182 9.7506 6.4182 10.015C6.4182 10.2794 6.52324 10.533 6.71022 10.72L11.3002 15.31C11.3927 15.4027 11.5026 15.4763 11.6236 15.5265C11.7446 15.5766 11.8743 15.6025 12.0052 15.6025C12.1362 15.6025 12.2659 15.5766 12.3868 15.5265C12.5078 15.4763 12.6177 15.4027 12.7102 15.31L17.3002 10.72C17.6802 10.34 17.6802 9.70002 17.2902 9.31002Z"
+                        fill="black"
+                      />
+                    </svg>
+                  </button>
+
+                  {idCabangOpen && (
+                    <div className="w-full relative">
+                      <DropdownSelector
+                        selected={(option) => setIdCabang(option)}
+                        options={["Cabang 01", "Cabang 02", "Cabang 03"]}
+                        onClose={() => setIdCabangOpen(false)}
+                      />
+                    </div>
+                  )}
                 </div>
               </div>
-              <div className="flex w-3/5 gap-3">
-                <div>
-                  <label htmlFor="kelurahan">Kelurahan/Desa</label>
-                  <input
-                    type="text"
-                    id="kelurahan"
-                    name="kelurahan"
-                    placeholder="Isi"
-                    className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
-                  />
-                </div>
-                <div>
-                  <label htmlFor="kecamatan">Kecamatan</label>
-                  <input
-                    type="text"
-                    id="kecamatan"
-                    name="kecamatan"
-                    placeholder="Isi"
-                    className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
-                  />
-                </div>
-                <div>
-                  <label htmlFor="kota">Kabupaten/Kota</label>
-                  <input
-                    type="text"
-                    id="kota"
-                    name="kota"
-                    placeholder="Isi"
-                    className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
-                  />
-                </div>
-                <div>
-                  <label htmlFor="kodePos">Kode Pos</label>
-                  <input
-                    type="text"
-                    id="kodePos"
-                    name="kodePos"
-                    placeholder="Isi"
-                    className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="bg-white p-[20px] rounded-xl">
-          <p className="text-black font-regular text-lg mb-[10px]">
-            Silahkan lengkapi form berikut dengan data diri kepala cabang.
-          </p>
-          <div className="flex flex-col gap-2">
-            <div className="flex gap-3">
-              <div className="w-2/5">
-                <label htmlFor="namaKepalaCabang">Nama Kepala Cabang</label>
+              <div className="w-1/3">
+                <label htmlFor="namaKetuaKelompok">Nama Ketua Kelompok</label>
                 <input
                   type="text"
-                  id="namaKepalaCabang"
-                  name="namaKepalaCabang"
-                  placeholder="Isi Nama Lengkap Kepala Cabang"
+                  id="namaKetuaKelompok"
+                  name="namaKetuaKelompok"
+                  placeholder="Isi Nama Ketua Kelompok"
                   className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
                 />
               </div>
-              <div className="w-1/5">
+              <div className="w-1/3">
+                <label htmlFor="idKetuaKelompok">ID Ketua Kelompok</label>
+                <input
+                  type="text"
+                  id="idKetuaKelompok"
+                  name="idKetuaKelompok"
+                  placeholder="Isi ID Ketua Kelompok"
+                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
+                />
+              </div>
+            </div>
+            <div className="flex w-full gap-2">
+              <div className="w-1/3">
+                <label htmlFor="namaLengkap">Nama Lengkap</label>
+                <input
+                  type="text"
+                  id="namaLengkap"
+                  name="namaLengkap"
+                  placeholder="Isi"
+                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
+                />
+              </div>
+              <div className="w-1/3">
                 <label htmlFor="statusPernikahan">Status Pernikahan</label>
                 <button
                   type="button"
@@ -152,7 +147,7 @@ const BuatAkunCabang = () => {
                   </div>
                 )}
               </div>
-              <div className="w-2/5">
+              <div className="w-1/3">
                 <label htmlFor="namaSuamiIstri">Nama Suami/Istri</label>
                 <input
                   type="text"
@@ -163,9 +158,9 @@ const BuatAkunCabang = () => {
                 />
               </div>
             </div>
-            <div className="flex gap-3">
+            <div className="flex w-full gap-2">
               <div className="w-1/4">
-                <label htmlFor="tempatLahir">Tempat Lahir</label>
+                <label htmlFor="tempatLahir">Isi Tempat Lahir Sesuai KTP</label>
                 <input
                   type="text"
                   id="tempatLahir"
@@ -233,7 +228,7 @@ const BuatAkunCabang = () => {
                 )}
               </div>
             </div>
-            <div className="flex gap-3">
+            <div className="flex w-full gap-2">
               <div className="w-2/5">
                 <label htmlFor="nik">NIK</label>
                 <input
@@ -298,10 +293,10 @@ const BuatAkunCabang = () => {
                 />
               </div>
             </div>
-            <div className="flex gap-3">
+            <div className="flex w-full gap-2">
               <div className="w-2/5">
                 <div>
-                  <label htmlFor="alamatKepalaCabang">Alamat Lengkap</label>
+                  <label htmlFor="alamat">Alamat Lengkap</label>
                   <input
                     type="text"
                     id="alamatCabang"
@@ -313,48 +308,48 @@ const BuatAkunCabang = () => {
               </div>
               <div className="flex w-3/5 gap-3">
                 <div>
-                  <label htmlFor="kelurahanKepalaCabang">Kelurahan/Desa</label>
+                  <label htmlFor="kelurahan">Kelurahan/Desa</label>
                   <input
                     type="text"
-                    id="kelurahanKepalaCabang"
-                    name="kelurahanKepalaCabang"
+                    id="kelurahan"
+                    name="kelurahan"
                     placeholder="Isi Sesuai KTP"
                     className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
                   />
                 </div>
                 <div>
-                  <label htmlFor="kecamatanKepalaCabang">Kecamatan</label>
+                  <label htmlFor="kecamatan">Kecamatan</label>
                   <input
                     type="text"
-                    id="kecamatanKepalaCabang"
-                    name="kecamatanKepalaCabang"
-                    placeholder="Isi"
+                    id="kecamatan"
+                    name="kecamatan"
+                    placeholder="Isi Sesuai KTP"
                     className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
                   />
                 </div>
                 <div>
-                  <label htmlFor="kotaKepalaCabang">Kabupaten/Kota</label>
+                  <label htmlFor="kota">Kabupaten/Kota</label>
                   <input
                     type="text"
-                    id="kotaKepalaCabang"
-                    name="kotaKepalaCabang"
-                    placeholder="Isi"
+                    id="kota"
+                    name="kota"
+                    placeholder="Isi Sesuai KTP"
                     className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
                   />
                 </div>
                 <div>
-                  <label htmlFor="kodePosKepalaCabang">Kode Pos</label>
+                  <label htmlFor="kodePos">Kode Pos</label>
                   <input
                     type="text"
-                    id="kodePosKepalaCabang"
-                    name="kodePosKepalaCabang"
-                    placeholder="Isi"
+                    id="kodePos"
+                    name="kodePos"
+                    placeholder="Isi Sesuai KTP"
                     className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
                   />
                 </div>
               </div>
             </div>
-            <div className="flex gap-3">
+            <div className="flex w-full gap-2">
               <div className="w-2/5">
                 <label htmlFor="pendidikan">Pendidikan Terakhir</label>
                 <button
@@ -404,31 +399,35 @@ const BuatAkunCabang = () => {
                 />
               </div>
             </div>
-            <div className="flex gap-3">
-              <label htmlFor="fotoDiri" className="flex w-1/2">
+            <div className="flex w-full gap-2">
+              <label htmlFor="fotoDiri" className="flex w-2/5">
                 {fotoDiri === null ? (
-                  <Image
-                    src={"/images/image_none.jpg"}
-                    alt="Image_none"
-                    width={80}
-                    height={80}
-                    style={{ objectFit: "cover" }}
-                    className="rounded-lg"
-                  />
+                  <div className="flex-grow">
+                    <Image
+                      src={"/images/image_none.jpg"}
+                      alt="Image_none"
+                      width={80}
+                      height={80}
+                      style={{ objectFit: "cover" }}
+                      className="rounded-lg"
+                    />
+                  </div>
                 ) : (
-                  <Image
-                    src={URL.createObjectURL(fotoDiri)}
-                    alt="Image_none"
-                    width={80}
-                    height={80}
-                    style={{ objectFit: "cover" }}
-                    className="rounded-lg"
-                  />
+                  <div className="flex-grow">
+                    <Image
+                      src={URL.createObjectURL(fotoDiri)}
+                      alt="Image_none"
+                      width={80}
+                      height={80}
+                      style={{ objectFit: "cover" }}
+                      className="rounded-lg"
+                    />
+                  </div>
                 )}
                 <div className="flex flex-col ml-2 flex-grow">
                   <p>Upload Foto Diri</p>
-                  <div className="border border-[#d9d9d9] rounded-lg p-[10px] flex mt-1 items-center">
-                    <div className="px-[25px] py-[2px] w-[177px] border border-secondary rounded-lg text-primary flex items-center">
+                  <div className="border border-[#d9d9d9] rounded-lg px-[10px] py-[2px] flex mt-1 items-center">
+                    <div className="w-[131px] border border-secondary rounded-lg text-primary flex items-center">
                       <p>Tambah Foto</p>
                       <svg
                         width="17"
@@ -463,30 +462,34 @@ const BuatAkunCabang = () => {
                   />
                 </div>
               </label>
-              <label htmlFor="fotoKtp" className="flex w-1/2">
+              <label htmlFor="fotoKtp" className="flex w-2/5">
                 {fotoKtp === null ? (
-                  <Image
-                    src={"/images/image_none.jpg"}
-                    alt="Image_none"
-                    width={80}
-                    height={80}
-                    style={{ objectFit: "cover" }}
-                    className="rounded-lg"
-                  />
+                  <div className="flex-grow">
+                    <Image
+                      src={"/images/image_none.jpg"}
+                      alt="Image_none"
+                      width={80}
+                      height={80}
+                      style={{ objectFit: "cover" }}
+                      className="rounded-lg"
+                    />
+                  </div>
                 ) : (
-                  <Image
-                    src={URL.createObjectURL(fotoKtp)}
-                    alt="Image_none"
-                    width={80}
-                    height={80}
-                    style={{ objectFit: "cover" }}
-                    className="rounded-lg"
-                  />
+                  <div className="flex-grow">
+                    <Image
+                      src={URL.createObjectURL(fotoDiri)}
+                      alt="Image_none"
+                      width={80}
+                      height={80}
+                      style={{ objectFit: "cover" }}
+                      className="rounded-lg"
+                    />
+                  </div>
                 )}
                 <div className="flex flex-col ml-2 flex-grow">
                   <p>Upload Foto KTP</p>
-                  <div className="border border-[#d9d9d9] rounded-lg p-[10px] flex mt-1 items-center">
-                    <div className="px-[25px] py-[2px] w-[177px] border border-secondary rounded-lg text-primary flex items-center">
+                  <div className="border border-[#d9d9d9] rounded-lg px-[10px] py-[2px] flex mt-1 items-center">
+                    <div className="py-[2px] w-[131px] border border-secondary rounded-lg text-primary flex items-center justify-around">
                       <p>Tambah Foto</p>
                       <svg
                         width="17"
@@ -521,78 +524,32 @@ const BuatAkunCabang = () => {
                   />
                 </div>
               </label>
+              <div className="w-1/5">
+                <label htmlFor="namaTeller">Nama Petugas/Teller</label>
+                <input
+                  type="text"
+                  id="namaTeller"
+                  name="namaTeller"
+                  placeholder="Isi Nama Petugas/Teller"
+                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
+                />
+              </div>
             </div>
           </div>
         </div>
-
-        <button
-          type="button"
-          className="w-[148px] px-[20px] py-[12px] text-white bg-primary rounded-lg ml-auto"
-          onClick={(e) => setProsesData(true)}
-        >
-          Simpan
-        </button>
-      </div>
-      <Modal isVisible={showProsesData} onClose={() => setProsesData(false)}>
-        <h3 className="text-xl text-center font-bold text-black">
-          Proses Data?
-        </h3>
-        <p className="text-base text-black font-regular text-center mb-4">
-          Anda yakin telah mengisikan data dengan benar dan sesuai?
-        </p>
-        <button
-          type="submit"
-          className="w-[450px] px-[20px] py-[12px] text-white bg-primary rounded-lg mx-auto"
-          onClick={(e) => {
-            setProsesData(false);
-            setBerhasil(true);
-          }}
-        >
-          Proses Data
-        </button>
-      </Modal>
-      <Modal isVisible={showBerhasil} onClose={() => setBerhasil(false)}>
-        <div className="w-[98px] h-[98px] rounded-full bg-primary place-self-center relative">
-          <svg
-            width="43"
-            height="43"
-            viewBox="0 0 43 43"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            className="absolute top-0 bottom-0 right-0 left-0 m-auto"
-          >
-            <path
-              fillRule="evenodd"
-              clipRule="evenodd"
-              d="M27.9622 8.30487C22.0269 5.93076 14.8128 7.27682 10.608 11.9082C8.54111 14.1835 7.24452 17.0533 6.90334 20.1082C6.56216 23.1632 7.1935 26.2479 8.70746 28.9232C10.2214 31.5984 12.5408 33.7279 15.3354 35.0082C18.13 36.2886 21.2573 36.6547 24.2721 36.0543C30.3567 34.8443 34.8592 29.357 36.0597 23.3543C36.2402 22.4519 37.118 21.8667 38.0204 22.0472C38.9228 22.2277 39.508 23.1055 39.3276 24.0079C37.9245 31.0233 32.6109 37.7938 24.9225 39.3228C21.2201 40.06 17.3794 39.6104 13.9473 38.038C10.5151 36.4655 7.66647 33.8502 5.80708 30.5645C3.94769 27.2789 3.1723 23.4903 3.59132 19.7384C4.01033 15.9865 5.60231 12.4625 8.14058 9.66804M8.14058 9.66804C13.3816 3.89568 22.1173 2.37758 29.1999 5.21062C30.0543 5.5524 30.4699 6.52214 30.1281 7.37659C29.7864 8.23105 28.8166 8.64665 27.9622 8.30487"
-              fill="white"
-            />
-            <path
-              fillRule="evenodd"
-              clipRule="evenodd"
-              d="M40.8946 7.60151C41.5645 8.23243 41.5962 9.287 40.9652 9.95696L23.2868 28.7289C22.9779 29.0569 22.5493 29.2459 22.0987 29.2526C21.6482 29.2594 21.2141 29.0834 20.8955 28.7648L14.3865 22.2558C13.7358 21.605 13.7358 20.55 14.3865 19.8993C15.0372 19.2485 16.0923 19.2485 16.743 19.8993L22.0379 25.1941L38.5391 7.67217C39.17 7.00222 40.2246 6.97058 40.8946 7.60151Z"
-              fill="white"
-            />
-          </svg>
+        <div className="flex gap-5 place-self-end">
+          <button className="bg-primary text-white w-[228px] h-[48px] rounded-md text-center">
+            <Link href={"/daftar-anggota/tambah-anggota/simpanan"}>
+              Tambah Simpanan
+            </Link>
+          </button>
+          <button className="bg-primary text-white w-[228px] h-[48px] rounded-md text-center">
+            Tambah Pinjaman
+          </button>
         </div>
-        <h4 className="text-black text-xl font-bold text-center">
-          Data Berhasil Disimpan
-        </h4>
-        <p className="text-black font-regular text-base text-center mb-3">
-          Silahkan Cek Data Anda
-        </p>
-        <button
-          type="button"
-          className="w-[450px] px-[20px] py-[12px] text-white bg-primary rounded-lg mx-auto"
-          onClick={(e) => {
-            setBerhasil(false);
-          }}
-        >
-          OK
-        </button>
-      </Modal>
+      </div>
     </form>
   );
 };
 
-export default BuatAkunCabang;
+export default TambahAnggota;
