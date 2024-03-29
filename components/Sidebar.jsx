@@ -89,7 +89,7 @@ const MenuItem = ({ item }) => {
                     <Link
                       href={subItem.path}
                       className={`${
-                        subItem.path === pathname ? "font-bold" : ""
+                        pathname.includes(subItem.path) ? "font-bold" : ""
                       } `}
                     >
                       <p>{subItem.title}</p>

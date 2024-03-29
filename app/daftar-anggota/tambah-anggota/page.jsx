@@ -544,7 +544,9 @@ const TambahAnggota = () => {
             </Link>
           </button>
           <button className="bg-primary text-white w-[228px] h-[48px] rounded-md text-center">
-            Tambah Pinjaman
+            <Link href={"/daftar-anggota/tambah-anggota/pinjaman"}>
+              Tambah Pinjaman
+            </Link>
           </button>
         </div>
       </div>

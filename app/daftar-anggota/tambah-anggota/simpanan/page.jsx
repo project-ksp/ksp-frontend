@@ -22,7 +22,7 @@ const Simpanan = () => {
         </div>
         <div className="bg-white p-[20px] rounded-xl">
           <p className="text-black font-bold text-lg mb-[10px]">
-            Silahkan lengkapi form berikut dengan benar.
+            Detail Simpanan
           </p>
           <div className="flex flex-col gap-3">
             <div className="flex-1">
