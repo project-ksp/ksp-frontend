@@ -248,14 +248,20 @@ const Dashboard = () => {
         <table className="table-fixed w-full text-left">
           <thead>
             <tr className="border-b border-[#DDE1E6]">
-              <th className="w-[7%] font-semibold py-[13px]">ID Cabang</th>
-              <th className="w-[10%] font-semibold">Lokasi Cabang</th>
-              <th className="w-[13%] font-semibold">Nama Ketua Cabang</th>
-              <th className="w-[9%] font-semibold">Jumlah Anggota Aktif</th>
-              <th className="w-[9%] font-semibold">
+              <th className="w-[7%] font-semibold py-[13px] px-[10px]">
+                ID Cabang
+              </th>
+              <th className="w-[10%] font-semibold px-[10px]">Lokasi Cabang</th>
+              <th className="w-[13%] font-semibold px-[10px]">
+                Nama Ketua Cabang
+              </th>
+              <th className="w-[9%] font-semibold px-[10px]">
+                Jumlah Anggota Aktif
+              </th>
+              <th className="w-[9%] font-semibold px-[10px]">
                 Jumlah Anggota Tidak Aktif
               </th>
-              <th className="w-[13%] font-semibold">
+              <th className="w-[13%] font-semibold px-[10px]">
                 <div className="flex justify-between items-center">
                   <p>Total Simpanan</p>
                   <svg
@@ -273,7 +279,7 @@ const Dashboard = () => {
                   </svg>
                 </div>
               </th>
-              <th className="w-[13%] font-semibold">
+              <th className="w-[13%] font-semibold px-[10px]">
                 <div className="flex justify-between items-center">
                   <p>Total Pinjaman</p>
                   <svg
@@ -291,22 +297,24 @@ const Dashboard = () => {
                   </svg>
                 </div>
               </th>
-              <th className="w-[8%] font-semibold">Total Publish</th>
-              <th className="w-[9%] font-semibold">Setting Publish</th>
-              <th className="w-[9%] font-semibold">Akses Cabang</th>
+              <th className="w-[8%] font-semibold px-[10px]">Total Publish</th>
+              <th className="w-[9%] font-semibold px-[10px]">
+                Setting Publish
+              </th>
+              <th className="w-[9%] font-semibold px-[10px]">Akses Cabang</th>
             </tr>
           </thead>
           <tbody>
             <tr className=" border-b border-[#DDE1E6]">
-              <td>01</td>
-              <td>Mojokerto</td>
-              <td>M.Ikhsan M</td>
-              <td>999,999</td>
-              <td>99,999</td>
-              <td>Rp. 99,999,999</td>
-              <td>Rp. 99,999,999</td>
-              <td>99</td>
-              <td>
+              <td className="px-[10px]">01</td>
+              <td className="px-[10px]">Mojokerto</td>
+              <td className="px-[10px]">M.Ikhsan M</td>
+              <td className="px-[10px]">999,999</td>
+              <td className="px-[10px]">99,999</td>
+              <td className="px-[10px]">Rp. 99,999,999</td>
+              <td className="px-[10px]">Rp. 99,999,999</td>
+              <td className="px-[10px]">99</td>
+              <td className="px-[10px]">
                 <div className="flex justify-center items-center h-[50px]">
                   <button
                     onClick={() => setAturPublish(true)}
@@ -316,7 +324,7 @@ const Dashboard = () => {
                   </button>
                 </div>
               </td>
-              <td>
+              <td className="px-[10px]">
                 <div className="flex justify-center items-center h-[50px]">
                   <button className="bg-primary w-[68px] py-[1px] text-white rounded-lg mx-auto my-auto">
                     Akses
@@ -325,15 +333,15 @@ const Dashboard = () => {
               </td>
             </tr>
             <tr className=" border-b border-[#DDE1E6]">
-              <td>01</td>
-              <td>Mojokerto</td>
-              <td>M.Ikhsan M</td>
-              <td>999,999</td>
-              <td>99,999</td>
-              <td>Rp. 99,999,999</td>
-              <td>Rp. 99,999,999</td>
-              <td>99</td>
-              <td>
+              <td className="px-[10px]">01</td>
+              <td className="px-[10px]">Mojokerto</td>
+              <td className="px-[10px]">M.Ikhsan M</td>
+              <td className="px-[10px]">999,999</td>
+              <td className="px-[10px]">99,999</td>
+              <td className="px-[10px]">Rp. 99,999,999</td>
+              <td className="px-[10px]">Rp. 99,999,999</td>
+              <td className="px-[10px]">99</td>
+              <td className="px-[10px]">
                 <div className="flex justify-center items-center h-[50px]">
                   <button
                     onClick={() => setAturPublish(true)}
@@ -343,7 +351,7 @@ const Dashboard = () => {
                   </button>
                 </div>
               </td>
-              <td>
+              <td className="px-[10px]">
                 <div className="flex justify-center items-center h-[50px]">
                   <button className="bg-primary w-[68px] py-[1px] text-white rounded-lg mx-auto my-auto">
                     Akses
@@ -352,15 +360,15 @@ const Dashboard = () => {
               </td>
             </tr>
             <tr className=" border-b border-[#DDE1E6]">
-              <td>01</td>
-              <td>Mojokerto</td>
-              <td>M.Ikhsan M</td>
-              <td>999,999</td>
-              <td>99,999</td>
-              <td>Rp. 99,999,999</td>
-              <td>Rp. 99,999,999</td>
-              <td>99</td>
-              <td>
+              <td className="px-[10px]">01</td>
+              <td className="px-[10px]">Mojokerto</td>
+              <td className="px-[10px]">M.Ikhsan M</td>
+              <td className="px-[10px]">999,999</td>
+              <td className="px-[10px]">99,999</td>
+              <td className="px-[10px]">Rp. 99,999,999</td>
+              <td className="px-[10px]">Rp. 99,999,999</td>
+              <td className="px-[10px]">99</td>
+              <td className="px-[10px]">
                 <div className="flex justify-center items-center h-[50px]">
                   <button
                     onClick={() => setAturPublish(true)}
@@ -370,7 +378,7 @@ const Dashboard = () => {
                   </button>
                 </div>
               </td>
-              <td>
+              <td className="px-[10px]">
                 <div className="flex justify-center items-center h-[50px]">
                   <button className="bg-primary w-[68px] py-[1px] text-white rounded-lg mx-auto my-auto">
                     Akses
@@ -379,15 +387,15 @@ const Dashboard = () => {
               </td>
             </tr>
             <tr className=" border-b border-[#DDE1E6]">
-              <td>01</td>
-              <td>Mojokerto</td>
-              <td>M.Ikhsan M</td>
-              <td>999,999</td>
-              <td>99,999</td>
-              <td>Rp. 99,999,999</td>
-              <td>Rp. 99,999,999</td>
-              <td>99</td>
-              <td>
+              <td className="px-[10px]">01</td>
+              <td className="px-[10px]">Mojokerto</td>
+              <td className="px-[10px]">M.Ikhsan M</td>
+              <td className="px-[10px]">999,999</td>
+              <td className="px-[10px]">99,999</td>
+              <td className="px-[10px]">Rp. 99,999,999</td>
+              <td className="px-[10px]">Rp. 99,999,999</td>
+              <td className="px-[10px]">99</td>
+              <td className="px-[10px]">
                 <div className="flex justify-center items-center h-[50px]">
                   <button
                     onClick={() => setAturPublish(true)}
@@ -397,7 +405,7 @@ const Dashboard = () => {
                   </button>
                 </div>
               </td>
-              <td>
+              <td className="px-[10px]">
                 <div className="flex justify-center items-center h-[50px]">
                   <button className="bg-primary w-[68px] py-[1px] text-white rounded-lg mx-auto my-auto">
                     Akses
@@ -406,15 +414,15 @@ const Dashboard = () => {
               </td>
             </tr>
             <tr className=" border-b border-[#DDE1E6]">
-              <td>01</td>
-              <td>Mojokerto</td>
-              <td>M.Ikhsan M</td>
-              <td>999,999</td>
-              <td>99,999</td>
-              <td>Rp. 99,999,999</td>
-              <td>Rp. 99,999,999</td>
-              <td>99</td>
-              <td>
+              <td className="px-[10px]">01</td>
+              <td className="px-[10px]">Mojokerto</td>
+              <td className="px-[10px]">M.Ikhsan M</td>
+              <td className="px-[10px]">999,999</td>
+              <td className="px-[10px]">99,999</td>
+              <td className="px-[10px]">Rp. 99,999,999</td>
+              <td className="px-[10px]">Rp. 99,999,999</td>
+              <td className="px-[10px]">99</td>
+              <td className="px-[10px]">
                 <div className="flex justify-center items-center h-[50px]">
                   <button
                     onClick={() => setAturPublish(true)}
@@ -424,7 +432,7 @@ const Dashboard = () => {
                   </button>
                 </div>
               </td>
-              <td>
+              <td className="px-[10px]">
                 <div className="flex justify-center items-center h-[50px]">
                   <button className="bg-primary w-[68px] py-[1px] text-white rounded-lg mx-auto my-auto">
                     Akses
@@ -433,15 +441,15 @@ const Dashboard = () => {
               </td>
             </tr>
             <tr className=" border-b border-[#DDE1E6]">
-              <td>01</td>
-              <td>Mojokerto</td>
-              <td>M.Ikhsan M</td>
-              <td>999,999</td>
-              <td>99,999</td>
-              <td>Rp. 99,999,999</td>
-              <td>Rp. 99,999,999</td>
-              <td>99</td>
-              <td>
+              <td className="px-[10px]">01</td>
+              <td className="px-[10px]">Mojokerto</td>
+              <td className="px-[10px]">M.Ikhsan M</td>
+              <td className="px-[10px]">999,999</td>
+              <td className="px-[10px]">99,999</td>
+              <td className="px-[10px]">Rp. 99,999,999</td>
+              <td className="px-[10px]">Rp. 99,999,999</td>
+              <td className="px-[10px]">99</td>
+              <td className="px-[10px]">
                 <div className="flex justify-center items-center h-[50px]">
                   <button
                     onClick={() => setAturPublish(true)}
@@ -451,7 +459,7 @@ const Dashboard = () => {
                   </button>
                 </div>
               </td>
-              <td>
+              <td className="px-[10px]">
                 <div className="flex justify-center items-center h-[50px]">
                   <button className="bg-primary w-[68px] py-[1px] text-white rounded-lg mx-auto my-auto">
                     Akses
@@ -460,15 +468,15 @@ const Dashboard = () => {
               </td>
             </tr>
             <tr className=" border-b border-[#DDE1E6]">
-              <td>01</td>
-              <td>Mojokerto</td>
-              <td>M.Ikhsan M</td>
-              <td>999,999</td>
-              <td>99,999</td>
-              <td>Rp. 99,999,999</td>
-              <td>Rp. 99,999,999</td>
-              <td>99</td>
-              <td>
+              <td className="px-[10px]">01</td>
+              <td className="px-[10px]">Mojokerto</td>
+              <td className="px-[10px]">M.Ikhsan M</td>
+              <td className="px-[10px]">999,999</td>
+              <td className="px-[10px]">99,999</td>
+              <td className="px-[10px]">Rp. 99,999,999</td>
+              <td className="px-[10px]">Rp. 99,999,999</td>
+              <td className="px-[10px]">99</td>
+              <td className="px-[10px]">
                 <div className="flex justify-center items-center h-[50px]">
                   <button
                     onClick={() => setAturPublish(true)}
@@ -478,7 +486,7 @@ const Dashboard = () => {
                   </button>
                 </div>
               </td>
-              <td>
+              <td className="px-[10px]">
                 <div className="flex justify-center items-center h-[50px]">
                   <button className="bg-primary w-[68px] py-[1px] text-white rounded-lg mx-auto my-auto">
                     Akses
@@ -487,15 +495,15 @@ const Dashboard = () => {
               </td>
             </tr>
             <tr className=" border-b border-[#DDE1E6]">
-              <td>01</td>
-              <td>Mojokerto</td>
-              <td>M.Ikhsan M</td>
-              <td>999,999</td>
-              <td>99,999</td>
-              <td>Rp. 99,999,999</td>
-              <td>Rp. 99,999,999</td>
-              <td>99</td>
-              <td>
+              <td className="px-[10px]">01</td>
+              <td className="px-[10px]">Mojokerto</td>
+              <td className="px-[10px]">M.Ikhsan M</td>
+              <td className="px-[10px]">999,999</td>
+              <td className="px-[10px]">99,999</td>
+              <td className="px-[10px]">Rp. 99,999,999</td>
+              <td className="px-[10px]">Rp. 99,999,999</td>
+              <td className="px-[10px]">99</td>
+              <td className="px-[10px]">
                 <div className="flex justify-center items-center h-[50px]">
                   <button
                     onClick={() => setAturPublish(true)}
@@ -505,7 +513,7 @@ const Dashboard = () => {
                   </button>
                 </div>
               </td>
-              <td>
+              <td className="px-[10px]">
                 <div className="flex justify-center items-center h-[50px]">
                   <button className="bg-primary w-[68px] py-[1px] text-white rounded-lg mx-auto my-auto">
                     Akses
@@ -514,15 +522,15 @@ const Dashboard = () => {
               </td>
             </tr>
             <tr className=" border-b border-[#DDE1E6]">
-              <td>01</td>
-              <td>Mojokerto</td>
-              <td>M.Ikhsan M</td>
-              <td>999,999</td>
-              <td>99,999</td>
-              <td>Rp. 99,999,999</td>
-              <td>Rp. 99,999,999</td>
-              <td>99</td>
-              <td>
+              <td className="px-[10px]">01</td>
+              <td className="px-[10px]">Mojokerto</td>
+              <td className="px-[10px]">M.Ikhsan M</td>
+              <td className="px-[10px]">999,999</td>
+              <td className="px-[10px]">99,999</td>
+              <td className="px-[10px]">Rp. 99,999,999</td>
+              <td className="px-[10px]">Rp. 99,999,999</td>
+              <td className="px-[10px]">99</td>
+              <td className="px-[10px]">
                 <div className="flex justify-center items-center h-[50px]">
                   <button
                     onClick={() => setAturPublish(true)}
@@ -532,7 +540,7 @@ const Dashboard = () => {
                   </button>
                 </div>
               </td>
-              <td>
+              <td className="px-[10px]">
                 <div className="flex justify-center items-center h-[50px]">
                   <button className="bg-primary w-[68px] py-[1px] text-white rounded-lg mx-auto my-auto">
                     Akses
@@ -541,15 +549,15 @@ const Dashboard = () => {
               </td>
             </tr>
             <tr className=" border-b border-[#DDE1E6]">
-              <td>01</td>
-              <td>Mojokerto</td>
-              <td>M.Ikhsan M</td>
-              <td>999,999</td>
-              <td>99,999</td>
-              <td>Rp. 99,999,999</td>
-              <td>Rp. 99,999,999</td>
-              <td>99</td>
-              <td>
+              <td className="px-[10px]">01</td>
+              <td className="px-[10px]">Mojokerto</td>
+              <td className="px-[10px]">M.Ikhsan M</td>
+              <td className="px-[10px]">999,999</td>
+              <td className="px-[10px]">99,999</td>
+              <td className="px-[10px]">Rp. 99,999,999</td>
+              <td className="px-[10px]">Rp. 99,999,999</td>
+              <td className="px-[10px]">99</td>
+              <td className="px-[10px]">
                 <div className="flex justify-center items-center h-[50px]">
                   <button
                     onClick={() => setAturPublish(true)}
@@ -559,7 +567,7 @@ const Dashboard = () => {
                   </button>
                 </div>
               </td>
-              <td>
+              <td className="px-[10px]">
                 <div className="flex justify-center items-center h-[50px]">
                   <button className="bg-primary w-[68px] py-[1px] text-white rounded-lg mx-auto my-auto">
                     Akses
