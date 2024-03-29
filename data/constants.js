@@ -42,7 +42,7 @@ export const SIDENAV_ITEMS_KEPCAB = [
       },
       {
         title: "Form Pendaftaran Anggota",
-        path: "/daftar-anggota/tambah-anggota",
+        path: "/daftar-anggota/tambah-anggota/anggota-baru",
       },
       {
         title: "Pengajuan Hapus Anggota",
