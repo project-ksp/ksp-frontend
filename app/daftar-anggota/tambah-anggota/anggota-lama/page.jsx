@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 const AnggotaLama = () => {
@@ -122,9 +123,12 @@ const AnggotaLama = () => {
               </td>
               <td className="px-[10px]">
                 <div className="flex justify-center items-center h-[64px]">
-                  <button className="bg-primary w-[98px] py-[1px] text-white rounded-lg mx-auto my-auto">
+                  <Link
+                    href={"/daftar-anggota/tambah-anggota/anggota-lama/detail"}
+                    className="bg-primary w-[98px] py-[1px] text-white rounded-lg text-center"
+                  >
                     Cek Detail
-                  </button>
+                  </Link>
                 </div>
               </td>
             </tr>
