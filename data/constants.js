@@ -71,8 +71,8 @@ export const SIDENAV_ITEMS_KEPCAB = [
     submenu: true,
     subMenuItems: [
       {
-        title: "Pengajuan Simpanan",
-        path: "/status-pengajuan/pengajuan-simpanan",
+        title: "Anggota Baru",
+        path: "/status-pengajuan/anggota-baru",
       },
       {
         title: "Pinjaman Anggota Lama",

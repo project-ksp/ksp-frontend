@@ -1,11 +1,12 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
 import Image from "next/image";
 import DropdownSelector from "@/components/DropdownSelector";
 import Modal from "@/components/Modal";
 
-const Detail = () => {
+const DetailPinjamanAnggotaBaru = () => {
   const [showProsesData, setProsesData] = useState(false);
   const [showBerhasil, setBerhasil] = useState(false);
   const [idCabang, setIdCabang] = useState("Pilih Cabang");
@@ -19,10 +20,24 @@ const Detail = () => {
   const [statusPernikahanOpen, setStatusPernikahanOpen] = useState(false);
   const [idCabangOpen, setIdCabangOpen] = useState(false);
   const [buktiPendukung, setBuktiPendukung] = useState(null);
-
   return (
     <div className="flex flex-col gap-2">
-      <h2 className="text-2xl font-bold text-black">Detail Anggota</h2>
+      <div className="flex items-center justify-between">
+        <h2 className="text-2xl font-bold text-black">
+          Detail Pengajuan Anggota Baru
+        </h2>
+        <div className="flex gap-4">
+          <button className="bg-primary text-white w-[228px] h-[48px] rounded-md text-center">
+            <Link href={"/status-pengajuan/anggota-baru"}>Kembali</Link>
+          </button>
+          <button
+            onClick={() => setProsesData(true)}
+            className="bg-primary text-white w-[228px] h-[48px] rounded-md text-center"
+          >
+            Submit Data
+          </button>
+        </div>
+      </div>
       <div className="bg-white rounded-xl p-[20px]">
         <p className="text-black font-bold text-lg mb-[10px]">
           Biodata Lengkap Anggota
@@ -39,15 +54,15 @@ const Detail = () => {
             <div className="flex flex-col gap-2">
               <p className="text-xl text-black">Ifadatul K</p>
               <p className="text-lg text-black">01-2024-12345</p>
-              <div className="bg-red-status-1 text-white text-center my-[8px] rounded-lgx  w-[86px]">
-                Tidak Aktif
+              <div className="bg-green-status-1 text-white text-center my-[8px] rounded-lg  w-[86px]">
+                Aktif
               </div>
             </div>
           </div>
         </div>
       </div>
       <div className="bg-white p-[20px] rounded-xl">
-        <p className="text-black font-bold text-lg mb-[10px]">Data diri</p>
+        <p className="text-black text-lg mb-[10px] font-bold">Data Diri</p>
         <div className="flex flex-col gap-2">
           <div className="flex w-full gap-2">
             <div className="w-1/3">
@@ -414,349 +429,30 @@ const Detail = () => {
           </div>
         </div>
       </div>
-      <div className="bg-white p-[20px] rounded-xl">
-        <p className="text-black font-bold text-lg mb-[10px]">
-          Detail Simpanan
-        </p>
-        <div className="flex flex-col gap-3">
-          <div className="flex-1">
-            <label htmlFor="simpananPokok">Simpanan Pokok</label>
-            <input
-              type="text"
-              name="simpananPokok"
-              id="simpananPokok"
-              value={"Rp.99.000.000,00"}
-              className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
-            />
-            <p className="text-filled-color text-sm mt-1">
-              *Minimal Rp.50.000,00/bulan
-            </p>
-          </div>
-          <div className="flex flex-col">
-            <label htmlFor="simpananWajib">Simpanan Wajib</label>
-            <div className="flex mt-2 gap-3">
-              <div className="flex-grow">
-                <label htmlFor="bulan1">Bulan Ke-</label>
-                <input
-                  type="text"
-                  name="bulan1"
-                  id="bulan1"
-                  placeholder="Auto Generated"
-                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none italic"
-                  disabled
-                />
-              </div>
-              <div className="flex-grow">
-                <label htmlFor="bulan1">Bulan Ke-</label>
-                <input
-                  type="text"
-                  name="bulan1"
-                  id="bulan1"
-                  placeholder="Auto Generated"
-                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none italic"
-                  disabled
-                />
-              </div>
-              <div className="flex-grow">
-                <label htmlFor="bulan1">Bulan Ke-</label>
-                <input
-                  type="text"
-                  name="bulan1"
-                  id="bulan1"
-                  placeholder="Auto Generated"
-                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none italic"
-                  disabled
-                />
-              </div>
-              <div className="flex-grow">
-                <label htmlFor="bulan1">Bulan Ke-</label>
-                <input
-                  type="text"
-                  name="bulan1"
-                  id="bulan1"
-                  placeholder="Auto Generated"
-                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none italic"
-                  disabled
-                />
-              </div>
-              <div className="flex-grow">
-                <label htmlFor="bulan1">Bulan Ke-</label>
-                <input
-                  type="text"
-                  name="bulan1"
-                  id="bulan1"
-                  placeholder="Auto Generated"
-                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none italic"
-                  disabled
-                />
-              </div>
-            </div>
-            <p className="text-filled-color text-sm mt-1">
-              *Minimal Rp.50.000,00/bulan
-            </p>
-          </div>
-          <div className="flex-1">
-            <label htmlFor="simpananSukarela">Simpanan Sukarela</label>
-            <input
-              type="text"
-              name="simpananSukarela"
-              id="simpananSukarela"
-              value={"Rp.99.000.000,00"}
-              className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
-            />
-            <p className="text-filled-color text-sm mt-1">
-              Diambil dari pinjaman
-            </p>
-          </div>
-        </div>
-      </div>
-      <div className="bg-white p-[20px] rounded-xl">
-        <p className="text-black font-bold text-lg mb-[10px]">
-          Detail Pinjaman
-        </p>
-        <div className="flex flex-col gap-4">
-          <div className="flex gap-2">
-            <div className="min-w-[175px]">
-              <div>
-                <label htmlFor="idCabang">ID Cabang</label>
-                <button
-                  type="button"
-                  name="idCabang"
-                  id="idCabang"
-                  className={`w-full flex justify-between py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] text-start text-[#d9d9d9] bg-transparent focus:outline-none ${
-                    idCabang === "Pilih Cabang"
-                      ? "text-[#d9d9d9]"
-                      : "text-primary"
-                  }`}
-                  onClick={() => setIdCabangOpen(!idCabangOpen)}
-                >
-                  {idCabang}
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M17.2902 9.31002C17.1977 9.21732 17.0878 9.14377 16.9668 9.09359C16.8459 9.04341 16.7162 9.01758 16.5852 9.01758C16.4543 9.01758 16.3246 9.04341 16.2036 9.09359C16.0826 9.14377 15.9727 9.21732 15.8802 9.31002L12.0002 13.19L8.12022 9.31002C7.93324 9.12304 7.67965 9.018 7.41522 9.018C7.1508 9.018 6.8972 9.12304 6.71022 9.31002C6.52324 9.497 6.4182 9.7506 6.4182 10.015C6.4182 10.2794 6.52324 10.533 6.71022 10.72L11.3002 15.31C11.3927 15.4027 11.5026 15.4763 11.6236 15.5265C11.7446 15.5766 11.8743 15.6025 12.0052 15.6025C12.1362 15.6025 12.2659 15.5766 12.3868 15.5265C12.5078 15.4763 12.6177 15.4027 12.7102 15.31L17.3002 10.72C17.6802 10.34 17.6802 9.70002 17.2902 9.31002Z"
-                      fill="black"
-                    />
-                  </svg>
-                </button>
-
-                {idCabangOpen && (
-                  <div className="w-full relative">
-                    <DropdownSelector
-                      selected={(option) => setIdCabang(option)}
-                      options={["Cabang 01", "Cabang 02", "Cabang 03"]}
-                      onClose={() => setIdCabangOpen(false)}
-                    />
-                  </div>
-                )}
-              </div>
-            </div>
-            <div className="min-w-[290px]">
-              <div>
-                <label htmlFor="jumlahPinjaman">Jumlah Pinjaman</label>
-                <input
-                  type="text"
-                  name="jumlahPinjaman"
-                  id="jumlahPinjaman"
-                  placeholder="Auto Generated"
-                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none italic"
-                />
-              </div>
-            </div>
-            <div className="w-1/2">
-              <div>
-                <label htmlFor="namaKetuaKelompok">Nama Ketua Kelompok</label>
-                <input
-                  type="text"
-                  name="namaKetuaKelompok"
-                  id="namaKetuaKelompok"
-                  placeholder="Auto Generated"
-                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none italic"
-                />
-              </div>
-            </div>
-            <div className="w-1/2">
-              <div>
-                <label htmlFor="idKetuaKelompok">ID Ketua Kelompok</label>
-                <input
-                  type="text"
-                  name="idKetuaKelompok"
-                  id="idKetuaKelompok"
-                  placeholder="Auto Generated"
-                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none italic"
-                />
-              </div>
-            </div>
-          </div>
-          <div className="flex gap-2">
-            <div className="min-w-[175px]">
-              <div>
-                <label htmlFor="idCabang">ID Cabang</label>
-                <button
-                  type="button"
-                  name="idCabang"
-                  id="idCabang"
-                  className={`w-full flex justify-between py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] text-start text-[#d9d9d9] bg-transparent focus:outline-none ${
-                    idCabang === "Pilih Cabang"
-                      ? "text-[#d9d9d9]"
-                      : "text-primary"
-                  }`}
-                  onClick={() => setIdCabangOpen(!idCabangOpen)}
-                >
-                  {idCabang}
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M17.2902 9.31002C17.1977 9.21732 17.0878 9.14377 16.9668 9.09359C16.8459 9.04341 16.7162 9.01758 16.5852 9.01758C16.4543 9.01758 16.3246 9.04341 16.2036 9.09359C16.0826 9.14377 15.9727 9.21732 15.8802 9.31002L12.0002 13.19L8.12022 9.31002C7.93324 9.12304 7.67965 9.018 7.41522 9.018C7.1508 9.018 6.8972 9.12304 6.71022 9.31002C6.52324 9.497 6.4182 9.7506 6.4182 10.015C6.4182 10.2794 6.52324 10.533 6.71022 10.72L11.3002 15.31C11.3927 15.4027 11.5026 15.4763 11.6236 15.5265C11.7446 15.5766 11.8743 15.6025 12.0052 15.6025C12.1362 15.6025 12.2659 15.5766 12.3868 15.5265C12.5078 15.4763 12.6177 15.4027 12.7102 15.31L17.3002 10.72C17.6802 10.34 17.6802 9.70002 17.2902 9.31002Z"
-                      fill="black"
-                    />
-                  </svg>
-                </button>
-
-                {idCabangOpen && (
-                  <div className="w-full relative">
-                    <DropdownSelector
-                      selected={(option) => setIdCabang(option)}
-                      options={["Cabang 01", "Cabang 02", "Cabang 03"]}
-                      onClose={() => setIdCabangOpen(false)}
-                    />
-                  </div>
-                )}
-              </div>
-            </div>
-            <div className="min-w-[290px]">
-              <div>
-                <label htmlFor="jumlahPinjaman">Jumlah Pinjaman</label>
-                <input
-                  type="text"
-                  name="jumlahPinjaman"
-                  id="jumlahPinjaman"
-                  placeholder="Auto Generated"
-                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none italic"
-                />
-              </div>
-            </div>
-            <div className="w-1/2">
-              <div>
-                <label htmlFor="namaKetuaKelompok">Nama Ketua Kelompok</label>
-                <input
-                  type="text"
-                  name="namaKetuaKelompok"
-                  id="namaKetuaKelompok"
-                  placeholder="Auto Generated"
-                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none italic"
-                />
-              </div>
-            </div>
-            <div className="w-1/2">
-              <div>
-                <label htmlFor="idKetuaKelompok">ID Ketua Kelompok</label>
-                <input
-                  type="text"
-                  name="idKetuaKelompok"
-                  id="idKetuaKelompok"
-                  placeholder="Auto Generated"
-                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none italic"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="bg-white p-[20px] rounded-xl">
-        <p className="text-black font-bold text-lg mb-[10px]">
-          Detail Penghapusan Anggota
-        </p>
-        <div className="flex gap-2">
-          <div className="w-1/2">
-            <div>
-              <label htmlFor="alasanPenghapusan">Alasan Penghapusan</label>
-              <input
-                type="text"
-                name="alasanPenghapusan"
-                id="alasanPenghapusan"
-                placeholder="Auto Generated"
-                className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none italic"
-              />
-            </div>
-          </div>
-          <label htmlFor="buktiPendukung" className="flex w-1/2">
-            {buktiPendukung === null ? (
-              <Image
-                src={"/images/image_none.jpg"}
-                alt="Image_none"
-                width={80}
-                height={80}
-                style={{ objectFit: "cover" }}
-                className="rounded-lg"
-              />
-            ) : (
-              <Image
-                src={URL.createObjectURL(buktiPendukung)}
-                alt="Image_none"
-                width={80}
-                height={80}
-                style={{ objectFit: "cover" }}
-                className="rounded-lg"
-              />
-            )}
-            <div className="flex flex-col ml-2 flex-grow">
-              <p>Upload Foto KTP</p>
-              <div className="border border-[#d9d9d9] rounded-lg p-[10px] flex mt-1 items-center">
-                <div className="px-[25px] py-[2px] w-[177px] border border-secondary rounded-lg text-primary flex items-center">
-                  <p>Tambah Foto</p>
-                  <svg
-                    width="17"
-                    height="16"
-                    viewBox="0 0 17 16"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="ml-3"
-                  >
-                    <path
-                      d="M3.25 14C2.78587 14 2.34075 13.8156 2.01256 13.4874C1.68437 13.1592 1.5 12.7141 1.5 12.25V9.75C1.5 9.55109 1.57902 9.36032 1.71967 9.21967C1.86032 9.07902 2.05109 9 2.25 9C2.44891 9 2.63968 9.07902 2.78033 9.21967C2.92098 9.36032 3 9.55109 3 9.75V12.25C3 12.388 3.112 12.5 3.25 12.5H13.75C13.8163 12.5 13.8799 12.4737 13.9268 12.4268C13.9737 12.3799 14 12.3163 14 12.25V9.75C14 9.55109 14.079 9.36032 14.2197 9.21967C14.3603 9.07902 14.5511 9 14.75 9C14.9489 9 15.1397 9.07902 15.2803 9.21967C15.421 9.36032 15.5 9.55109 15.5 9.75V12.25C15.5 12.7141 15.3156 13.1592 14.9874 13.4874C14.6592 13.8156 14.2141 14 13.75 14H3.25Z"
-                      fill="#004080"
-                    />
-                    <path
-                      d="M12.2795 4.72C12.3491 4.7896 12.4043 4.87223 12.442 4.96316C12.4797 5.0541 12.4991 5.15157 12.4991 5.25C12.4991 5.34843 12.4797 5.44589 12.442 5.53683C12.4043 5.62777 12.3491 5.7104 12.2795 5.78C12.2099 5.8496 12.1273 5.90481 12.0364 5.94248C11.9454 5.98014 11.848 5.99953 11.7495 5.99953C11.6511 5.99953 11.5536 5.98014 11.4627 5.94248C11.3718 5.90481 11.2891 5.8496 11.2195 5.78L9.24953 3.811V9.5C9.24953 9.69891 9.17052 9.88968 9.02986 10.0303C8.88921 10.171 8.69845 10.25 8.49953 10.25C8.30062 10.25 8.10986 10.171 7.9692 10.0303C7.82855 9.88968 7.74953 9.69891 7.74953 9.5V3.811L5.77953 5.78C5.70993 5.8496 5.6273 5.90481 5.53637 5.94248C5.44543 5.98014 5.34796 5.99953 5.24953 5.99953C5.1511 5.99953 5.05364 5.98014 4.9627 5.94248C4.87176 5.90481 4.78913 5.8496 4.71953 5.78C4.64993 5.7104 4.59472 5.62777 4.55705 5.53683C4.51939 5.44589 4.5 5.34843 4.5 5.25C4.5 5.15157 4.51939 5.0541 4.55705 4.96316C4.59472 4.87223 4.64993 4.7896 4.71953 4.72L7.96953 1.47C8.0391 1.40033 8.12171 1.34507 8.21266 1.30736C8.3036 1.26965 8.40108 1.25024 8.49953 1.25024C8.59798 1.25024 8.69547 1.26965 8.78641 1.30736C8.87735 1.34507 8.95997 1.40033 9.02953 1.47L12.2795 4.72Z"
-                      fill="#004080"
-                    />
-                  </svg>
-                </div>
-                <p className="text-[#3c3c3c] ml-[30px]">
-                  {buktiPendukung === null
-                    ? "Tidak ada file terpilih"
-                    : buktiPendukung.name}
-                </p>
-              </div>
-              <input
-                type="file"
-                name="buktiPendukung"
-                id="buktiPendukung"
-                hidden
-                onChange={(e) => setBuktiPendukung(e.target.files[0])}
-              />
-            </div>
-          </label>
-        </div>
-      </div>
-      <div className="flex gap-5 place-self-end">
+      <div className="flex gap-3 justify-end">
         <button
           type="button"
-          onClick={() => setProsesData(true)}
-          className="bg-primary text-white w-[228px] h-[48px] rounded-md text-center"
+          className="w-[200px] px-[20px] h-[48px] text-white bg-primary rounded-lg"
         >
-          Proses Pengajuan
+          Formulir
+        </button>
+        <button
+          type="button"
+          className="w-[200px] px-[20px] h-[48px] text-white bg-primary rounded-lg"
+        >
+          Kartu Anggota
+        </button>
+        <button
+          type="button"
+          className="w-[200px] px-[20px] h-[48px] text-white bg-primary rounded-lg"
+        >
+          Buku Anggota
+        </button>
+        <button
+          type="button"
+          className="w-[200px] px-[20px] h-[48px] text-white bg-primary rounded-lg"
+        >
+          Blanko Pinjaman
         </button>
       </div>
       <Modal isVisible={showProsesData} onClose={() => setProsesData(false)}>
@@ -821,4 +517,4 @@ const Detail = () => {
   );
 };
 
-export default Detail;
+export default DetailPinjamanAnggotaBaru;
