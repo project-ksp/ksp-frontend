@@ -4,13 +4,13 @@ import Link from "next/link";
 import Image from "next/image";
 import Modal from "@/components/Modal";
 
-const EditKetuaKelompok = () => {
+const EditTeller = () => {
   const [showProsesData, setProsesData] = useState(false);
   const [showBerhasil, setBerhasil] = useState(false);
   return (
     <div className="flex flex-col gap-2">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold text-black">Daftar Ketua Kelompok</h2>
+        <h2 className="text-2xl font-bold text-black">Daftar Teller</h2>
         <div className="flex gap-4">
           <button className="bg-primary text-white w-[228px] h-[48px] rounded-md text-center">
             <Link href={"/daftar-ketua-kelompok"}>Kembali</Link>
@@ -22,13 +22,13 @@ const EditKetuaKelompok = () => {
       </div>
       <div className="bg-white rounded-xl p-[20px]">
         <p className="text-black font-bold text-lg mb-[10px]">
-          Biodata Lengkap Ketua Kelompok
+          Biodata Lengkap Teller
         </p>
         <div className="flex gap-5 w-full">
           <div className="w-[300px]">
             <Image
               src={"/images/dummy.jpg"}
-              alt="Foto Ketua Kelompok"
+              alt="Foto Teller"
               width={300}
               height={400}
               quality={100}
@@ -37,59 +37,57 @@ const EditKetuaKelompok = () => {
           </div>
           <div className="flex flex-col w-full gap-2">
             <div className="flex-1">
-              <label htmlFor="idKetuaKelompok">ID Ketua Kelompok</label>
+              <label htmlFor="idTeller">ID Teller</label>
               <input
                 type="text"
-                id="idKetuaKelompok"
-                name="idKetuaKelompok"
-                placeholder="Isi ID Ketua Kelompok"
+                id="idTeller"
+                name="idTeller"
+                placeholder="Isi ID Teller"
                 value={"01281"}
                 className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
               />
             </div>
             <div className="flex-1">
-              <label htmlFor="namaKetuaKelompok">Nama Ketua Kelompok</label>
+              <label htmlFor="namaTeller">Nama Teller</label>
               <input
                 type="text"
-                id="namaKetuaKelompok"
-                name="namaKetuaKelompok"
-                placeholder="Isi Nama Ketua Kelompok"
+                id="namaTeller"
+                name="namaTeller"
+                placeholder="Isi Nama Teller"
                 value={"M. Syakur"}
                 className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
               />
             </div>
             <div className="flex-1">
-              <label htmlFor="nikKetuaKelompok">NIK</label>
+              <label htmlFor="nikTeller">NIK</label>
               <input
                 type="text"
-                id="nikKetuaKelompok"
-                name="nikKetuaKelompok"
-                placeholder="Isi Nik Ketua Kelompok"
+                id="nikTeller"
+                name="nikTeller"
+                placeholder="Isi Nik Teller"
                 value={"358804128500004"}
                 className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
               />
             </div>
             <div className="flex gap-3">
               <div className="w-1/2">
-                <label htmlFor="agamaKetuaKelompok">Agama</label>
+                <label htmlFor="agamaTeller">Agama</label>
                 <input
                   type="text"
-                  id="agamaKetuaKelompok"
-                  name="agamaKetuaKelompok"
-                  placeholder="Isi Agama Ketua Kelompok"
+                  id="agamaTeller"
+                  name="agamaTeller"
+                  placeholder="Isi Agama Teller"
                   value={"Islam"}
                   className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
                 />
               </div>
               <div className="w-1/2">
-                <label htmlFor="pendidikanKetuaKelompok">
-                  Pendidikan Terakhir
-                </label>
+                <label htmlFor="pendidikanTeller">Pendidikan Terakhir</label>
                 <input
                   type="text"
-                  id="pendidikanKetuaKelompok"
-                  name="pendidikanKetuaKelompok"
-                  placeholder="Isi Pendidikan Ketua Kelompok"
+                  id="pendidikanTeller"
+                  name="pendidikanTeller"
+                  placeholder="Isi Pendidikan Teller"
                   value={"Islam"}
                   className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
                 />
@@ -97,45 +95,45 @@ const EditKetuaKelompok = () => {
             </div>
             <div className="flex gap-3">
               <div className="w-1/4">
-                <label htmlFor="tempatLahirKetuaKelompok">Tempat Lahir</label>
+                <label htmlFor="tempatLahirTeller">Tempat Lahir</label>
                 <input
                   type="text"
-                  id="tempatLahirKetuaKelompok"
-                  name="tempatLahirKetuaKelompok"
-                  placeholder="Isi Tempat Lahir Ketua Kelompok"
+                  id="tempatLahirTeller"
+                  name="tempatLahirTeller"
+                  placeholder="Isi Tempat Lahir Teller"
                   value={"Malang"}
                   className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
                 />
               </div>
               <div className="w-1/4">
-                <label htmlFor="tanggalLahirKetuaKelompok">Tanggal Lahir</label>
+                <label htmlFor="tanggalLahirTeller">Tanggal Lahir</label>
                 <input
                   type="date"
-                  id="tanggalLahirKetuaKelompok"
-                  name="tanggalLahirKetuaKelompok"
-                  placeholder="Isi Tanggal Lahir Ketua Kelompok"
+                  id="tanggalLahirTeller"
+                  name="tanggalLahirTeller"
+                  placeholder="Isi Tanggal Lahir Teller"
                   value={"Kediri"}
                   className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
                 />
               </div>
               <div className="w-1/4">
-                <label htmlFor="umurKetuaKelompok">Umur</label>
+                <label htmlFor="umurTeller">Umur</label>
                 <input
                   type="text"
-                  id="umurKetuaKelompok"
-                  name="umurKetuaKelompok"
-                  placeholder="Isi Umur Ketua Kelompok"
+                  id="umurTeller"
+                  name="umurTeller"
+                  placeholder="Isi Umur Teller"
                   value={"18"}
                   className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
                 />
               </div>
               <div className="w-1/4">
-                <label htmlFor="jenisKelaminKetuaKelompok">Jenis Kelamin</label>
+                <label htmlFor="jenisKelaminTeller">Jenis Kelamin</label>
                 <input
                   type="text"
-                  id="jenisKelaminKetuaKelompok"
-                  name="jenisKelaminKetuaKelompok"
-                  placeholder="Isi Jenis Kelamin Ketua Kelompok"
+                  id="jenisKelaminTeller"
+                  name="jenisKelaminTeller"
+                  placeholder="Isi Jenis Kelamin Teller"
                   value={"Laki Laki"}
                   className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
                 />
@@ -143,25 +141,23 @@ const EditKetuaKelompok = () => {
             </div>
             <div className="flex gap-3">
               <div className="w-1/2">
-                <label htmlFor="alamatLengkapKetuaKelompok">
-                  Alamat Lengkap
-                </label>
+                <label htmlFor="alamatLengkapTeller">Alamat Lengkap</label>
                 <input
                   type="text"
-                  id="alamatLengkapKetuaKelompok"
-                  name="alamatLengkapKetuaKelompok"
-                  placeholder="Isi Alamat Lengkap Ketua Kelompok"
+                  id="alamatLengkapTeller"
+                  name="alamatLengkapTeller"
+                  placeholder="Isi Alamat Lengkap Teller"
                   value={"Jalan Taman Indonesia Indah"}
                   className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
                 />
               </div>
               <div className="w-1/2">
-                <label htmlFor="noHpKetuaKelompok">No. HP(WhatsApp)</label>
+                <label htmlFor="noHpTeller">No. HP(WhatsApp)</label>
                 <input
                   type="text"
-                  id="noHpKetuaKelompok"
-                  name="noHpKetuaKelompok"
-                  placeholder="Isi NoHp Ketua Kelompok"
+                  id="noHpTeller"
+                  name="noHpTeller"
+                  placeholder="Isi NoHp Teller"
                   value={"087241698241"}
                   className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
                 />
@@ -169,45 +165,45 @@ const EditKetuaKelompok = () => {
             </div>
             <div className="flex gap-3">
               <div className="w-1/4">
-                <label htmlFor="kelurahanKetuaKelompok">Kelurahan/Desa</label>
+                <label htmlFor="kelurahanTeller">Kelurahan/Desa</label>
                 <input
                   type="text"
-                  id="kelurahanKetuaKelompok"
-                  name="kelurahanKetuaKelompok"
-                  placeholder="Isi Kelurahan/Desa Ketua Kelompok"
+                  id="kelurahanTeller"
+                  name="kelurahanTeller"
+                  placeholder="Isi Kelurahan/Desa Teller"
                   value={"Sumbersari"}
                   className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
                 />
               </div>
               <div className="w-1/4">
-                <label htmlFor="kecamatanKetuaKelompok">Kecamatan</label>
+                <label htmlFor="kecamatanTeller">Kecamatan</label>
                 <input
                   type="date"
-                  id="kecamatanKetuaKelompok"
-                  name="kecamatanKetuaKelompok"
-                  placeholder="Isi Kecamatan Ketua Kelompok"
+                  id="kecamatanTeller"
+                  name="kecamatanTeller"
+                  placeholder="Isi Kecamatan Teller"
                   value={"Jatimulyo"}
                   className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
                 />
               </div>
               <div className="w-1/4">
-                <label htmlFor="kabupatenKetuaKelompok">Kabupaten/Kota</label>
+                <label htmlFor="kabupatenTeller">Kabupaten/Kota</label>
                 <input
                   type="text"
-                  id="kabupatenKetuaKelompok"
-                  name="kabupatenKetuaKelompok"
-                  placeholder="Isi Kabupaten Ketua Kelompok"
+                  id="kabupatenTeller"
+                  name="kabupatenTeller"
+                  placeholder="Isi Kabupaten Teller"
                   value={"Kediri"}
                   className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
                 />
               </div>
               <div className="w-1/4">
-                <label htmlFor="kodePosKetuaKelompok">Kode Pos</label>
+                <label htmlFor="kodePosTeller">Kode Pos</label>
                 <input
                   type="text"
-                  id="kodePosKetuaKelompok"
-                  name="kodePosKetuaKelompok"
-                  placeholder="Isi Jenis Kelamin Ketua Kelompok"
+                  id="kodePosTeller"
+                  name="kodePosTeller"
+                  placeholder="Isi Jenis Kelamin Teller"
                   value={"65182"}
                   className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
                 />
@@ -219,7 +215,7 @@ const EditKetuaKelompok = () => {
                 type="text"
                 id="jumlahAnggota"
                 name="jumlahAnggota"
-                placeholder="Isi Jenis Kelamin Ketua Kelompok"
+                placeholder="Isi Jenis Kelamin Teller"
                 value={"5"}
                 className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
               />
@@ -298,4 +294,4 @@ const EditKetuaKelompok = () => {
   );
 };
 
-export default EditKetuaKelompok;
+export default EditTeller;
