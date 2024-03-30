@@ -30,7 +30,7 @@ const Detail = () => {
         <div className="flex flex-col gap-2">
           <div className="flex">
             <Image
-              src={"/images/dummy.png"}
+              src={"/images/dummy.jpg"}
               width={90}
               height={120}
               alt="Foto Diri"
