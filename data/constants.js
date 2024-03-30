@@ -38,19 +38,19 @@ export const SIDENAV_ITEMS_KEPCAB = [
     subMenuItems: [
       {
         title: "Form Simpanan/ Pinjaman",
-        path: "/daftar-anggota/form-simpanan-pinjaman",
-      },
-      {
-        title: "Form Pendaftaran Anggota",
         path: "/daftar-anggota/tambah-anggota/anggota-baru",
       },
       {
+        title: "Form Pendaftaran Anggota",
+        path: "/daftar-anggota/form-pendaftaran-anggota",
+      },
+      {
         title: "Pengajuan Hapus Anggota",
-        path: "/daftar-anggota/hapus-anggota",
+        path: "/daftar-anggota/pengajuan-hapus-anggota",
       },
       {
         title: "Rekap Anggota",
-        path: "daftar-anggota/rekap-anggota",
+        path: "/daftar-anggota/rekap-anggota",
       },
     ],
   },
