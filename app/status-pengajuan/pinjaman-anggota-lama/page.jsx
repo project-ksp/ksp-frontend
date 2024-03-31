@@ -5,7 +5,7 @@ const StatusPengajuanAnggotaBaru = () => {
   return (
     <div className="flex flex-col gap-2">
       <h2 className="text-2xl font-bold text-black">
-        Status Pengajuan Anggota Baru
+        Status Pengajuan Pinjaman Anggota Lama
       </h2>
       <div className="w-full relative">
         <input
@@ -42,10 +42,10 @@ const StatusPengajuanAnggotaBaru = () => {
         <table className="table-fixed w-full text-left">
           <thead>
             <tr className="border-b border-[#DDE1E6]">
-              <th className="w-[9%] font-semibold py-[13px] px-[10px]">
+              <th className="w-[8%] font-semibold py-[13px] px-[10px]">
                 ID Anggota
               </th>
-              <th className="w-[11%] font-semibold px-[10px]">
+              <th className="w-[10%] font-semibold px-[10px]">
                 <div className="flex justify-between items-center">
                   <p>Nama Anggota</p>
                   <svg
@@ -63,21 +63,21 @@ const StatusPengajuanAnggotaBaru = () => {
                   </svg>
                 </div>
               </th>
-              <th className="w-[13%] font-semibold px-[10px]">NIK</th>
-              <th className="w-[10%] font-semibold px-[10px]">
-                Kategori Pengajuan
-              </th>
+              <th className="w-[11%] font-semibold px-[10px]">NIK</th>
               <th className="w-[7%] font-semibold px-[10px]">
                 Jenis Kelamin (P/L)
               </th>
-              <th className="w-[12%] font-semibold px-[10px]">
+              <th className="w-[14%] font-semibold px-[10px]">
+                Pinjaman yang diajukan
+              </th>
+              <th className="w-[11%] font-semibold px-[10px]">
                 Status Pengajuan
               </th>
-              <th className="w-[10%] font-semibold px-[10px]">Status</th>
-              <th className="w-[11%] font-semibold px-[10px]">
+              <th className="w-[9%] font-semibold px-[10px]">Status</th>
+              <th className="w-[10%] font-semibold px-[10px]">
                 Detail Anggota
               </th>
-              <th className="w-[11%] font-semibold px-[10px]">Verifikasi</th>
+              <th className="w-[10%] font-semibold px-[10px]">Verifikasi</th>
             </tr>
           </thead>
           <tbody>
@@ -85,8 +85,8 @@ const StatusPengajuanAnggotaBaru = () => {
               <td className="break-words px-[10px]">01.02.004</td>
               <td className="px-[10px]">Aji Santosa</td>
               <td className="px-[10px]">3471t4718241</td>
-              <td className="px-[10px]">Simpanan</td>
               <td className="px-[10px]">P</td>
+              <td className="px-[10px]">Rp. 10.000.000</td>
               <td className="px-[10px]">
                 <div className="flex justify-center items-center h-[48px]">
                   <button className="bg-green-status-2 w-[116px] h-[24px] text-black rounded-lg mx-auto my-auto text-sm">
@@ -104,7 +104,7 @@ const StatusPengajuanAnggotaBaru = () => {
               <td className="px-[10px]">
                 <div className="flex justify-center items-center h-[48px]">
                   <Link
-                    href={"/status-pengajuan/anggota-baru/detail"}
+                    href={"/status-pengajuan/pinjaman-anggota-lama/detail"}
                     className="bg-primary w-[100px] h-[24px] text-white rounded-lg text-center"
                   >
                     Cek Detail
@@ -123,122 +123,8 @@ const StatusPengajuanAnggotaBaru = () => {
               <td className="break-words px-[10px]">01.02.004</td>
               <td className="px-[10px]">Aji Santosa</td>
               <td className="px-[10px]">3471t4718241</td>
-              <td className="px-[10px]">Simpanan</td>
               <td className="px-[10px]">P</td>
-              <td className="px-[10px]">
-                <div className="flex justify-center items-center h-[48px]">
-                  <button className="bg-green-status-2 w-[116px] h-[24px] text-black rounded-lg mx-auto my-auto text-sm">
-                    Disetujui
-                  </button>
-                </div>
-              </td>
-              <td className="px-[10px]">
-                <div className="flex justify-center items-center h-[48px]">
-                  <button className="bg-green-status-1 w-[86px] h-[24px] text-white rounded-lg mx-auto my-auto">
-                    Aktif
-                  </button>
-                </div>
-              </td>
-              <td className="px-[10px]">
-                <div className="flex justify-center items-center h-[48px]">
-                  <Link
-                    href={"/status-pengajuan/anggota-baru/detail"}
-                    className="bg-primary w-[100px] h-[24px] text-white rounded-lg text-center"
-                  >
-                    Cek Detail
-                  </Link>
-                </div>
-              </td>
-              <td className="px-[10px]">
-                <div className="flex justify-center items-center h-[48px]">
-                  <button className="bg-yellow-status-2 w-[100px] h-[24px] text-black rounded-lg mx-auto my-auto text-sm">
-                    Menunggu
-                  </button>
-                </div>
-              </td>
-            </tr>
-            <tr className=" border-b border-[#DDE1E6]">
-              <td className="break-words px-[10px]">01.02.004</td>
-              <td className="px-[10px]">Aji Santosa</td>
-              <td className="px-[10px]">3471t4718241</td>
-              <td className="px-[10px]">Simpanan</td>
-              <td className="px-[10px]">P</td>
-              <td className="px-[10px]">
-                <div className="flex justify-center items-center h-[48px]">
-                  <button className="bg-green-status-2 w-[116px] h-[24px] text-black rounded-lg mx-auto my-auto text-sm">
-                    Disetujui
-                  </button>
-                </div>
-              </td>
-              <td className="px-[10px]">
-                <div className="flex justify-center items-center h-[48px]">
-                  <button className="bg-green-status-1 w-[86px] h-[24px] text-white rounded-lg mx-auto my-auto">
-                    Aktif
-                  </button>
-                </div>
-              </td>
-              <td className="px-[10px]">
-                <div className="flex justify-center items-center h-[48px]">
-                  <Link
-                    href={"/status-pengajuan/anggota-baru/detail"}
-                    className="bg-primary w-[100px] h-[24px] text-white rounded-lg text-center"
-                  >
-                    Cek Detail
-                  </Link>
-                </div>
-              </td>
-              <td className="px-[10px]">
-                <div className="flex justify-center items-center h-[48px]">
-                  <button className="bg-yellow-status-2 w-[100px] h-[24px] text-black rounded-lg mx-auto my-auto text-sm">
-                    Menunggu
-                  </button>
-                </div>
-              </td>
-            </tr>
-            <tr className=" border-b border-[#DDE1E6]">
-              <td className="break-words px-[10px]">01.02.004</td>
-              <td className="px-[10px]">Aji Santosa</td>
-              <td className="px-[10px]">3471t4718241</td>
-              <td className="px-[10px]">Simpanan</td>
-              <td className="px-[10px]">P</td>
-              <td className="px-[10px]">
-                <div className="flex justify-center items-center h-[48px]">
-                  <button className="bg-green-status-2 w-[116px] h-[24px] text-black rounded-lg mx-auto my-auto text-sm">
-                    Disetujui
-                  </button>
-                </div>
-              </td>
-              <td className="px-[10px]">
-                <div className="flex justify-center items-center h-[48px]">
-                  <button className="bg-green-status-1 w-[86px] h-[24px] text-white rounded-lg mx-auto my-auto">
-                    Aktif
-                  </button>
-                </div>
-              </td>
-              <td className="px-[10px]">
-                <div className="flex justify-center items-center h-[48px]">
-                  <Link
-                    href={"/status-pengajuan/anggota-baru/detail"}
-                    className="bg-primary w-[100px] h-[24px] text-white rounded-lg text-center"
-                  >
-                    Cek Detail
-                  </Link>
-                </div>
-              </td>
-              <td className="px-[10px]">
-                <div className="flex justify-center items-center h-[48px]">
-                  <button className="bg-yellow-status-2 w-[100px] h-[24px] text-black rounded-lg mx-auto my-auto text-sm">
-                    Menunggu
-                  </button>
-                </div>
-              </td>
-            </tr>
-            <tr className=" border-b border-[#DDE1E6]">
-              <td className="break-words px-[10px]">01.02.004</td>
-              <td className="px-[10px]">Aji Santosa</td>
-              <td className="px-[10px]">3471t4718241</td>
-              <td className="px-[10px]">Simpanan</td>
-              <td className="px-[10px]">P</td>
+              <td className="px-[10px]">Rp. 10.000.000</td>
               <td className="px-[10px]">
                 <div className="flex justify-center items-center h-[48px]">
                   <button className="bg-yellow-status-2 w-[116px] h-[24px] text-black rounded-lg mx-auto my-auto text-sm">
@@ -256,7 +142,7 @@ const StatusPengajuanAnggotaBaru = () => {
               <td className="px-[10px]">
                 <div className="flex justify-center items-center h-[48px]">
                   <Link
-                    href={"/status-pengajuan/anggota-baru/detail"}
+                    href={"/status-pengajuan/pinjaman-anggota-lama/detail"}
                     className="bg-primary w-[100px] h-[24px] text-white rounded-lg text-center"
                   >
                     Cek Detail
@@ -275,8 +161,8 @@ const StatusPengajuanAnggotaBaru = () => {
               <td className="break-words px-[10px]">01.02.004</td>
               <td className="px-[10px]">Aji Santosa</td>
               <td className="px-[10px]">3471t4718241</td>
-              <td className="px-[10px]">Simpanan</td>
               <td className="px-[10px]">P</td>
+              <td className="px-[10px]">Rp. 10.000.000</td>
               <td className="px-[10px]">
                 <div className="flex justify-center items-center h-[48px]">
                   <button className="bg-red-status-2 w-[116px] h-[24px] text-black rounded-lg mx-auto my-auto text-sm">
@@ -294,7 +180,7 @@ const StatusPengajuanAnggotaBaru = () => {
               <td className="px-[10px]">
                 <div className="flex justify-center items-center h-[48px]">
                   <Link
-                    href={"/status-pengajuan/anggota-baru/detail"}
+                    href={"/status-pengajuan/pinjaman-anggota-lama/detail"}
                     className="bg-primary w-[100px] h-[24px] text-white rounded-lg text-center"
                   >
                     Cek Detail
@@ -303,8 +189,8 @@ const StatusPengajuanAnggotaBaru = () => {
               </td>
               <td className="px-[10px]">
                 <div className="flex justify-center items-center h-[48px]">
-                  <button className="bg-red-status-2 w-[100px] h-[24px] text-black rounded-lg mx-auto my-auto text-sm">
-                    Tidak Ada
+                  <button className="bg-yellow-status-2 w-[100px] h-[24px] text-black rounded-lg mx-auto my-auto text-sm">
+                    Menunggu
                   </button>
                 </div>
               </td>

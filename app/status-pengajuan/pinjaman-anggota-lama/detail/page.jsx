@@ -24,7 +24,7 @@ const DetailPinjamanAnggotaBaru = () => {
     <div className="flex flex-col gap-2">
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold text-black">
-          Detail Pengajuan Anggota Baru
+          Detail Pengajuan Pinjaman
         </h2>
         <div className="flex gap-4">
           <button className="bg-primary text-white w-[228px] h-[48px] rounded-md text-center">
@@ -419,48 +419,266 @@ const DetailPinjamanAnggotaBaru = () => {
           </div>
         </div>
       </div>
-      <div className="flex gap-3 justify-end">
-        <button
-          type="button"
-          className="w-[200px] px-[20px] h-[48px] text-white bg-primary rounded-lg"
-        >
-          <Link href={"/status-pengajuan/anggota-baru/cetak-formulir"}>
-            Formulir
-          </Link>
-        </button>
-        <button
-          type="button"
-          className="w-[200px] px-[20px] h-[48px] text-white bg-primary rounded-lg"
-        >
-          <Link href={"/status-pengajuan/anggota-baru/cetak-kartu-anggota"}>
-            Kartu Anggota
-          </Link>
-        </button>
-        <button
-          type="button"
-          className="w-[200px] px-[20px] h-[48px] text-white bg-primary rounded-lg"
-        >
-          <Link href={"/status-pengajuan/anggota-baru/cetak-buku-anggota"}>
-            Buku Anggota
-          </Link>
-        </button>
-        <button
-          type="button"
-          className="w-[200px] px-[20px] h-[48px] text-white bg-primary rounded-lg"
-        >
-          <Link href={"/status-pengajuan/anggota-baru/cetak-blanko-simpanan"}>
-            Blanko Simpanan
-          </Link>
-        </button>
-        <button
-          type="button"
-          className="w-[200px] px-[20px] h-[48px] text-white bg-primary rounded-lg"
-        >
-          <Link href={"/status-pengajuan/anggota-baru/cetak-blanko-pinjaman"}>
-            Blanko Pinjaman
-          </Link>
-        </button>
+      <div className="bg-white p-[20px] rounded-xl">
+        <p className="text-black font-bold text-lg mb-[10px]">
+          Detail Simpanan
+        </p>
+        <div className="flex flex-col gap-3">
+          <div className="flex-1">
+            <label htmlFor="simpananPokok">Simpanan Pokok</label>
+            <input
+              type="text"
+              name="simpananPokok"
+              id="simpananPokok"
+              placeholder="Auto Generate"
+              className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none italic"
+              disabled
+            />
+          </div>
+          <div className="flex flex-col">
+            <label htmlFor="simpananWajib">Simpanan Wajib</label>
+            <div className="flex mt-2 gap-3">
+              <div className="flex-grow">
+                <label htmlFor="bulan1">Bulan Ke-</label>
+                <input
+                  type="text"
+                  name="bulan1"
+                  id="bulan1"
+                  placeholder="Auto Generated"
+                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none italic"
+                  disabled
+                />
+              </div>
+              <div className="flex-grow">
+                <label htmlFor="bulan1">Bulan Ke-</label>
+                <input
+                  type="text"
+                  name="bulan1"
+                  id="bulan1"
+                  placeholder="Auto Generated"
+                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none italic"
+                  disabled
+                />
+              </div>
+              <div className="flex-grow">
+                <label htmlFor="bulan1">Bulan Ke-</label>
+                <input
+                  type="text"
+                  name="bulan1"
+                  id="bulan1"
+                  placeholder="Auto Generated"
+                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none italic"
+                  disabled
+                />
+              </div>
+              <div className="flex-grow">
+                <label htmlFor="bulan1">Bulan Ke-</label>
+                <input
+                  type="text"
+                  name="bulan1"
+                  id="bulan1"
+                  placeholder="Auto Generated"
+                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none italic"
+                  disabled
+                />
+              </div>
+              <div className="flex-grow">
+                <label htmlFor="bulan1">Bulan Ke-</label>
+                <input
+                  type="text"
+                  name="bulan1"
+                  id="bulan1"
+                  placeholder="Auto Generated"
+                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none italic"
+                  disabled
+                />
+              </div>
+            </div>
+          </div>
+          <div className="flex-1">
+            <label htmlFor="simpananSukarela">Simpanan Sukarela</label>
+            <input
+              type="text"
+              name="simpananSukarela"
+              id="simpananSukarela"
+              placeholder="Auto Generated"
+              className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none italic"
+              disabled
+            />
+          </div>
+        </div>
       </div>
+      <div className="bg-white p-[20px] rounded-xl">
+        <p className="text-black font-bold text-lg mb-[10px]">
+          Detail Pinjaman Sebelumnya
+        </p>
+        <div className="flex flex-col gap-4">
+          <div className="flex gap-2">
+            <div className="min-w-[175px]">
+              <div>
+                <label htmlFor="idCabang">ID Cabang</label>
+                <input
+                  type="text"
+                  name="idCabang"
+                  id="idCabang"
+                  placeholder="Auto Generated"
+                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none italic"
+                  disabled
+                />
+              </div>
+            </div>
+            <div className="min-w-[290px]">
+              <div>
+                <label htmlFor="jumlahPinjaman">Jumlah Pinjaman</label>
+                <input
+                  type="text"
+                  name="jumlahPinjaman"
+                  id="jumlahPinjaman"
+                  placeholder="Auto Generated"
+                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none italic"
+                  disabled
+                />
+              </div>
+            </div>
+            <div className="w-1/2">
+              <div>
+                <label htmlFor="namaKetuaKelompok">Nama Ketua Kelompok</label>
+                <input
+                  type="text"
+                  name="namaKetuaKelompok"
+                  id="namaKetuaKelompok"
+                  placeholder="Isi Nama Ketua Kelompok"
+                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
+                />
+              </div>
+            </div>
+            <div className="w-1/2">
+              <div>
+                <label htmlFor="idKetuaKelompok">ID Ketua Kelompok</label>
+                <input
+                  type="text"
+                  name="idKetuaKelompok"
+                  id="idKetuaKelompok"
+                  placeholder="Isi ID Ketua Kelompok"
+                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
+                />
+              </div>
+            </div>
+          </div>
+          <div className="flex gap-2">
+            <div className="min-w-[175px]">
+              <div>
+                <label htmlFor="idCabang">ID Cabang</label>
+                <input
+                  type="text"
+                  name="idCabang"
+                  id="idCabang"
+                  placeholder="Auto Generated"
+                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none italic"
+                  disabled
+                />
+              </div>
+            </div>
+            <div className="min-w-[290px]">
+              <div>
+                <label htmlFor="jumlahPinjaman">Jumlah Pinjaman</label>
+                <input
+                  type="text"
+                  name="jumlahPinjaman"
+                  id="jumlahPinjaman"
+                  placeholder="Auto Generated"
+                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none italic"
+                  disabled
+                />
+              </div>
+            </div>
+            <div className="w-1/2">
+              <div>
+                <label htmlFor="namaKetuaKelompok">Nama Ketua Kelompok</label>
+                <input
+                  type="text"
+                  name="namaKetuaKelompok"
+                  id="namaKetuaKelompok"
+                  placeholder="Isi Nama Ketua Kelompok"
+                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
+                />
+              </div>
+            </div>
+            <div className="w-1/2">
+              <div>
+                <label htmlFor="idKetuaKelompok">ID Ketua Kelompok</label>
+                <input
+                  type="text"
+                  name="idKetuaKelompok"
+                  id="idKetuaKelompok"
+                  placeholder="Isi ID Ketua Kelompok"
+                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="bg-white p-[20px] rounded-xl">
+        <p className="text-black font-bold text-lg mb-[10px]">
+          Detail Pinjaman yang Diajukan
+        </p>
+        <div className="flex flex-col gap-4">
+          <div className="flex gap-2">
+            <div className="min-w-[175px]">
+              <div>
+                <label htmlFor="idCabang">ID Cabang</label>
+                <input
+                  type="text"
+                  name="idCabang"
+                  id="idCabang"
+                  placeholder="Auto Generated"
+                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none italic"
+                  disabled
+                />
+              </div>
+            </div>
+            <div className="min-w-[290px]">
+              <div>
+                <label htmlFor="jumlahPinjaman">Jumlah Pinjaman</label>
+                <input
+                  type="text"
+                  name="jumlahPinjaman"
+                  id="jumlahPinjaman"
+                  placeholder="Auto Generated"
+                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none italic"
+                  disabled
+                />
+              </div>
+            </div>
+            <div className="w-1/2">
+              <div>
+                <label htmlFor="namaKetuaKelompok">Nama Ketua Kelompok</label>
+                <input
+                  type="text"
+                  name="namaKetuaKelompok"
+                  id="namaKetuaKelompok"
+                  placeholder="Isi Nama Ketua Kelompok"
+                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
+                />
+              </div>
+            </div>
+            <div className="w-1/2">
+              <div>
+                <label htmlFor="idKetuaKelompok">ID Ketua Kelompok</label>
+                <input
+                  type="text"
+                  name="idKetuaKelompok"
+                  id="idKetuaKelompok"
+                  placeholder="Isi ID Ketua Kelompok"
+                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <Modal isVisible={showProsesData} onClose={() => setProsesData(false)}>
         <h3 className="text-xl text-center font-bold text-black">
           Proses Data?
@@ -503,8 +721,11 @@ const DetailPinjamanAnggotaBaru = () => {
             />
           </svg>
         </div>
-        <p className="text-black font-regular text-lg text-center mb-3 w-[420px]">
-          Data Anggota Baru telah diproses dan telah tersimpan di data master
+        <h4 className="text-black text-xl font-bold text-center">
+          Data Berhasil Disimpan
+        </h4>
+        <p className="text-black font-regular text-base text-center mb-3">
+          Silahkan Cek Data Anda
         </p>
         <button
           type="button"
