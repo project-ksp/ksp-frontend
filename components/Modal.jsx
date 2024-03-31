@@ -1,26 +1,40 @@
+"use client";
 import React from "react";
+import { useEffect, useRef } from "react";
 
 const Modal = ({ isVisible, onClose, children }) => {
-  if (!isVisible) return null;
-  return (
+  useEffect(() => {
+    if (isVisible) {
+      // Prevent scrolling when the modal is open
+      document.body.style.overflowY = "hidden";
+    } else {
+      // Re-enable scrolling when the modal is closed
+      document.body.style.overflowY = "auto";
+    }
+    return () => {
+      document.body.style.overflowY = "auto"; // Re-enable scrolling when component unmounts
+    };
+  }, [isVisible]);
+
+  return isVisible ? (
     <div
-      className="absolute inset-0 bg-[#022B94] bg-opacity-20 backdrop-blur-sm flex justify-center items-center -m-[30px] min-h-screen"
-      onClick={() => onClose()}
+      className="fixed inset-0 ml-[280px] bg-[#022B94] bg-opacity-20 backdrop-blur-sm flex justify-center items-center z-50"
+      onClick={onClose}
     >
       <div
-        className="w-[640px] flex flex-col bg-white px-[45px] py-[35px] rounded-2xl gap-2 relative"
+        className="bg-white px-[45px] py-[35px] rounded-2xl relative"
         onClick={(e) => e.stopPropagation()}
       >
         <p
-          className="text-[40px] text-[#525256] rotate-45 absolute right-5 top-0 cursor-pointer"
-          onClick={() => onClose()}
+          className="text-[40px] text-[#525256] rotate-45 absolute top-0 right-5 cursor-pointer"
+          onClick={onClose}
         >
           +
         </p>
-        {children}
+        <div className="flex flex-col items-center gap-2">{children}</div>
       </div>
     </div>
-  );
+  ) : null;
 };
 
 export default Modal;

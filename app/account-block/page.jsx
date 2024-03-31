@@ -4,9 +4,9 @@ import Link from "next/link";
 const AccountBlock = () => {
   return (
     <div className="flex flex-col gap-[20px]">
-      <h2 className="text-2xl font-bold text-black">Data Master</h2>
+      <h2 className="text-2xl font-bold text-black">Account Block</h2>
       <div className="flex h-[48px] gap-[18px]">
-        <div className="w-3/5 relative">
+        <div className="flex-grow relative">
           <input
             type="text"
             name="search"
@@ -37,7 +37,7 @@ const AccountBlock = () => {
             />
           </svg>
         </div>
-        <Link
+        {/* <Link
           href={`/account-block/tambah-akun`}
           className="w-1/5 bg-primary px-[15px] py-[8px] flex justify-center items-center text-white rounded-md"
         >
@@ -54,7 +54,7 @@ const AccountBlock = () => {
             />
           </svg>
           <p className="ml-5 text-base font-regular">Tambah Akun</p>
-        </Link>
+        </Link> */}
         <button className="w-1/5 bg-primary px-[15px] py-[8px] flex justify-center items-center text-white rounded-md">
           <svg
             width="18"
@@ -77,119 +77,112 @@ const AccountBlock = () => {
       <div className="bg-white p-[20px] rounded-xl">
         <table className="table-fixed w-full text-left">
           <thead>
-            <tr className="border-b border-[#DDE1E6]">
-              <th className="w-1/5 py-[13px]">ID Cabang</th>
-              <th className="w-1/5">Username</th>
-              <th className="w-1/5">Password</th>
-              <th className="w-1/5">Pemilik Akun</th>
-              <th className="w-1/5">Jabatan</th>
+            <tr className="border-b border-[#DDE1E6] ">
+              <th className="w-1/5 py-[13px] px-[10px]">ID Cabang</th>
+              <th className="w-1/5 px-[10px]">Username</th>
+              <th className="w-1/5 px-[10px]">Password</th>
+              <th className="w-1/5 px-[10px]">Pemilik Akun</th>
+              <th className="w-1/5 px-[10px]">Jabatan</th>
             </tr>
           </thead>
           <tbody>
             <tr className="h-[48px] border-b border-[#DDE1E6]">
-              <td className="py-[13px]">01</td>
-              <td>qwerty01</td>
-              <td>password1</td>
-              <td>Roni</td>
-              <td>Owner</td>
+              <td className="py-[13px] px-[10px] ">01</td>
+              <td className="px-[10px]">qwerty01</td>
+              <td className="px-[10px]">password1</td>
+              <td className="px-[10px]">Roni</td>
+              <td className="px-[10px]">Owner</td>
             </tr>
             <tr className="h-[48px] border-b border-[#DDE1E6]">
-              <td className="py-[13px]">01</td>
-              <td>qwerty01</td>
-              <td>password1</td>
-              <td>Roni</td>
-              <td>Owner</td>
+              <td className="py-[13px] px-[10px] ">01</td>
+              <td className="px-[10px]">qwerty01</td>
+              <td className="px-[10px]">password1</td>
+              <td className="px-[10px]">Roni</td>
+              <td className="px-[10px]">Owner</td>
             </tr>
             <tr className="h-[48px] border-b border-[#DDE1E6]">
-              <td className="py-[13px]">01</td>
-              <td>qwerty01</td>
-              <td>password1</td>
-              <td>Roni</td>
-              <td>Owner</td>
+              <td className="py-[13px] px-[10px] ">01</td>
+              <td className="px-[10px]">qwerty01</td>
+              <td className="px-[10px]">password1</td>
+              <td className="px-[10px]">Roni</td>
+              <td className="px-[10px]">Owner</td>
             </tr>
             <tr className="h-[48px] border-b border-[#DDE1E6]">
-              <td className="py-[13px]">01</td>
-              <td>qwerty01</td>
-              <td>password1</td>
-              <td>Roni</td>
-              <td>Owner</td>
+              <td className="py-[13px] px-[10px] ">01</td>
+              <td className="px-[10px]">qwerty01</td>
+              <td className="px-[10px]">password1</td>
+              <td className="px-[10px]">Roni</td>
+              <td className="px-[10px]">Owner</td>
             </tr>
             <tr className="h-[48px] border-b border-[#DDE1E6]">
-              <td className="py-[13px]">01</td>
-              <td>qwerty01</td>
-              <td>password1</td>
-              <td>Roni</td>
-              <td>Owner</td>
+              <td className="py-[13px] px-[10px] ">01</td>
+              <td className="px-[10px]">qwerty01</td>
+              <td className="px-[10px]">password1</td>
+              <td className="px-[10px]">Roni</td>
+              <td className="px-[10px]">Owner</td>
             </tr>
             <tr className="h-[48px] border-b border-[#DDE1E6]">
-              <td className="py-[13px]">01</td>
-              <td>qwerty01</td>
-              <td>password1</td>
-              <td>Roni</td>
-              <td>Owner</td>
+              <td className="py-[13px] px-[10px] ">01</td>
+              <td className="px-[10px]">qwerty01</td>
+              <td className="px-[10px]">password1</td>
+              <td className="px-[10px]">Roni</td>
+              <td className="px-[10px]">Owner</td>
             </tr>
             <tr className="h-[48px] border-b border-[#DDE1E6]">
-              <td className="py-[13px]">01</td>
-              <td>qwerty01</td>
-              <td>password1</td>
-              <td>Roni</td>
-              <td>Owner</td>
+              <td className="py-[13px] px-[10px] ">01</td>
+              <td className="px-[10px]">qwerty01</td>
+              <td className="px-[10px]">password1</td>
+              <td className="px-[10px]">Roni</td>
+              <td className="px-[10px]">Owner</td>
             </tr>
             <tr className="h-[48px] border-b border-[#DDE1E6]">
-              <td className="py-[13px]">01</td>
-              <td>qwerty01</td>
-              <td>password1</td>
-              <td>Roni</td>
-              <td>Owner</td>
+              <td className="py-[13px] px-[10px] ">01</td>
+              <td className="px-[10px]">qwerty01</td>
+              <td className="px-[10px]">password1</td>
+              <td className="px-[10px]">Roni</td>
+              <td className="px-[10px]">Owner</td>
             </tr>
             <tr className="h-[48px] border-b border-[#DDE1E6]">
-              <td className="py-[13px]">01</td>
-              <td>qwerty01</td>
-              <td>password1</td>
-              <td>Roni</td>
-              <td>Owner</td>
+              <td className="py-[13px] px-[10px] ">01</td>
+              <td className="px-[10px]">qwerty01</td>
+              <td className="px-[10px]">password1</td>
+              <td className="px-[10px]">Roni</td>
+              <td className="px-[10px]">Owner</td>
             </tr>
             <tr className="h-[48px] border-b border-[#DDE1E6]">
-              <td className="py-[13px]">01</td>
-              <td>qwerty01</td>
-              <td>password1</td>
-              <td>Roni</td>
-              <td>Owner</td>
+              <td className="py-[13px] px-[10px] ">01</td>
+              <td className="px-[10px]">qwerty01</td>
+              <td className="px-[10px]">password1</td>
+              <td className="px-[10px]">Roni</td>
+              <td className="px-[10px]">Owner</td>
             </tr>
             <tr className="h-[48px] border-b border-[#DDE1E6]">
-              <td className="py-[13px]">01</td>
-              <td>qwerty01</td>
-              <td>password1</td>
-              <td>Roni</td>
-              <td>Owner</td>
+              <td className="py-[13px] px-[10px] ">01</td>
+              <td className="px-[10px]">qwerty01</td>
+              <td className="px-[10px]">password1</td>
+              <td className="px-[10px]">Roni</td>
+              <td className="px-[10px]">Owner</td>
             </tr>
             <tr className="h-[48px] border-b border-[#DDE1E6]">
-              <td className="py-[13px]">01</td>
-              <td>qwerty01</td>
-              <td>password1</td>
-              <td>Roni</td>
-              <td>Owner</td>
+              <td className="py-[13px] px-[10px] ">01</td>
+              <td className="px-[10px]">qwerty01</td>
+              <td className="px-[10px]">password1</td>
+              <td className="px-[10px]">Roni</td>
+              <td className="px-[10px]">Owner</td>
             </tr>
             <tr className="h-[48px] border-b border-[#DDE1E6]">
-              <td className="py-[13px]">01</td>
-              <td>qwerty01</td>
-              <td>password1</td>
-              <td>Roni</td>
-              <td>Owner</td>
+              <td className="py-[13px] px-[10px] ">01</td>
+              <td className="px-[10px]">qwerty01</td>
+              <td className="px-[10px]">password1</td>
+              <td className="px-[10px]">Roni</td>
+              <td className="px-[10px]">Owner</td>
             </tr>
             <tr className="h-[48px] border-b border-[#DDE1E6]">
-              <td className="py-[13px]">01</td>
-              <td>qwerty01</td>
-              <td>password1</td>
-              <td>Roni</td>
-              <td>Owner</td>
-            </tr>
-            <tr className="h-[48px] border-b border-[#DDE1E6]">
-              <td className="py-[13px]">01</td>
-              <td>qwerty01</td>
-              <td>password1</td>
-              <td>Roni</td>
-              <td>Owner</td>
+              <td className="py-[13px] px-[10px] ">01</td>
+              <td className="px-[10px]">qwerty01</td>
+              <td className="px-[10px]">password1</td>
+              <td className="px-[10px]">Roni</td>
+              <td className="px-[10px]">Owner</td>
             </tr>
           </tbody>
         </table>

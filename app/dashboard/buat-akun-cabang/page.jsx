@@ -165,12 +165,12 @@ const BuatAkunCabang = () => {
             </div>
             <div className="flex gap-3">
               <div className="w-1/4">
-                <label htmlFor="tempatLahir">Isi Tempat Lahir Sesuai KTP</label>
+                <label htmlFor="tempatLahir">Tempat Lahir</label>
                 <input
                   type="text"
                   id="tempatLahir"
                   name="tempatLahir"
-                  placeholder="*Jika Sudah Menikah"
+                  placeholder="Isi Tempat Lahir Sesuai KTP"
                   className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
                 />
               </div>
@@ -288,12 +288,12 @@ const BuatAkunCabang = () => {
                 )}
               </div>
               <div className="w-2/5">
-                <label htmlFor="pekerjaan">Isi Sesuai KTP</label>
+                <label htmlFor="pekerjaan">Pekerjaan</label>
                 <input
                   type="text"
                   id="pekerjaan"
                   name="pekerjaan"
-                  placeholder="*Jika Sudah Menikah"
+                  placeholder="Isi Sesuai KTP"
                   className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
                 />
               </div>
@@ -484,7 +484,7 @@ const BuatAkunCabang = () => {
                   />
                 )}
                 <div className="flex flex-col ml-2 flex-grow">
-                  <p>Upload Foto Diri</p>
+                  <p>Upload Foto KTP</p>
                   <div className="border border-[#d9d9d9] rounded-lg p-[10px] flex mt-1 items-center">
                     <div className="px-[25px] py-[2px] w-[177px] border border-secondary rounded-lg text-primary flex items-center">
                       <p>Tambah Foto</p>

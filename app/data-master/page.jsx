@@ -27,8 +27,10 @@ const DataMaster = () => {
         <table className="table-fixed w-full text-left">
           <thead>
             <tr className="border-b border-[#DDE1E6]">
-              <th className="w-[6%] font-semibold py-[13px]">ID Cabang</th>
-              <th className="w-[11%] font-semibold">
+              <th className="w-[8%] font-semibold py-[13px] px-[10px]">
+                ID Cabang
+              </th>
+              <th className="w-[11%] font-semibold px-[10px]">
                 <div className="flex justify-between items-center">
                   <p>Nama Anggota</p>
                   <svg
@@ -46,9 +48,11 @@ const DataMaster = () => {
                   </svg>
                 </div>
               </th>
-              <th className="w-[13%] font-semibold">NIK</th>
-              <th className="w-[7%] font-semibold">Jenis Kelamin (P/L)</th>
-              <th className="w-[12%] font-semibold">
+              <th className="w-[13%] font-semibold px-[10px]">NIK</th>
+              <th className="w-[7%] font-semibold px-[10px]">
+                Jenis Kelamin (P/L)
+              </th>
+              <th className="w-[12%] font-semibold px-[10px]">
                 <div className="flex justify-between items-center">
                   <p>Total Simpanan</p>
                   <svg
@@ -66,7 +70,7 @@ const DataMaster = () => {
                   </svg>
                 </div>
               </th>
-              <th className="w-[12%] font-semibold">
+              <th className="w-[12%] font-semibold px-[10px]">
                 <div className="flex justify-between items-center">
                   <p>Total Pinjaman</p>
                   <svg
@@ -84,28 +88,28 @@ const DataMaster = () => {
                   </svg>
                 </div>
               </th>
-              <th className="w-[8%] font-semibold">Ketua Kelompok</th>
-              <th className="w-[9%] font-semibold">Status</th>
-              <th className="w-[9%] font-semibold">Detail Anggota</th>
+              <th className="w-[8%] font-semibold px-[10px]">Ketua Kelompok</th>
+              <th className="w-[9%] font-semibold px-[10px]">Status</th>
+              <th className="w-[9%] font-semibold px-[10px]">Detail Anggota</th>
             </tr>
           </thead>
           <tbody>
-            <tr className=" border-b border-[#DDE1E6]">
-              <td>01</td>
-              <td>Nama Anggota</td>
-              <td>3522061124020111</td>
-              <td>P</td>
-              <td>Rp. 99,999,999</td>
-              <td>Rp. 99,999,999</td>
-              <td>M. Zidan</td>
-              <td>
+            <tr className=" border-b border-[#DDE1E6] ">
+              <td className="px-[10px]">01</td>
+              <td className="px-[10px]">Nama Anggota</td>
+              <td className="px-[10px]">3522061124020111</td>
+              <td className="px-[10px]">P</td>
+              <td className="px-[10px]">Rp. 99,999,999</td>
+              <td className="px-[10px]">Rp. 99,999,999</td>
+              <td className="px-[10px]">M. Zidan</td>
+              <td className="px-[10px]">
                 <div className="flex justify-center items-center h-[64px]">
                   <button className="bg-green-status-1 w-[86px] py-[1px] text-white rounded-lg mx-auto my-auto">
                     Aktif
                   </button>
                 </div>
               </td>
-              <td>
+              <td className="px-[10px]">
                 <div className="flex justify-center items-center h-[64px]">
                   <button className="bg-primary w-[98px] py-[1px] text-white rounded-lg mx-auto my-auto">
                     Cek Detail
@@ -113,22 +117,22 @@ const DataMaster = () => {
                 </div>
               </td>
             </tr>
-            <tr className=" border-b border-[#DDE1E6]">
-              <td>01</td>
-              <td>Nama Anggota</td>
-              <td>3522061124020111</td>
-              <td>P</td>
-              <td>Rp. 99,999,999</td>
-              <td>Rp. 99,999,999</td>
-              <td>M. Zidan</td>
-              <td>
+            <tr className=" border-b border-[#DDE1E6] ">
+              <td className="px-[10px]">01</td>
+              <td className="px-[10px]">Nama Anggota</td>
+              <td className="px-[10px]">3522061124020111</td>
+              <td className="px-[10px]">P</td>
+              <td className="px-[10px]">Rp. 99,999,999</td>
+              <td className="px-[10px]">Rp. 99,999,999</td>
+              <td className="px-[10px]">M. Zidan</td>
+              <td className="px-[10px]">
                 <div className="flex justify-center items-center h-[64px]">
                   <button className="bg-green-status-1 w-[86px] py-[1px] text-white rounded-lg mx-auto my-auto">
                     Aktif
                   </button>
                 </div>
               </td>
-              <td>
+              <td className="px-[10px]">
                 <div className="flex justify-center items-center h-[64px]">
                   <button className="bg-primary w-[98px] py-[1px] text-white rounded-lg mx-auto my-auto">
                     Cek Detail
@@ -136,22 +140,22 @@ const DataMaster = () => {
                 </div>
               </td>
             </tr>
-            <tr className=" border-b border-[#DDE1E6]">
-              <td>01</td>
-              <td>Nama Anggota</td>
-              <td>3522061124020111</td>
-              <td>P</td>
-              <td>Rp. 99,999,999</td>
-              <td>Rp. 99,999,999</td>
-              <td>M. Zidan</td>
-              <td>
+            <tr className=" border-b border-[#DDE1E6] ">
+              <td className="px-[10px]">01</td>
+              <td className="px-[10px]">Nama Anggota</td>
+              <td className="px-[10px]">3522061124020111</td>
+              <td className="px-[10px]">P</td>
+              <td className="px-[10px]">Rp. 99,999,999</td>
+              <td className="px-[10px]">Rp. 99,999,999</td>
+              <td className="px-[10px]">M. Zidan</td>
+              <td className="px-[10px]">
                 <div className="flex justify-center items-center h-[64px]">
                   <button className="bg-green-status-1 w-[86px] py-[1px] text-white rounded-lg mx-auto my-auto">
                     Aktif
                   </button>
                 </div>
               </td>
-              <td>
+              <td className="px-[10px]">
                 <div className="flex justify-center items-center h-[64px]">
                   <button className="bg-primary w-[98px] py-[1px] text-white rounded-lg mx-auto my-auto">
                     Cek Detail
@@ -159,22 +163,22 @@ const DataMaster = () => {
                 </div>
               </td>
             </tr>
-            <tr className=" border-b border-[#DDE1E6]">
-              <td>01</td>
-              <td>Nama Anggota</td>
-              <td>3522061124020111</td>
-              <td>P</td>
-              <td>Rp. 99,999,999</td>
-              <td>Rp. 99,999,999</td>
-              <td>M. Zidan</td>
-              <td>
+            <tr className=" border-b border-[#DDE1E6] ">
+              <td className="px-[10px]">01</td>
+              <td className="px-[10px]">Nama Anggota</td>
+              <td className="px-[10px]">3522061124020111</td>
+              <td className="px-[10px]">P</td>
+              <td className="px-[10px]">Rp. 99,999,999</td>
+              <td className="px-[10px]">Rp. 99,999,999</td>
+              <td className="px-[10px]">M. Zidan</td>
+              <td className="px-[10px]">
                 <div className="flex justify-center items-center h-[64px]">
                   <button className="bg-green-status-1 w-[86px] py-[1px] text-white rounded-lg mx-auto my-auto">
                     Aktif
                   </button>
                 </div>
               </td>
-              <td>
+              <td className="px-[10px]">
                 <div className="flex justify-center items-center h-[64px]">
                   <button className="bg-primary w-[98px] py-[1px] text-white rounded-lg mx-auto my-auto">
                     Cek Detail
@@ -182,22 +186,46 @@ const DataMaster = () => {
                 </div>
               </td>
             </tr>
-            <tr className=" border-b border-[#DDE1E6]">
-              <td>01</td>
-              <td>Nama Anggota</td>
-              <td>3522061124020111</td>
-              <td>P</td>
-              <td>Rp. 99,999,999</td>
-              <td>Rp. 99,999,999</td>
-              <td>M. Zidan</td>
-              <td>
+            <tr className=" border-b border-[#DDE1E6] ">
+              <td className="px-[10px]">01</td>
+              <td className="px-[10px]">Nama Anggota</td>
+              <td className="px-[10px]">3522061124020111</td>
+              <td className="px-[10px]">P</td>
+              <td className="px-[10px]">Rp. 99,999,999</td>
+              <td className="px-[10px]">Rp. 99,999,999</td>
+              <td className="px-[10px]">M. Zidan</td>
+              <td className="px-[10px]">
                 <div className="flex justify-center items-center h-[64px]">
                   <button className="bg-green-status-1 w-[86px] py-[1px] text-white rounded-lg mx-auto my-auto">
                     Aktif
                   </button>
                 </div>
               </td>
-              <td>
+              <td className="px-[10px]">
+                <div className="flex justify-center items-center h-[64px]">
+                  <button className="bg-primary w-[98px] py-[1px] text-white rounded-lg mx-auto my-auto">
+                    Cek Detail
+                  </button>
+                </div>
+              </td>
+            </tr>
+
+            <tr className=" border-b border-[#DDE1E6]">
+              <td className="px-[10px]">01</td>
+              <td className="px-[10px]">Nama Anggota</td>
+              <td className="px-[10px]">3522061124020111</td>
+              <td className="px-[10px]">P</td>
+              <td className="px-[10px]">Rp. 99,999,999</td>
+              <td className="px-[10px]">Rp. 99,999,999</td>
+              <td className="px-[10px]">M. Zidan</td>
+              <td className="px-[10px]">
+                <div className="flex justify-center items-center h-[64px]">
+                  <button className="bg-red-status-1 w-[86px] py-[1px] text-white rounded-lg mx-auto my-auto">
+                    Tidak Aktif
+                  </button>
+                </div>
+              </td>
+              <td className="px-[10px]">
                 <div className="flex justify-center items-center h-[64px]">
                   <button className="bg-primary w-[98px] py-[1px] text-white rounded-lg mx-auto my-auto">
                     Cek Detail
@@ -206,21 +234,21 @@ const DataMaster = () => {
               </td>
             </tr>
             <tr className=" border-b border-[#DDE1E6]">
-              <td>01</td>
-              <td>Nama Anggota</td>
-              <td>3522061124020111</td>
-              <td>P</td>
-              <td>Rp. 99,999,999</td>
-              <td>Rp. 99,999,999</td>
-              <td>M. Zidan</td>
-              <td>
+              <td className="px-[10px]">01</td>
+              <td className="px-[10px]">Nama Anggota</td>
+              <td className="px-[10px]">3522061124020111</td>
+              <td className="px-[10px]">P</td>
+              <td className="px-[10px]">Rp. 99,999,999</td>
+              <td className="px-[10px]">Rp. 99,999,999</td>
+              <td className="px-[10px]">M. Zidan</td>
+              <td className="px-[10px]">
                 <div className="flex justify-center items-center h-[64px]">
                   <button className="bg-red-status-1 w-[86px] py-[1px] text-white rounded-lg mx-auto my-auto">
                     Tidak Aktif
                   </button>
                 </div>
               </td>
-              <td>
+              <td className="px-[10px]">
                 <div className="flex justify-center items-center h-[64px]">
                   <button className="bg-primary w-[98px] py-[1px] text-white rounded-lg mx-auto my-auto">
                     Cek Detail
@@ -229,21 +257,21 @@ const DataMaster = () => {
               </td>
             </tr>
             <tr className=" border-b border-[#DDE1E6]">
-              <td>01</td>
-              <td>Nama Anggota</td>
-              <td>3522061124020111</td>
-              <td>P</td>
-              <td>Rp. 99,999,999</td>
-              <td>Rp. 99,999,999</td>
-              <td>M. Zidan</td>
-              <td>
+              <td className="px-[10px]">01</td>
+              <td className="px-[10px]">Nama Anggota</td>
+              <td className="px-[10px]">3522061124020111</td>
+              <td className="px-[10px]">P</td>
+              <td className="px-[10px]">Rp. 99,999,999</td>
+              <td className="px-[10px]">Rp. 99,999,999</td>
+              <td className="px-[10px]">M. Zidan</td>
+              <td className="px-[10px]">
                 <div className="flex justify-center items-center h-[64px]">
                   <button className="bg-red-status-1 w-[86px] py-[1px] text-white rounded-lg mx-auto my-auto">
                     Tidak Aktif
                   </button>
                 </div>
               </td>
-              <td>
+              <td className="px-[10px]">
                 <div className="flex justify-center items-center h-[64px]">
                   <button className="bg-primary w-[98px] py-[1px] text-white rounded-lg mx-auto my-auto">
                     Cek Detail
@@ -252,21 +280,21 @@ const DataMaster = () => {
               </td>
             </tr>
             <tr className=" border-b border-[#DDE1E6]">
-              <td>01</td>
-              <td>Nama Anggota</td>
-              <td>3522061124020111</td>
-              <td>P</td>
-              <td>Rp. 99,999,999</td>
-              <td>Rp. 99,999,999</td>
-              <td>M. Zidan</td>
-              <td>
+              <td className="px-[10px]">01</td>
+              <td className="px-[10px]">Nama Anggota</td>
+              <td className="px-[10px]">3522061124020111</td>
+              <td className="px-[10px]">P</td>
+              <td className="px-[10px]">Rp. 99,999,999</td>
+              <td className="px-[10px]">Rp. 99,999,999</td>
+              <td className="px-[10px]">M. Zidan</td>
+              <td className="px-[10px]">
                 <div className="flex justify-center items-center h-[64px]">
                   <button className="bg-red-status-1 w-[86px] py-[1px] text-white rounded-lg mx-auto my-auto">
                     Tidak Aktif
                   </button>
                 </div>
               </td>
-              <td>
+              <td className="px-[10px]">
                 <div className="flex justify-center items-center h-[64px]">
                   <button className="bg-primary w-[98px] py-[1px] text-white rounded-lg mx-auto my-auto">
                     Cek Detail
@@ -275,44 +303,21 @@ const DataMaster = () => {
               </td>
             </tr>
             <tr className=" border-b border-[#DDE1E6]">
-              <td>01</td>
-              <td>Nama Anggota</td>
-              <td>3522061124020111</td>
-              <td>P</td>
-              <td>Rp. 99,999,999</td>
-              <td>Rp. 99,999,999</td>
-              <td>M. Zidan</td>
-              <td>
+              <td className="px-[10px]">01</td>
+              <td className="px-[10px]">Nama Anggota</td>
+              <td className="px-[10px]">3522061124020111</td>
+              <td className="px-[10px]">P</td>
+              <td className="px-[10px]">Rp. 99,999,999</td>
+              <td className="px-[10px]">Rp. 99,999,999</td>
+              <td className="px-[10px]">M. Zidan</td>
+              <td className="px-[10px]">
                 <div className="flex justify-center items-center h-[64px]">
                   <button className="bg-red-status-1 w-[86px] py-[1px] text-white rounded-lg mx-auto my-auto">
                     Tidak Aktif
                   </button>
                 </div>
               </td>
-              <td>
-                <div className="flex justify-center items-center h-[64px]">
-                  <button className="bg-primary w-[98px] py-[1px] text-white rounded-lg mx-auto my-auto">
-                    Cek Detail
-                  </button>
-                </div>
-              </td>
-            </tr>
-            <tr className=" border-b border-[#DDE1E6]">
-              <td>01</td>
-              <td>Nama Anggota</td>
-              <td>3522061124020111</td>
-              <td>P</td>
-              <td>Rp. 99,999,999</td>
-              <td>Rp. 99,999,999</td>
-              <td>M. Zidan</td>
-              <td>
-                <div className="flex justify-center items-center h-[64px]">
-                  <button className="bg-red-status-1 w-[86px] py-[1px] text-white rounded-lg mx-auto my-auto">
-                    Tidak Aktif
-                  </button>
-                </div>
-              </td>
-              <td>
+              <td className="px-[10px]">
                 <div className="flex justify-center items-center h-[64px]">
                   <button className="bg-primary w-[98px] py-[1px] text-white rounded-lg mx-auto my-auto">
                     Cek Detail
