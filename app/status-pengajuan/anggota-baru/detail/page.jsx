@@ -434,25 +434,41 @@ const DetailPinjamanAnggotaBaru = () => {
           type="button"
           className="w-[200px] px-[20px] h-[48px] text-white bg-primary rounded-lg"
         >
-          Formulir
+          <Link href={"/status-pengajuan/anggota-baru/cetak-formulir"}>
+            Formulir
+          </Link>
         </button>
         <button
           type="button"
           className="w-[200px] px-[20px] h-[48px] text-white bg-primary rounded-lg"
         >
-          Kartu Anggota
+          <Link href={"/status-pengajuan/anggota-baru/cetak-kartu-anggota"}>
+            Kartu Anggota
+          </Link>
         </button>
         <button
           type="button"
           className="w-[200px] px-[20px] h-[48px] text-white bg-primary rounded-lg"
         >
-          Buku Anggota
+          <Link href={"/status-pengajuan/anggota-baru/cetak-buku-anggota"}>
+            Buku Anggota
+          </Link>
         </button>
         <button
           type="button"
           className="w-[200px] px-[20px] h-[48px] text-white bg-primary rounded-lg"
         >
-          Blanko Pinjaman
+          <Link href={"/status-pengajuan/anggota-baru/cetak-blanko-simpanan"}>
+            Blanko Simpanan
+          </Link>
+        </button>
+        <button
+          type="button"
+          className="w-[200px] px-[20px] h-[48px] text-white bg-primary rounded-lg"
+        >
+          <Link href={"/status-pengajuan/anggota-baru/cetak-blanko-pinjaman"}>
+            Blanko Pinjaman
+          </Link>
         </button>
       </div>
       <Modal isVisible={showProsesData} onClose={() => setProsesData(false)}>
@@ -497,11 +513,8 @@ const DetailPinjamanAnggotaBaru = () => {
             />
           </svg>
         </div>
-        <h4 className="text-black text-xl font-bold text-center">
-          Data Berhasil Disimpan
-        </h4>
-        <p className="text-black font-regular text-base text-center mb-3">
-          Silahkan Cek Data Anda
+        <p className="text-black font-regular text-lg text-center mb-3 w-[420px]">
+          Data Anggota Baru telah diproses dan telah tersimpan di data master
         </p>
         <button
           type="button"
