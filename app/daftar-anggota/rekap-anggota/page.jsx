@@ -100,7 +100,7 @@ const RekapAnggota = () => {
               <td className="px-[10px]">
                 <div className="flex justify-center items-center h-[64px]">
                   <Link
-                    href={"/daftar-anggota/pengajuan-hapus-anggota/detail"}
+                    href={"/detail"}
                     className="bg-primary w-[98px] py-[1px] text-white rounded-lg text-center"
                   >
                     Cek Detail
@@ -126,7 +126,7 @@ const RekapAnggota = () => {
               <td className="px-[10px]">
                 <div className="flex justify-center items-center h-[64px]">
                   <Link
-                    href={"/daftar-anggota/pengajuan-hapus-anggota/detail"}
+                    href={"/detail"}
                     className="bg-primary w-[98px] py-[1px] text-white rounded-lg text-center"
                   >
                     Cek Detail
@@ -152,7 +152,7 @@ const RekapAnggota = () => {
               <td className="px-[10px]">
                 <div className="flex justify-center items-center h-[64px]">
                   <Link
-                    href={"/daftar-anggota/pengajuan-hapus-anggota/detail"}
+                    href={"/detail"}
                     className="bg-primary w-[98px] py-[1px] text-white rounded-lg text-center"
                   >
                     Cek Detail
@@ -178,7 +178,7 @@ const RekapAnggota = () => {
               <td className="px-[10px]">
                 <div className="flex justify-center items-center h-[64px]">
                   <Link
-                    href={"/daftar-anggota/pengajuan-hapus-anggota/detail"}
+                    href={"/detail"}
                     className="bg-primary w-[98px] py-[1px] text-white rounded-lg text-center"
                   >
                     Cek Detail
@@ -204,7 +204,7 @@ const RekapAnggota = () => {
               <td className="px-[10px]">
                 <div className="flex justify-center items-center h-[64px]">
                   <Link
-                    href={"/daftar-anggota/pengajuan-hapus-anggota/detail"}
+                    href={"/detail"}
                     className="bg-primary w-[98px] py-[1px] text-white rounded-lg text-center"
                   >
                     Cek Detail
@@ -230,7 +230,7 @@ const RekapAnggota = () => {
               <td className="px-[10px]">
                 <div className="flex justify-center items-center h-[64px]">
                   <Link
-                    href={"/daftar-anggota/pengajuan-hapus-anggota/detail"}
+                    href={"/detail"}
                     className="bg-primary w-[98px] py-[1px] text-white rounded-lg text-center"
                   >
                     Cek Detail
@@ -256,7 +256,7 @@ const RekapAnggota = () => {
               <td className="px-[10px]">
                 <div className="flex justify-center items-center h-[64px]">
                   <Link
-                    href={"/daftar-anggota/pengajuan-hapus-anggota/detail"}
+                    href={"/detail"}
                     className="bg-primary w-[98px] py-[1px] text-white rounded-lg text-center"
                   >
                     Cek Detail
@@ -282,7 +282,7 @@ const RekapAnggota = () => {
               <td className="px-[10px]">
                 <div className="flex justify-center items-center h-[64px]">
                   <Link
-                    href={"/daftar-anggota/pengajuan-hapus-anggota/detail"}
+                    href={"/detail"}
                     className="bg-primary w-[98px] py-[1px] text-white rounded-lg text-center"
                   >
                     Cek Detail
@@ -308,7 +308,7 @@ const RekapAnggota = () => {
               <td className="px-[10px]">
                 <div className="flex justify-center items-center h-[64px]">
                   <Link
-                    href={"/daftar-anggota/pengajuan-hapus-anggota/detail"}
+                    href={"/detail"}
                     className="bg-primary w-[98px] py-[1px] text-white rounded-lg text-center"
                   >
                     Cek Detail

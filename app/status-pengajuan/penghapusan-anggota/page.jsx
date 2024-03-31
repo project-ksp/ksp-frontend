@@ -11,7 +11,7 @@ const StatusPengajuanPenghapusanAnggota = () => {
         <input
           type="text"
           name="search"
-          placeholder="Cari ID Anggota"
+          placeholder="Cari Anggota"
           className="w-full bg-white rounded-md p-[12px] focus:outline-none text-base font-regular"
         />
         <svg
@@ -67,9 +67,7 @@ const StatusPengajuanPenghapusanAnggota = () => {
               <th className="w-[7%] font-semibold px-[10px]">
                 Jenis Kelamin (P/L)
               </th>
-              <th className="w-[14%] font-semibold px-[10px]">
-                Pinjaman yang diajukan
-              </th>
+              <th className="w-[14%] font-semibold px-[10px]">Alasan</th>
               <th className="w-[11%] font-semibold px-[10px]">
                 Status Pengajuan
               </th>
@@ -86,7 +84,7 @@ const StatusPengajuanPenghapusanAnggota = () => {
               <td className="px-[10px]">Aji Santosa</td>
               <td className="px-[10px]">3471t4718241</td>
               <td className="px-[10px]">P</td>
-              <td className="px-[10px]">Rp. 10.000.000</td>
+              <td className="px-[10px]">Berhenti</td>
               <td className="px-[10px]">
                 <div className="flex justify-center items-center h-[48px]">
                   <button className="bg-green-status-2 w-[116px] h-[24px] text-black rounded-lg mx-auto my-auto text-sm">
@@ -124,7 +122,7 @@ const StatusPengajuanPenghapusanAnggota = () => {
               <td className="px-[10px]">Aji Santosa</td>
               <td className="px-[10px]">3471t4718241</td>
               <td className="px-[10px]">P</td>
-              <td className="px-[10px]">Rp. 10.000.000</td>
+              <td className="px-[10px]">Pinjaman Selesai</td>
               <td className="px-[10px]">
                 <div className="flex justify-center items-center h-[48px]">
                   <button className="bg-yellow-status-2 w-[116px] h-[24px] text-black rounded-lg mx-auto my-auto text-sm">

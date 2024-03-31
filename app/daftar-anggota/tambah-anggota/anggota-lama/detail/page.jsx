@@ -42,9 +42,7 @@ const Detail = () => {
             </div>
             <div className="w-1/3">
               <div>
-                <label htmlFor="namaKetuaKelompok">
-                  ID Nama Ketua Kelompok
-                </label>
+                <label htmlFor="namaKetuaKelompok">Nama Ketua Kelompok</label>
                 <input
                   type="text"
                   name="namaKetuaKelompok"

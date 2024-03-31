@@ -39,7 +39,7 @@ const Detail = () => {
             <div className="flex flex-col gap-2">
               <p className="text-xl text-black">Ifadatul K</p>
               <p className="text-lg text-black">01-2024-12345</p>
-              <div className="bg-red-status-1 text-white text-center my-[8px] rounded-lgx  w-[86px]">
+              <div className="bg-red-status-1 text-white text-center my-[8px] rounded-lg w-[86px]">
                 Tidak Aktif
               </div>
             </div>
@@ -113,16 +113,6 @@ const Detail = () => {
           </div>
           <div className="flex w-full gap-2">
             <div className="w-1/3">
-              <label htmlFor="namaLengkap">Nama Lengkap</label>
-              <input
-                type="text"
-                id="namaLengkap"
-                name="namaLengkap"
-                placeholder="Isi"
-                className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
-              />
-            </div>
-            <div className="w-1/3">
               <label htmlFor="statusPernikahan">Status Pernikahan</label>
               <button
                 type="button"
@@ -160,7 +150,7 @@ const Detail = () => {
                 </div>
               )}
             </div>
-            <div className="w-1/3">
+            <div className="w-2/3">
               <label htmlFor="namaSuamiIstri">Nama Suami/Istri</label>
               <input
                 type="text"
@@ -173,7 +163,7 @@ const Detail = () => {
           </div>
           <div className="flex w-full gap-2">
             <div className="w-1/4">
-              <label htmlFor="tempatLahir">Isi Tempat Lahir Sesuai KTP</label>
+              <label htmlFor="tempatLahir">Tempat Lahir</label>
               <input
                 type="text"
                 id="tempatLahir"

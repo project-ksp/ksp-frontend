@@ -12,11 +12,11 @@ const Layout = ({ children }) => {
     <div className="flex flex-col gap-2">
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold text-black">
-          Detail Pengajuan Pinjaman
+          Detail Pengajuan Penghapusan
         </h2>
         <div className="flex gap-4">
           <button className="bg-primary text-white w-[228px] h-[48px] rounded-md text-center">
-            <Link href={"/status-pengajuan/anggota-baru"}>Kembali</Link>
+            <Link href={"/status-pengajuan/penghapusan-anggota"}>Kembali</Link>
           </button>
           <button
             onClick={() => setProsesData(true)}

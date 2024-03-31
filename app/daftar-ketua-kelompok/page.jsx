@@ -10,7 +10,7 @@ const DaftarKetuaKelompok = () => {
           <input
             type="text"
             name="search"
-            placeholder="Cari cabang"
+            placeholder="Cari Ketua Kelompok"
             className="w-full bg-white rounded-md p-[12px] focus:outline-none text-base font-regular"
           />
           <svg

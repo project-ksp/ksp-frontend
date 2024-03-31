@@ -6,7 +6,7 @@ import Image from "next/image";
 import DropdownSelector from "@/components/DropdownSelector";
 import Modal from "@/components/Modal";
 
-const DetailPinjamanAnggotaBaru = () => {
+const EditAnggota = () => {
   const [showProsesData, setProsesData] = useState(false);
   const [showBerhasil, setBerhasil] = useState(false);
   const [idCabang, setIdCabang] = useState("Pilih Cabang");
@@ -19,24 +19,19 @@ const DetailPinjamanAnggotaBaru = () => {
   const [jenisKelaminOpen, setJenisKelaminOpen] = useState(false);
   const [statusPernikahanOpen, setStatusPernikahanOpen] = useState(false);
   const [idCabangOpen, setIdCabangOpen] = useState(false);
-  const [buktiPendukung, setBuktiPendukung] = useState(null);
   return (
     <div className="flex flex-col gap-2">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold text-black">
-          Detail Pengajuan Pinjaman
-        </h2>
+        <h2 className="text-2xl font-bold text-black">Detail Anggota</h2>
         <div className="flex gap-4">
           <button className="bg-primary text-white w-[228px] h-[48px] rounded-md text-center">
-            <Link href={"/status-pengajuan/pinjaman-anggota-lama"}>
-              Kembali
-            </Link>
+            <Link href={"/dashboard"}>Kembali</Link>
           </button>
           <button
-            onClick={() => setProsesData(true)}
+            type="button"
             className="bg-primary text-white w-[228px] h-[48px] rounded-md text-center"
           >
-            Submit Data
+            <Link href={"/edit"}>Edit Data Diri</Link>
           </button>
         </div>
       </div>
@@ -180,7 +175,7 @@ const DetailPinjamanAnggotaBaru = () => {
           </div>
           <div className="flex w-full gap-2">
             <div className="w-1/4">
-              <label htmlFor="tempatLahir">Tempat Lahir</label>
+              <label htmlFor="tempatLahir">Isi Tempat Lahir Sesuai KTP</label>
               <input
                 type="text"
                 id="tempatLahir"
@@ -512,7 +507,7 @@ const DetailPinjamanAnggotaBaru = () => {
       </div>
       <div className="bg-white p-[20px] rounded-xl">
         <p className="text-black font-bold text-lg mb-[10px]">
-          Detail Pinjaman Sebelumnya
+          Detail Pinjaman
         </p>
         <div className="flex flex-col gap-4">
           <div className="flex gap-2">
@@ -621,66 +616,15 @@ const DetailPinjamanAnggotaBaru = () => {
           </div>
         </div>
       </div>
-      <div className="bg-white p-[20px] rounded-xl">
-        <p className="text-black font-bold text-lg mb-[10px]">
-          Detail Pinjaman yang Diajukan
-        </p>
-        <div className="flex flex-col gap-4">
-          <div className="flex gap-2">
-            <div className="min-w-[175px]">
-              <div>
-                <label htmlFor="idCabang">ID Cabang</label>
-                <input
-                  type="text"
-                  name="idCabang"
-                  id="idCabang"
-                  placeholder="Auto Generated"
-                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none italic"
-                  disabled
-                />
-              </div>
-            </div>
-            <div className="min-w-[290px]">
-              <div>
-                <label htmlFor="jumlahPinjaman">Jumlah Pinjaman</label>
-                <input
-                  type="text"
-                  name="jumlahPinjaman"
-                  id="jumlahPinjaman"
-                  placeholder="Auto Generated"
-                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none italic"
-                  disabled
-                />
-              </div>
-            </div>
-            <div className="w-1/2">
-              <div>
-                <label htmlFor="namaKetuaKelompok">Nama Ketua Kelompok</label>
-                <input
-                  type="text"
-                  name="namaKetuaKelompok"
-                  id="namaKetuaKelompok"
-                  placeholder="Isi Nama Ketua Kelompok"
-                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
-                />
-              </div>
-            </div>
-            <div className="w-1/2">
-              <div>
-                <label htmlFor="idKetuaKelompok">ID Ketua Kelompok</label>
-                <input
-                  type="text"
-                  name="idKetuaKelompok"
-                  id="idKetuaKelompok"
-                  placeholder="Isi ID Ketua Kelompok"
-                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
+      <div className="flex gap-5 place-self-end">
+        <button
+          type="button"
+          onClick={() => setProsesData(true)}
+          className="bg-primary text-white w-[228px] h-[48px] rounded-md text-center"
+        >
+          Proses Data
+        </button>
       </div>
-
       <Modal isVisible={showProsesData} onClose={() => setProsesData(false)}>
         <h3 className="text-xl text-center font-bold text-black">
           Proses Data?
@@ -743,4 +687,4 @@ const DetailPinjamanAnggotaBaru = () => {
   );
 };
 
-export default DetailPinjamanAnggotaBaru;
+export default EditAnggota;

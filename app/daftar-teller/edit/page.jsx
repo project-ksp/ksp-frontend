@@ -13,7 +13,7 @@ const EditTeller = () => {
         <h2 className="text-2xl font-bold text-black">Daftar Teller</h2>
         <div className="flex gap-4">
           <button className="bg-primary text-white w-[228px] h-[48px] rounded-md text-center">
-            <Link href={"/daftar-ketua-kelompok"}>Kembali</Link>
+            <Link href={"/daftar-teller"}>Kembali</Link>
           </button>
           <button className="bg-primary text-white w-[228px] h-[48px] rounded-md text-center">
             <Link href={"/daftar-ketua-kelompok/edit"}>Edit Data Diri</Link>

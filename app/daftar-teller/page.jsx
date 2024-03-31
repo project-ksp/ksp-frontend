@@ -10,7 +10,7 @@ const DaftarTeller = () => {
           <input
             type="text"
             name="search"
-            placeholder="Cari cabang"
+            placeholder="Cari Teller"
             className="w-full bg-white rounded-md p-[12px] focus:outline-none text-base font-regular"
           />
           <svg

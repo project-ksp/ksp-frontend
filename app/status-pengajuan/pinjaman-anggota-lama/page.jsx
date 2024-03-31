@@ -11,7 +11,7 @@ const StatusPengajuanAnggotaBaru = () => {
         <input
           type="text"
           name="search"
-          placeholder="Cari ID Anggota"
+          placeholder="Cari Anggota"
           className="w-full bg-white rounded-md p-[12px] focus:outline-none text-base font-regular"
         />
         <svg

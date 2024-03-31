@@ -414,10 +414,10 @@ const TambahKetuaKelompok = () => {
 
         <button
           type="button"
-          className="w-[148px] px-[20px] py-[12px] text-white bg-primary rounded-lg ml-auto"
+          className="w-[224px] px-[20px] py-[12px] text-white bg-primary rounded-lg ml-auto"
           onClick={(e) => setProsesData(true)}
         >
-          Simpan
+          Proses Data
         </button>
       </div>
       <Modal isVisible={showProsesData} onClose={() => setProsesData(false)}>

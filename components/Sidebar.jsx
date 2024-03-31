@@ -13,12 +13,20 @@ const Sidebar = () => {
     <>
       <div className="w-[280px] flex flex-col justify-between p-[28px] bg-primary fixed h-screen overflow-scroll">
         <div className="flex flex-col">
-          <div className="flex items-center mb-[60px]">
-            <div className="w-[35px] h-[40px] bg-filled-color rounded-md mr-[15px]"></div>
+          <div className="flex items-center mb-[60px] mt-[20px] gap-[10px]">
+            <Image
+              src={"/images/logo.png"}
+              alt="logo"
+              width={40}
+              height={45}
+              quality={100}
+            />
             <div className="flex flex-col">
-              <h3 className="text-white font-bold text-lg">KSP</h3>
-              <p className="text-white font-regular text-base">
-                Sentosa Makmur
+              <h3 className="text-white font-regular text-[14px]">
+                KOPERASI SIMPAN PINJAM
+              </h3>
+              <p className="text-white font-bold text-[14px]">
+                SENTOSA MAKMUR JATIM
               </p>
             </div>
           </div>

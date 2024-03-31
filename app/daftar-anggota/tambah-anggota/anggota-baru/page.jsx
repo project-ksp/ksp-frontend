@@ -150,7 +150,7 @@ const TambahAnggota = () => {
           </div>
           <div className="flex w-full gap-2">
             <div className="w-1/4">
-              <label htmlFor="tempatLahir">Isi Tempat Lahir Sesuai KTP</label>
+              <label htmlFor="tempatLahir">Tempat Lahir</label>
               <input
                 type="text"
                 id="tempatLahir"
@@ -392,32 +392,28 @@ const TambahAnggota = () => {
           <div className="flex w-full gap-2">
             <label htmlFor="fotoDiri" className="flex w-2/5">
               {fotoDiri === null ? (
-                <div className="flex-grow">
+                <div className="relative h-[80px] w-[80px]">
                   <Image
                     src={"/images/image_none.jpg"}
                     alt="Image_none"
-                    width={80}
-                    height={80}
-                    style={{ objectFit: "cover" }}
-                    className="rounded-lg"
+                    fill
+                    className="absolute rounded-md object-cover top-0"
                   />
                 </div>
               ) : (
-                <div className="flex-grow">
+                <div className="relative h-[80px] w-[80px]">
                   <Image
                     src={URL.createObjectURL(fotoDiri)}
                     alt="Image_none"
-                    width={80}
-                    height={80}
-                    style={{ objectFit: "cover" }}
-                    className="rounded-lg"
+                    fill
+                    className="absolute rounded-md object-cover top-0"
                   />
                 </div>
               )}
               <div className="flex flex-col ml-2 flex-grow">
                 <p>Upload Foto Diri</p>
-                <div className="border border-[#d9d9d9] rounded-lg px-[10px] py-[2px] flex mt-1 items-center">
-                  <div className="w-[131px] border border-secondary rounded-lg text-primary flex items-center">
+                <div className="border border-[#d9d9d9] rounded-lg flex mt-1 items-center h-[48px]">
+                  <div className=" my-[10px] w-[177px] border border-secondary rounded-lg text-primary flex items-center justify-between px-[10px] ml-[10px]">
                     <p>Tambah Foto</p>
                     <svg
                       width="17"
@@ -454,32 +450,28 @@ const TambahAnggota = () => {
             </label>
             <label htmlFor="fotoKtp" className="flex w-2/5">
               {fotoKtp === null ? (
-                <div className="flex-grow">
+                <div className="relative h-[80px] w-[80px]">
                   <Image
                     src={"/images/image_none.jpg"}
                     alt="Image_none"
-                    width={80}
-                    height={80}
-                    style={{ objectFit: "cover" }}
-                    className="rounded-lg"
+                    fill
+                    className="absolute rounded-md object-cover top-0"
                   />
                 </div>
               ) : (
-                <div className="flex-grow">
+                <div className="relative h-[80px] w-[80px]">
                   <Image
-                    src={URL.createObjectURL(fotoDiri)}
+                    src={URL.createObjectURL(fotoKtp)}
                     alt="Image_none"
-                    width={80}
-                    height={80}
-                    style={{ objectFit: "cover" }}
-                    className="rounded-lg"
+                    fill
+                    className="absolute rounded-md object-cover top-0"
                   />
                 </div>
               )}
               <div className="flex flex-col ml-2 flex-grow">
                 <p>Upload Foto KTP</p>
-                <div className="border border-[#d9d9d9] rounded-lg px-[10px] py-[2px] flex mt-1 items-center">
-                  <div className="py-[2px] w-[131px] border border-secondary rounded-lg text-primary flex items-center justify-around">
+                <div className="border border-[#d9d9d9] rounded-lg flex mt-1 items-center h-[48px]">
+                  <div className=" my-[10px] w-[177px] border border-secondary rounded-lg text-primary flex items-center justify-between px-[10px] ml-[10px]">
                     <p>Tambah Foto</p>
                     <svg
                       width="17"
