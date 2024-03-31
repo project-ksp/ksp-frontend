@@ -4,9 +4,9 @@ import Link from "next/link";
 const AccountBlock = () => {
   return (
     <div className="flex flex-col gap-[20px]">
-      <h2 className="text-2xl font-bold text-black">Data Master</h2>
+      <h2 className="text-2xl font-bold text-black">Account Block</h2>
       <div className="flex h-[48px] gap-[18px]">
-        <div className="w-3/5 relative">
+        <div className="flex-grow relative">
           <input
             type="text"
             name="search"
@@ -37,7 +37,7 @@ const AccountBlock = () => {
             />
           </svg>
         </div>
-        <Link
+        {/* <Link
           href={`/account-block/tambah-akun`}
           className="w-1/5 bg-primary px-[15px] py-[8px] flex justify-center items-center text-white rounded-md"
         >
@@ -54,7 +54,7 @@ const AccountBlock = () => {
             />
           </svg>
           <p className="ml-5 text-base font-regular">Tambah Akun</p>
-        </Link>
+        </Link> */}
         <button className="w-1/5 bg-primary px-[15px] py-[8px] flex justify-center items-center text-white rounded-md">
           <svg
             width="18"

@@ -18,12 +18,11 @@ const Modal = ({ isVisible, onClose, children }) => {
 
   return isVisible ? (
     <div
-      className="fixed inset-0 ml-[280px] bg-[#022B94] bg-opacity-20 backdrop-blur-sm flex justify-center items-center"
+      className="fixed inset-0 ml-[280px] bg-[#022B94] bg-opacity-20 backdrop-blur-sm flex justify-center items-center z-50"
       onClick={onClose}
     >
       <div
         className="bg-white px-[45px] py-[35px] rounded-2xl relative"
-        style={{ maxWidth: "90%", maxHeight: "90%", overflow: "auto" }}
         onClick={(e) => e.stopPropagation()}
       >
         <p

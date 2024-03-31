@@ -5,27 +5,37 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { SIDENAV_ITEMS, SIDENAV_ITEMS_KEPCAB } from "@/data/constants";
+import Modal from "./Modal";
 
 const Sidebar = () => {
+  const [showProsesData, setProsesData] = useState(false);
   return (
-    <div className="w-[280px] flex flex-col justify-between p-[28px] bg-primary fixed h-screen overflow-scroll">
-      <div className="flex flex-col">
-        <div className="flex items-center mb-[60px]">
-          <div className="w-[35px] h-[40px] bg-filled-color rounded-md mr-[15px]"></div>
-          <div className="flex flex-col">
-            <h3 className="text-white font-bold text-lg">KSP</h3>
-            <p className="text-white font-regular text-base">Sentosa Makmur</p>
+    <>
+      <div className="w-[280px] flex flex-col justify-between p-[28px] bg-primary fixed h-screen overflow-scroll">
+        <div className="flex flex-col">
+          <div className="flex items-center mb-[60px]">
+            <div className="w-[35px] h-[40px] bg-filled-color rounded-md mr-[15px]"></div>
+            <div className="flex flex-col">
+              <h3 className="text-white font-bold text-lg">KSP</h3>
+              <p className="text-white font-regular text-base">
+                Sentosa Makmur
+              </p>
+            </div>
           </div>
+          {SIDENAV_ITEMS_KEPCAB.map((item, index) => (
+            <MenuItem key={index} item={item} />
+          ))}
         </div>
-        {SIDENAV_ITEMS_KEPCAB.map((item, index) => (
-          <MenuItem key={index} item={item} />
-        ))}
+        <div className="flex flex-col">
+          <ButtonKeluar click={() => setProsesData(true)} />
+          <ButtonAccount jabatan="Teller" nama="Indah Sari" />
+        </div>
       </div>
-      <div className="flex flex-col">
-        <ButtonKeluar />
-        <ButtonAccount jabatan="Teller" nama="Indah Sari" />
-      </div>
-    </div>
+      <LogoutModal
+        isVisible={showProsesData}
+        onClose={() => setProsesData(false)}
+      />
+    </>
   );
 };
 
@@ -156,10 +166,13 @@ const ButtonAccount = ({ jabatan, nama }) => {
   );
 };
 
-const ButtonKeluar = () => {
+const ButtonKeluar = ({ click }) => {
   return (
     <>
-      <button className="bg-white/10  mb-[5px] py-[14px] px-[16px] flex items-center rounded-md">
+      <button
+        onClick={click}
+        className="bg-white/10  mb-[5px] py-[14px] px-[16px] flex items-center rounded-md"
+      >
         <svg
           width="24"
           height="24"
@@ -194,5 +207,36 @@ const ButtonKeluar = () => {
       </button>
       ;
     </>
+  );
+};
+
+const LogoutModal = ({ isVisible, onClose }) => {
+  return (
+    <Modal isVisible={isVisible} onClose={onClose}>
+      <h3 className="text-xl text-center font-bold text-black">Keluar?</h3>
+      <p className="text-base text-black font-regular text-center mb-4">
+        Apakah Anda yakin untuk Keluar?
+      </p>
+      <div className="flex gap-3">
+        <button
+          type="submit"
+          className="w-[224px] px-[20px] py-[12px] text-white bg-red-status-1 rounded-lg mx-auto"
+          onClick={(e) => {
+            onClose();
+          }}
+        >
+          Tidak
+        </button>
+        <button
+          type="submit"
+          className="w-[224px] px-[20px] py-[12px] text-white bg-green-status-1 rounded-lg mx-auto"
+          onClick={(e) => {
+            onClose();
+          }}
+        >
+          Ya
+        </button>
+      </div>
+    </Modal>
   );
 };
