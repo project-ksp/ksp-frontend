@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { use, useState } from "react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
@@ -51,15 +51,17 @@ export default Sidebar;
 
 const MenuItem = ({ item }) => {
   const pathname = usePathname();
-  const [subMenuOpen, setSubMenuOpen] = useState(false);
+  const [subMenuOpen, setSubMenuOpen] = useState(
+    usePathname().includes(item.path)
+  );
 
   return (
     <div>
       {item.submenu ? (
-        <>
+        <div className="relative">
           <button
             onClick={() => setSubMenuOpen(!subMenuOpen)}
-            className={`mb-[16px] py-[14px] px-[16px] relative flex items-center rounded-md w-full justify-between hover:bg-secondary ${
+            className={`mb-[16px] h-[48px] py-[2px] px-[16px] flex items-center rounded-md w-full justify-between hover:bg-secondary ${
               subMenuOpen ? "bg-[#fff]" : ""
             }`}
           >
@@ -97,19 +99,16 @@ const MenuItem = ({ item }) => {
             </div>
           </button>
           {subMenuOpen && (
-            <div className="bg-[#fff] -my-3 rounded-lg transition-all duration-300">
+            <div className="bg-[#fff] -my-3 rounded-lg transition-all duration-300 absolute z-20 ">
               {item.subMenuItems.map((subItem, index) => {
                 return (
                   <div
                     key={index}
-                    className="border-b border-black/20 pl-[48px] pr-[22px] rounded-md h-[48px] flex items-center hover:bg-secondary"
+                    className={`${
+                      pathname.includes(subItem.path) ? "bg-secondary" : ""
+                    } border-b border-black/20 pl-[48px] pr-[22px] rounded-md h-[48px] flex items-center hover:bg-secondary`}
                   >
-                    <Link
-                      href={subItem.path}
-                      className={`${
-                        pathname.includes(subItem.path) ? "font-bold" : ""
-                      } `}
-                    >
+                    <Link href={subItem.path}>
                       <p>{subItem.title}</p>
                     </Link>
                   </div>
@@ -117,11 +116,11 @@ const MenuItem = ({ item }) => {
               })}
             </div>
           )}
-        </>
+        </div>
       ) : (
         <Link
           href={item.path}
-          className={`mb-[16px] py-[14px] px-[16px] flex items-center rounded-md hover:bg-secondary ${
+          className={`mb-[16px] h-[48px] px-[16px] flex items-center rounded-md hover:bg-secondary ${
             pathname.includes(item.path) ? "bg-[#d9d9d9]" : ""
           }`}
         >
