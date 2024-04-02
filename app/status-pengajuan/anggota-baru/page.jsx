@@ -1,7 +1,11 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
 import Link from "next/link";
 
 const StatusPengajuanAnggotaBaru = () => {
+  const [statusOpen, setStatusOpen] = useState(false);
+
   return (
     <div className="flex flex-col gap-2">
       <h2 className="text-2xl font-bold text-black">
@@ -89,9 +93,30 @@ const StatusPengajuanAnggotaBaru = () => {
               <td className="px-[10px]">P</td>
               <td className="px-[10px]">
                 <div className="flex justify-center items-center h-[48px]">
-                  <button className="bg-green-status-2 w-[116px] h-[24px] text-black rounded-lg mx-auto my-auto text-sm">
-                    Disetujui
-                  </button>
+                  <div>
+                    <button
+                      type="button"
+                      onClick={() => setStatusOpen(!statusOpen)}
+                      className="bg-green-status-2 w-[116px] h-[24px] text-black rounded-lg mx-auto my-auto text-sm"
+                    >
+                      Disetujui
+                    </button>
+                    {statusOpen && (
+                      <div className="w-full relative">
+                        <div className="absolute text-black w-full">
+                          <div className="bg-yellow-status-2  h-[24px]  rounded-lg text-center text-sm">
+                            Belum Disetujui
+                          </div>
+                          <div className="bg-red-status-2  h-[24px]  rounded-lg text-center text-sm">
+                            Ditolak
+                          </div>
+                          <div className="bg-secondary  h-[24px]  rounded-lg text-center text-sm">
+                            Diproses
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </td>
               <td className="px-[10px]">
