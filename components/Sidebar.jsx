@@ -1,6 +1,8 @@
 "use client";
 
 import { use, useState } from "react";
+import { signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
@@ -9,6 +11,10 @@ import Modal from "./Modal";
 
 const Sidebar = () => {
   const [showProsesData, setProsesData] = useState(false);
+  const { data: session, status } = useSession();
+
+  if (status === "loading") return null;
+
   return (
     <>
       <div className="w-[280px] flex flex-col justify-between p-[28px] bg-primary fixed h-screen overflow-scroll">
@@ -35,8 +41,18 @@ const Sidebar = () => {
           ))}
         </div>
         <div className="flex flex-col">
-          <ButtonKeluar click={() => setProsesData(true)} />
-          <ButtonAccount jabatan="Teller" nama="Indah Sari" />
+          <ButtonKeluar
+            click={() =>
+              signOut({
+                callbackUrl: `/login`,
+                redirect: true,
+              })
+            }
+          />
+          <ButtonAccount
+            jabatan={`${session.user.role}`}
+            nama={`${session.user.name}`}
+          />
         </div>
       </div>
       <LogoutModal
