@@ -11,24 +11,19 @@ export const SIDENAV_ITEMS = [
     title: "Dashboard",
     path: "/dashboard",
     icon: <Grid />,
+    role: ["owner", "teller", "branch_head"],
   },
   {
     title: "Data Master",
     path: "/data-master",
     icon: <Shop />,
+    role: ["owner"],
   },
   {
     title: "Account Block",
     path: "/account-block",
     icon: <PersonPencil />,
-  },
-];
-
-export const SIDENAV_ITEMS_KEPCAB = [
-  {
-    title: "Dashboard",
-    path: "/dashboard",
-    icon: <Grid />,
+    role: ["owner"],
   },
   {
     title: "Daftar Anggota",
@@ -90,3 +85,5 @@ export const SIDENAV_ITEMS_KEPCAB = [
     icon: <PersonPencil />,
   },
 ];
+
+export const SIDENAV_ITEMS_KEPCAB = [];

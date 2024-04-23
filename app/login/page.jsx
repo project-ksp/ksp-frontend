@@ -18,6 +18,7 @@ export default function LoginPage() {
     passwordError: "",
     loginError: "",
   });
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const { data: session, status } = useSession();
@@ -53,8 +54,10 @@ export default function LoginPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     if (!validateForm()) {
+      setLoading(false);
       return;
     }
 
@@ -71,21 +74,26 @@ export default function LoginPage() {
     } else {
       router.push("/dashboard");
     }
+    setLoading(false);
   };
 
   return (
-    <div className="flex bg-primary h-screen">
-      <div className="w-1/2 relative">
-        <Image
-          fill
-          src="/images/login_image.png"
-          alt="Sentosa Makmur"
-          style={{ objectFit: "cover" }}
-          sizes="100%"
-          priority
-        />
+    <div className="flex h-screen">
+      <div className="w-1/2 justify-center items-center bg-mainBg">
+        <div className="mx-[129px]">
+          <div className="w-10 h-10 relative">
+            <Image
+              fill
+              src="/images/login_image.png"
+              alt="Sentosa Makmur"
+              style={{ objectFit: "cover" }}
+              sizes="100%"
+              priority
+            />
+          </div>
+        </div>
       </div>
-      <div className="w-1/2 flex justify-center items-center">
+      <div className="w-1/2 flex justify-center items-center bg-primary">
         <form
           className="flex flex-col w-[450px]"
           onSubmit={handleSubmit}
@@ -167,9 +175,10 @@ export default function LoginPage() {
           </div>
           <button
             type="submit"
-            className="w-full bg-primary rounded-md py-2.5 text-mainBg text-lg font-reguler border border-white focus:outline-none focus:bg-mainBg focus:text-primary hover:bg-mainBg hover:text-primary"
+            className={`w-full bg-primary rounded-md py-2.5 text-mainBg text-lg font-reguler border border-white focus:outline-none focus:bg-mainBg focus:text-primary hover:bg-mainBg hover:text-primary
+            }`}
           >
-            Masuk
+            {loading ? "Memuat..." : "Masuk"}
           </button>
         </form>
       </div>

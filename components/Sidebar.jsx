@@ -6,7 +6,7 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { SIDENAV_ITEMS, SIDENAV_ITEMS_KEPCAB } from "@/data/constants";
+import { SIDENAV_ITEMS } from "@/data/constants";
 import Modal from "./Modal";
 
 const Sidebar = () => {
@@ -36,7 +36,7 @@ const Sidebar = () => {
               </p>
             </div>
           </div>
-          {SIDENAV_ITEMS_KEPCAB.map((item, index) => (
+          {SIDENAV_ITEMS.map((item, index) => (
             <MenuItem key={index} item={item} />
           ))}
         </div>
