@@ -1,78 +1,7 @@
-"use client";
-
 import Image from "next/image";
-import { useEffect, useState } from "react";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { signIn } from "next-auth/react";
-import { redirect, useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
+import { FaEye } from "react-icons/fa";
 
 export default function LoginPage() {
-  const [auth, setAuth] = useState({
-    username: "",
-    password: "",
-  });
-  const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState({
-    usernameError: "",
-    passwordError: "",
-    loginError: "",
-  });
-  const router = useRouter();
-
-  const { data: session, status } = useSession();
-
-  useEffect(() => {
-    if (status === "authenticated") {
-      redirect("/dashboard");
-    }
-  });
-
-  const validateForm = () => {
-    if (auth.username === "" && auth.password === "") {
-      setError({
-        usernameError: "Username tidak boleh kosong",
-        passwordError: "Password tidak boleh kosong",
-      });
-      return false;
-    }
-    if (auth.username === "") {
-      setError({
-        usernameError: "Username tidak boleh kosong",
-      });
-      return false;
-    }
-    if (auth.password === "") {
-      setError({
-        passwordError: "Password tidak boleh kosong",
-      });
-      return false;
-    }
-    return true;
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (!validateForm()) {
-      return;
-    }
-
-    const response = await signIn("credentials", {
-      username: auth.username,
-      password: auth.password,
-      redirect: false,
-    });
-
-    if (!response.ok) {
-      setError({
-        loginError: "Username atau Password salah",
-      });
-    } else {
-      router.push("/dashboard");
-    }
-  };
-
   return (
     <div className="flex bg-primary h-screen">
       <div className="w-1/2 relative">
@@ -81,26 +10,13 @@ export default function LoginPage() {
           src="/images/login_image.png"
           alt="Sentosa Makmur"
           style={{ objectFit: "cover" }}
-          sizes="100%"
-          priority
         />
       </div>
       <div className="w-1/2 flex justify-center items-center">
-        <form
-          className="flex flex-col w-[450px]"
-          onSubmit={handleSubmit}
-          method="POST"
-        >
+        <form className="flex flex-col w-[450px]">
           <h2 className="text-title-large text-white mb-[25px] font-bold">
             Masuk
           </h2>
-          {error.loginError && (
-            <div className="bg-red-status-1 px-3 py-2 w-full rounded-md">
-              <p className="text-red-status-2 text-base font-bold">
-                {error.loginError}
-              </p>
-            </div>
-          )}
           <div className="mb-[27px]">
             <label
               htmlFor="username"
@@ -111,14 +27,8 @@ export default function LoginPage() {
             <input
               type="text"
               name="username"
-              onChange={(e) => setAuth({ ...auth, username: e.target.value })}
               className="p-3 w-full bg-transparent border border-filled-color rounded-md text-filled-color focus:text-mainBg focus:border-mainBg focus:outline-none"
             ></input>
-            {error.usernameError && (
-              <p className="text-red-status-2 text-base">
-                {error.usernameError}
-              </p>
-            )}
           </div>
           <div className="mb-[15px] relative">
             <label
@@ -128,29 +38,14 @@ export default function LoginPage() {
               Password
             </label>
             <input
-              type={showPassword ? "text" : "password"}
+              type="password"
               name="password"
-              onChange={(e) => setAuth({ ...auth, password: e.target.value })}
-              className="p-3 pr-[50px] w-full bg-transparent border border-filled-color rounded-md text-filled-color focus:text-mainBg focus:border-mainBg focus:outline-none peer"
+              className="p-3 w-full bg-transparent border border-filled-color rounded-md text-filled-color focus:text-mainBg focus:border-mainBg focus:outline-none"
             ></input>
-            {showPassword ? (
-              <FaEye
-                className="absolute right-5 top-[58px] text-filled-color cursor-pointer peer-focus:text-mainBg"
-                size={25}
-                onClick={() => setShowPassword(!showPassword)}
-              />
-            ) : (
-              <FaEyeSlash
-                className="absolute right-5 top-[58px] text-filled-color cursor-pointer peer-focus:text-mainBg"
-                size={25}
-                onClick={() => setShowPassword(!showPassword)}
-              />
-            )}
-            {error.passwordError && (
-              <p className="text-red-status-2 text-base">
-                {error.passwordError}
-              </p>
-            )}
+            <FaEye
+              className="absolute right-5 top-[58px] text-mainBg cursor-pointer"
+              size={25}
+            />
           </div>
           <div className="flex items-center mb-[25px]">
             <input
