@@ -1,27 +1,169 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Image from "next/image";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 import Modal from "@/components/Modal";
 import DropdownSelector from "@/components/DropdownSelector";
+import toast from "react-hot-toast";
 
 const BuatAkunCabang = () => {
+  const { data: session, status } = useSession();
+  const formRef = useRef();
+  const router = useRouter();
+
+  const [loading, setLoading] = useState(false);
   const [showProsesData, setProsesData] = useState(false);
   const [showBerhasil, setBerhasil] = useState(false);
   const [statusPernikahanOpen, setStatusPernikahanOpen] = useState(false);
   const [agamaOpen, setAgamaOpen] = useState(false);
   const [pendidikanOpen, setPendidikanOpen] = useState(false);
   const [jenisKelaminOpen, setJenisKelaminOpen] = useState(false);
-  const [statusPernikahan, setStatusPernikahan] = useState("Pilih Status");
-  const [agama, setAgama] = useState("Pilih Agama");
-  const [pendidikan, setPendidikan] = useState("Pilih Pendidikan Terakhir");
-  const [jenisKelamin, setJenisKelamin] = useState("Pilih Jenis Kelamin");
   const [fotoDiri, setFotoDiri] = useState(null);
   const [fotoKtp, setFotoKtp] = useState(null);
 
+  const [branchData, setBranchData] = useState({
+    address: "",
+    kelurahan: "",
+    kecamatan: "",
+    city: "",
+    postalCode: "",
+  });
+
+  const [branchHeadData, setBranchHeadData] = useState({
+    name: "",
+    isMarried: "Pilih Status",
+    spouse: "",
+    birthPlace: "",
+    birthDate: "",
+    gender: "Pilih Jenis Kelamin",
+    nik: "",
+    religion: "Pilih Agama",
+    occupation: "",
+    address: "",
+    kelurahan: "",
+    kecamatan: "",
+    city: "",
+    postalCode: "",
+    phoneNumber: "",
+    education: "Pilih Pendidikan Terakhir",
+    profilePictureUrl: "",
+    idPictureUrl: "",
+  });
+
+  const countAge = (date) => {
+    const today = new Date();
+    const birthDate = new Date(date);
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const month = today.getMonth() - birthDate.getMonth();
+    if (month < 0 || (month === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    return age;
+  };
+
+  const uploadFotoDiri = async (e) => {
+    setFotoDiri(e.target.files[0]);
+    const formData = new FormData();
+    formData.append("file", e.target.files[0]);
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}uploads/temp/image`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${session.token}`,
+        },
+        body: formData,
+      }
+    );
+    const data = await res.json();
+    if (res.ok) {
+      setBranchHeadData({ ...branchHeadData, profilePictureUrl: data.data });
+    } else {
+      setFotoDiri(null);
+      toast.error(data.message);
+    }
+  };
+
+  const uploadFotoKtp = async (e) => {
+    setFotoKtp(e.target.files[0]);
+    const formData = new FormData();
+    formData.append("file", e.target.files[0]);
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}uploads/temp/image`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${session.token}`,
+        },
+        body: formData,
+      }
+    );
+    const data = await res.json();
+    if (res.ok) {
+      setBranchHeadData({ ...branchHeadData, idPictureUrl: data.data });
+    } else {
+      setFotoKtp(null);
+      toast.error(data.message);
+    }
+  };
+
+  const submitData = async (e) => {
+    e.preventDefault();
+    if (
+      branchHeadData.isMarried === "Pilih Status" ||
+      branchHeadData.gender === "Pilih Jenis Kelamin" ||
+      branchHeadData.religion === "Pilih Agama" ||
+      branchHeadData.education === "Pilih Pendidikan Terakhir"
+    ) {
+      toast.error("Mohon lengkapi data kepala cabang");
+      setProsesData(false);
+      return;
+    }
+
+    if (
+      branchHeadData.profilePictureUrl === "" ||
+      branchHeadData.idPictureUrl === ""
+    ) {
+      toast.error("Mohon lengkapi foto diri dan foto KTP");
+      setProsesData(false);
+      return;
+    }
+
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}branches`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${session.token}`,
+      },
+      body: JSON.stringify({
+        branch: branchData,
+        branchHead: branchHeadData,
+      }),
+    });
+
+    const data = await res.json();
+    if (res.ok) {
+      setBerhasil(true);
+    } else {
+      toast.error(data.message);
+    }
+    setLoading(false);
+    setProsesData(false);
+  };
+
+  if (status === "loading") return <>Loading...</>;
+
   return (
-    <form action="">
+    <form
+      onSubmit={(e) => {
+        submitData(e);
+      }}
+      ref={formRef}
+    >
+      {loading && <div className="inset-0 fixed bg-black/20 z-50"></div>}
       <div className="flex flex-col gap-[10px]">
         <h2 className="text-2xl font-bold text-black">Buat Akun Cabang</h2>
         <div className="bg-white p-[20px] rounded-xl">
@@ -49,6 +191,10 @@ const BuatAkunCabang = () => {
                     id="alamatCabang"
                     name="alamatCabang"
                     placeholder="Isi alamat lengkap cabang"
+                    onChange={(e) => {
+                      setBranchData({ ...branchData, address: e.target.value });
+                    }}
+                    required
                     className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
                   />
                 </div>
@@ -61,6 +207,13 @@ const BuatAkunCabang = () => {
                     id="kelurahan"
                     name="kelurahan"
                     placeholder="Isi"
+                    onChange={(e) => {
+                      setBranchData({
+                        ...branchData,
+                        kelurahan: e.target.value,
+                      });
+                    }}
+                    required
                     className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
                   />
                 </div>
@@ -71,6 +224,13 @@ const BuatAkunCabang = () => {
                     id="kecamatan"
                     name="kecamatan"
                     placeholder="Isi"
+                    onChange={(e) => {
+                      setBranchData({
+                        ...branchData,
+                        kecamatan: e.target.value,
+                      });
+                    }}
+                    required
                     className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
                   />
                 </div>
@@ -81,6 +241,10 @@ const BuatAkunCabang = () => {
                     id="kota"
                     name="kota"
                     placeholder="Isi"
+                    onChange={(e) => {
+                      setBranchData({ ...branchData, city: e.target.value });
+                    }}
+                    required
                     className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
                   />
                 </div>
@@ -91,6 +255,13 @@ const BuatAkunCabang = () => {
                     id="kodePos"
                     name="kodePos"
                     placeholder="Isi"
+                    onChange={(e) => {
+                      setBranchData({
+                        ...branchData,
+                        postalCode: e.target.value,
+                      });
+                    }}
+                    required
                     className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
                   />
                 </div>
@@ -111,6 +282,13 @@ const BuatAkunCabang = () => {
                   id="namaKepalaCabang"
                   name="namaKepalaCabang"
                   placeholder="Isi Nama Lengkap Kepala Cabang"
+                  onChange={(e) => {
+                    setBranchHeadData({
+                      ...branchHeadData,
+                      name: e.target.value,
+                    });
+                  }}
+                  required
                   className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
                 />
               </div>
@@ -121,13 +299,18 @@ const BuatAkunCabang = () => {
                   name="statusPernikahan"
                   id="statusPernikahan"
                   className={`w-full flex justify-between py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] text-start text-[#d9d9d9] bg-transparent focus:outline-none ${
-                    statusPernikahan === "Pilih Status"
+                    branchHeadData.isMarried === "Pilih Status"
                       ? "text-[#d9d9d9]"
                       : "text-primary"
                   }`}
                   onClick={() => setStatusPernikahanOpen(!statusPernikahanOpen)}
                 >
-                  {statusPernikahan}
+                  {branchHeadData.isMarried === "Pilih Status"
+                    ? "Pilih Status"
+                    : branchHeadData.isMarried
+                    ? "Sudah Menikah"
+                    : "Belum Menikah"}
+
                   <svg
                     width="24"
                     height="24"
@@ -141,11 +324,15 @@ const BuatAkunCabang = () => {
                     />
                   </svg>
                 </button>
-
                 {statusPernikahanOpen && (
                   <div className="w-full relative">
                     <DropdownSelector
-                      selected={(option) => setStatusPernikahan(option)}
+                      selected={(option) =>
+                        setBranchHeadData({
+                          ...branchHeadData,
+                          isMarried: option === "Sudah Menikah" ? true : false,
+                        })
+                      }
                       options={["Sudah Menikah", "Belum Menikah"]}
                       onClose={() => setStatusPernikahanOpen(false)}
                     />
@@ -159,7 +346,20 @@ const BuatAkunCabang = () => {
                   id="namaSuamiIstri"
                   name="namaSuamiIstri"
                   placeholder="*Jika Sudah Menikah"
+                  onChange={(e) => {
+                    setBranchHeadData({
+                      ...branchHeadData,
+                      spouse: e.target.value,
+                    });
+                  }}
+                  required={branchHeadData.isMarried}
                   className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
+                  disabled={
+                    branchHeadData.isMarried === "Pilih Status" ||
+                    branchHeadData.isMarried === false
+                      ? true
+                      : false
+                  }
                 />
               </div>
             </div>
@@ -171,6 +371,13 @@ const BuatAkunCabang = () => {
                   id="tempatLahir"
                   name="tempatLahir"
                   placeholder="Isi Tempat Lahir Sesuai KTP"
+                  required
+                  onChange={(e) => {
+                    setBranchHeadData({
+                      ...branchHeadData,
+                      birthPlace: e.target.value,
+                    });
+                  }}
                   className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
                 />
               </div>
@@ -180,6 +387,13 @@ const BuatAkunCabang = () => {
                   type="date"
                   id="tanggalLahir"
                   name="tanggalLahir"
+                  onChange={(e) => {
+                    setBranchHeadData({
+                      ...branchHeadData,
+                      birthDate: e.target.value.toString(),
+                    });
+                  }}
+                  required
                   className="w-full py-[10px] px-[20px] border border-[#d9d9d9] text-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
                 />
               </div>
@@ -189,25 +403,34 @@ const BuatAkunCabang = () => {
                   type="text"
                   id="umur"
                   name="umur"
-                  placeholder="Auto generate"
-                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
+                  value={
+                    branchHeadData.birthDate === ""
+                      ? "Auto Generated"
+                      : countAge(branchHeadData.birthDate)
+                  }
+                  className={`w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none ${
+                    branchHeadData.birthDate === ""
+                      ? "text-[#d9d9d9]"
+                      : "text-black"
+                  }`}
                   disabled
                 />
               </div>
-              <div className="w-1/5">
+              <div className="w-1/4">
                 <label htmlFor="jenisKelamin">Jenis Kelamin</label>
                 <button
                   type="button"
                   name="jenisKelamin"
                   id="jenisKelamin"
                   className={`w-full flex justify-between py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] text-start text-[#d9d9d9] bg-transparent focus:outline-none ${
-                    jenisKelamin === "Pilih Jenis Kelamin"
+                    branchHeadData.gender === "Pilih Jenis Kelamin"
                       ? "text-[#d9d9d9]"
                       : "text-primary"
                   }`}
                   onClick={() => setJenisKelaminOpen(!jenisKelaminOpen)}
                 >
-                  {jenisKelamin}
+                  {branchHeadData.gender.charAt(0).toUpperCase() +
+                    branchHeadData.gender.slice(1)}
                   <svg
                     width="24"
                     height="24"
@@ -221,12 +444,16 @@ const BuatAkunCabang = () => {
                     />
                   </svg>
                 </button>
-
                 {jenisKelaminOpen && (
                   <div className="w-full relative">
                     <DropdownSelector
-                      selected={(option) => setJenisKelamin(option)}
-                      options={["Laki - Laki", "Perempuan"]}
+                      selected={(option) =>
+                        setBranchHeadData({
+                          ...branchHeadData,
+                          gender: option.toLowerCase(),
+                        })
+                      }
+                      options={["Laki-Laki", "Perempuan"]}
                       onClose={() => setJenisKelaminOpen(false)}
                     />
                   </div>
@@ -241,6 +468,13 @@ const BuatAkunCabang = () => {
                   id="nik"
                   name="nik"
                   placeholder="NIK Harus Sesuai KTP dan Terdaftar di Dukcapil"
+                  required
+                  onChange={(e) => {
+                    setBranchHeadData({
+                      ...branchHeadData,
+                      nik: e.target.value,
+                    });
+                  }}
                   className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
                 />
               </div>
@@ -251,11 +485,14 @@ const BuatAkunCabang = () => {
                   name="agama"
                   id="agama"
                   className={`w-full flex justify-between py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] text-start text-[#d9d9d9] bg-transparent focus:outline-none ${
-                    agama === "Pilih Agama" ? "text-[#d9d9d9]" : "text-primary"
+                    branchHeadData.religion === "Pilih Agama"
+                      ? "text-[#d9d9d9]"
+                      : "text-primary"
                   }`}
                   onClick={() => setAgamaOpen(!agamaOpen)}
                 >
-                  {agama}
+                  {branchHeadData.religion.charAt(0) +
+                    branchHeadData.religion.slice(1)}
                   <svg
                     width="24"
                     height="24"
@@ -273,13 +510,18 @@ const BuatAkunCabang = () => {
                 {agamaOpen && (
                   <div className="w-full relative">
                     <DropdownSelector
-                      selected={(option) => setAgama(option)}
+                      selected={(option) =>
+                        setBranchHeadData({
+                          ...branchHeadData,
+                          religion: option.toLowerCase(),
+                        })
+                      }
                       options={[
                         "Islam",
                         "Kristen",
                         "Katolik",
                         "Hindu",
-                        "Budha",
+                        "Buddha",
                         "Konghucu",
                       ]}
                       onClose={() => setAgamaOpen(false)}
@@ -294,6 +536,13 @@ const BuatAkunCabang = () => {
                   id="pekerjaan"
                   name="pekerjaan"
                   placeholder="Isi Sesuai KTP"
+                  required
+                  onChange={(e) => {
+                    setBranchHeadData({
+                      ...branchHeadData,
+                      occupation: e.target.value,
+                    });
+                  }}
                   className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
                 />
               </div>
@@ -307,6 +556,13 @@ const BuatAkunCabang = () => {
                     id="alamatCabang"
                     name="alamatCabang"
                     placeholder="Isi Alamat Lengkap Sesuai KTP"
+                    required
+                    onChange={(e) => {
+                      setBranchHeadData({
+                        ...branchHeadData,
+                        address: e.target.value,
+                      });
+                    }}
                     className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
                   />
                 </div>
@@ -319,6 +575,13 @@ const BuatAkunCabang = () => {
                     id="kelurahanKepalaCabang"
                     name="kelurahanKepalaCabang"
                     placeholder="Isi Sesuai KTP"
+                    required
+                    onChange={(e) => {
+                      setBranchHeadData({
+                        ...branchHeadData,
+                        kelurahan: e.target.value,
+                      });
+                    }}
                     className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
                   />
                 </div>
@@ -329,6 +592,13 @@ const BuatAkunCabang = () => {
                     id="kecamatanKepalaCabang"
                     name="kecamatanKepalaCabang"
                     placeholder="Isi"
+                    required
+                    onChange={(e) => {
+                      setBranchHeadData({
+                        ...branchHeadData,
+                        kecamatan: e.target.value,
+                      });
+                    }}
                     className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
                   />
                 </div>
@@ -339,6 +609,13 @@ const BuatAkunCabang = () => {
                     id="kotaKepalaCabang"
                     name="kotaKepalaCabang"
                     placeholder="Isi"
+                    required
+                    onChange={(e) => {
+                      setBranchHeadData({
+                        ...branchHeadData,
+                        city: e.target.value,
+                      });
+                    }}
                     className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
                   />
                 </div>
@@ -349,6 +626,13 @@ const BuatAkunCabang = () => {
                     id="kodePosKepalaCabang"
                     name="kodePosKepalaCabang"
                     placeholder="Isi"
+                    required
+                    onChange={(e) => {
+                      setBranchHeadData({
+                        ...branchHeadData,
+                        postalCode: e.target.value,
+                      });
+                    }}
                     className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
                   />
                 </div>
@@ -362,13 +646,14 @@ const BuatAkunCabang = () => {
                   name="pendidikan"
                   id="pendidikan"
                   className={`w-full flex justify-between py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] text-start text-[#d9d9d9] bg-transparent focus:outline-none ${
-                    pendidikan === "Pilih Pendidikan Terakhir"
+                    branchHeadData.education === "Pilih Pendidikan Terakhir"
                       ? "text-[#d9d9d9]"
                       : "text-primary"
                   }`}
                   onClick={() => setPendidikanOpen(!pendidikanOpen)}
                 >
-                  {pendidikan}
+                  {branchHeadData.education.charAt(0).toUpperCase() +
+                    branchHeadData.education.slice(1)}
                   <svg
                     width="24"
                     height="24"
@@ -386,8 +671,13 @@ const BuatAkunCabang = () => {
                 {pendidikanOpen && (
                   <div className="w-full relative">
                     <DropdownSelector
-                      selected={(option) => setPendidikan(option)}
-                      options={["S1", "SMA"]}
+                      selected={(option) =>
+                        setBranchHeadData({
+                          ...branchHeadData,
+                          education: option.toLowerCase(),
+                        })
+                      }
+                      options={["SD", "SMP", "SMA", "S1", "S2"]}
                       onClose={() => setPendidikanOpen(false)}
                     />
                   </div>
@@ -407,23 +697,23 @@ const BuatAkunCabang = () => {
             <div className="flex gap-3">
               <label htmlFor="fotoDiri" className="flex w-1/2">
                 {fotoDiri === null ? (
-                  <Image
-                    src={"/images/image_none.jpg"}
-                    alt="Image_none"
-                    width={80}
-                    height={80}
-                    style={{ objectFit: "cover" }}
-                    className="rounded-lg"
-                  />
+                  <div className="relative h-[80px] w-[80px]">
+                    <Image
+                      src={"/images/image_none.jpg"}
+                      alt="Image_none"
+                      fill
+                      className="absolute rounded-md object-cover top-0"
+                    />
+                  </div>
                 ) : (
-                  <Image
-                    src={URL.createObjectURL(fotoDiri)}
-                    alt="Image_none"
-                    width={80}
-                    height={80}
-                    style={{ objectFit: "cover" }}
-                    className="rounded-lg"
-                  />
+                  <div className="relative h-[80px] w-[80px]">
+                    <Image
+                      src={URL.createObjectURL(fotoDiri)}
+                      alt="Image_none"
+                      fill
+                      className="absolute rounded-md object-cover top-0"
+                    />
+                  </div>
                 )}
                 <div className="flex flex-col ml-2 flex-grow">
                   <p>Upload Foto Diri</p>
@@ -459,29 +749,31 @@ const BuatAkunCabang = () => {
                     name="fotoDiri"
                     id="fotoDiri"
                     hidden
-                    onChange={(e) => setFotoDiri(e.target.files[0])}
+                    onChange={(e) => {
+                      uploadFotoDiri(e);
+                    }}
                   />
                 </div>
               </label>
               <label htmlFor="fotoKtp" className="flex w-1/2">
                 {fotoKtp === null ? (
-                  <Image
-                    src={"/images/image_none.jpg"}
-                    alt="Image_none"
-                    width={80}
-                    height={80}
-                    style={{ objectFit: "cover" }}
-                    className="rounded-lg"
-                  />
+                  <div className="relative h-[80px] w-[80px]">
+                    <Image
+                      src={"/images/image_none.jpg"}
+                      alt="Image_none"
+                      fill
+                      className="absolute rounded-md object-cover top-0"
+                    />
+                  </div>
                 ) : (
-                  <Image
-                    src={URL.createObjectURL(fotoKtp)}
-                    alt="Image_none"
-                    width={80}
-                    height={80}
-                    style={{ objectFit: "cover" }}
-                    className="rounded-lg"
-                  />
+                  <div className="relative h-[80px] w-[80px]">
+                    <Image
+                      src={URL.createObjectURL(fotoKtp)}
+                      alt="Image_none"
+                      fill
+                      className="absolute rounded-md object-cover top-0"
+                    />
+                  </div>
                 )}
                 <div className="flex flex-col ml-2 flex-grow">
                   <p>Upload Foto KTP</p>
@@ -517,7 +809,9 @@ const BuatAkunCabang = () => {
                     name="fotoKtp"
                     id="fotoKtp"
                     hidden
-                    onChange={(e) => setFotoKtp(e.target.files[0])}
+                    onChange={(e) => {
+                      uploadFotoKtp(e);
+                    }}
                   />
                 </div>
               </label>
@@ -528,7 +822,13 @@ const BuatAkunCabang = () => {
         <button
           type="button"
           className="w-[148px] px-[20px] py-[12px] text-white bg-primary rounded-lg ml-auto"
-          onClick={(e) => setProsesData(true)}
+          onClick={(e) => {
+            if (formRef.current.checkValidity()) {
+              setProsesData(true);
+            } else {
+              formRef.current.reportValidity();
+            }
+          }}
         >
           Simpan
         </button>
@@ -543,15 +843,20 @@ const BuatAkunCabang = () => {
         <button
           type="submit"
           className="w-[450px] px-[20px] py-[12px] text-white bg-primary rounded-lg mx-auto"
-          onClick={(e) => {
-            setProsesData(false);
-            setBerhasil(true);
+          onClick={() => {
+            setLoading(true);
           }}
         >
-          Proses Data
+          {!loading ? "Proses Data" : "Menyimpan data..."}
         </button>
       </Modal>
-      <Modal isVisible={showBerhasil} onClose={() => setBerhasil(false)}>
+      <Modal
+        isVisible={showBerhasil}
+        onClose={() => {
+          setBerhasil(false);
+          router.push("/account-block");
+        }}
+      >
         <div className="w-[98px] h-[98px] rounded-full bg-primary place-self-center relative">
           <svg
             width="43"
@@ -586,6 +891,7 @@ const BuatAkunCabang = () => {
           className="w-[450px] px-[20px] py-[12px] text-white bg-primary rounded-lg mx-auto"
           onClick={(e) => {
             setBerhasil(false);
+            router.push("/dashboard");
           }}
         >
           OK

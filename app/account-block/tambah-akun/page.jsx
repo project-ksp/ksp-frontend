@@ -1,19 +1,85 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Modal from "@/components/Modal";
 import DropdownSelector from "@/components/DropdownSelector";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 const TambahAkun = () => {
+  const { data: session, status } = useSession();
+  const router = useRouter();
+  const formRef = useRef();
+
   const [showProsesData, setProsesData] = useState(false);
   const [showBerhasil, setBerhasil] = useState(false);
   const [cabangOpen, setCabangOpen] = useState(false);
   const [jabatanOpen, setJabatanOpen] = useState(false);
+  const [branches, setBranches] = useState();
   const [cabang, setCabang] = useState("Pilih Cabang");
   const [jabatan, setJabatan] = useState("Pilih Jabatan");
+  const [userData, setUserData] = useState({
+    username: "",
+    password: "",
+    name: "",
+    role: "Pilih Jabatan",
+    branchId: 0,
+  });
+
+  useEffect(() => {
+    if (status === "loading") return;
+    const getAllBranches = async () => {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}branches`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session.token}`,
+        },
+      });
+      const data = await res.json();
+      setBranches(data.data);
+    };
+    getAllBranches();
+  }, [session, status]);
+
+  const submitData = async (e) => {
+    e.preventDefault();
+    if (
+      (userData.role !== "owner" && userData.branchId === 0) ||
+      userData.role === "Pilih Jabatan"
+    ) {
+      toast.error("Silahkan pilih cabang dan jabatan terlebih dahulu");
+      setProsesData(false);
+      return;
+    }
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}users`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${session.token}`,
+      },
+      body: JSON.stringify(userData),
+    });
+
+    const data = await res.json();
+    if (res.ok) {
+      setProsesData(false);
+      setBerhasil(true);
+    } else {
+      toast.error(data.message);
+      setProsesData(false);
+    }
+  };
+
+  if (status === "loading") return <p>Loading... </p>;
 
   return (
-    <form action="">
+    <form
+      onSubmit={(e) => {
+        submitData(e);
+      }}
+      ref={formRef}
+    >
       <div className="flex flex-col gap-[20px]">
         <h2 className="text-2xl font-bold text-black">Tambah Akun</h2>
         <div className="bg-white p-[20px] rounded-xl">
@@ -47,58 +113,22 @@ const TambahAkun = () => {
             </div>
             <div className="flex gap-3">
               <div className="flex-1">
-                <label htmlFor="cabang">Pilih Cabang</label>
-                <button
-                  type="button"
-                  name="cabang"
-                  id="cabang"
-                  className={`w-full flex justify-between py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] text-start text-[#d9d9d9] bg-transparent focus:outline-none ${
-                    cabang === "Pilih Cabang"
-                      ? "text-[#d9d9d9]"
-                      : "text-primary"
-                  }`}
-                  onClick={() => setCabangOpen(!cabangOpen)}
-                >
-                  {cabang}
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M17.2902 9.31002C17.1977 9.21732 17.0878 9.14377 16.9668 9.09359C16.8459 9.04341 16.7162 9.01758 16.5852 9.01758C16.4543 9.01758 16.3246 9.04341 16.2036 9.09359C16.0826 9.14377 15.9727 9.21732 15.8802 9.31002L12.0002 13.19L8.12022 9.31002C7.93324 9.12304 7.67965 9.018 7.41522 9.018C7.1508 9.018 6.8972 9.12304 6.71022 9.31002C6.52324 9.497 6.4182 9.7506 6.4182 10.015C6.4182 10.2794 6.52324 10.533 6.71022 10.72L11.3002 15.31C11.3927 15.4027 11.5026 15.4763 11.6236 15.5265C11.7446 15.5766 11.8743 15.6025 12.0052 15.6025C12.1362 15.6025 12.2659 15.5766 12.3868 15.5265C12.5078 15.4763 12.6177 15.4027 12.7102 15.31L17.3002 10.72C17.6802 10.34 17.6802 9.70002 17.2902 9.31002Z"
-                      fill="black"
-                    />
-                  </svg>
-                </button>
-                {cabangOpen && (
-                  <div className="w-full relative">
-                    <DropdownSelector
-                      selected={(option) => setCabang(option)}
-                      options={["Cabang 01", "Cabang 02"]}
-                      onClose={() => setCabangOpen(false)}
-                    />
-                  </div>
-                )}
-              </div>
-            </div>
-            <div className="flex gap-3">
-              <div className="flex-1">
                 <label htmlFor="jabatan">Pilih Jabatan</label>
                 <button
                   type="button"
                   name="jabatan"
                   id="jabatan"
                   className={`w-full flex justify-between py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] text-start text-[#d9d9d9] bg-transparent focus:outline-none ${
-                    jabatan === "Pilih Jabatan"
+                    userData.role === "Pilih Jabatan"
                       ? "text-[#d9d9d9]"
                       : "text-primary"
                   }`}
                   onClick={() => setJabatanOpen(!jabatanOpen)}
                 >
-                  {jabatan}
+                  {userData.role === "branch_head"
+                    ? "Kepala Cabang"
+                    : userData.role.charAt(0).toUpperCase() +
+                      userData.role.slice(1)}
                   <svg
                     width="24"
                     height="24"
@@ -112,18 +142,79 @@ const TambahAkun = () => {
                     />
                   </svg>
                 </button>
-
                 {jabatanOpen && (
                   <div className="w-full relative">
                     <DropdownSelector
-                      selected={(option) => setJabatan(option)}
-                      options={["Jabatan 01", "Jabatan 02"]}
+                      selected={(option) =>
+                        setUserData({
+                          ...userData,
+                          role:
+                            option === "Kepala Cabang"
+                              ? "branch_head"
+                              : option.toLowerCase(),
+                        })
+                      }
+                      options={["Owner", "Kepala Cabang", "Teller"]}
                       onClose={() => setJabatanOpen(false)}
                     />
                   </div>
                 )}
               </div>
             </div>
+            {(userData.role === "branch_head" ||
+              userData.role === "teller") && (
+              <div className="flex gap-3">
+                <div className="flex-1">
+                  <label htmlFor="cabang">Pilih Cabang</label>
+                  <button
+                    type="button"
+                    name="cabang"
+                    id="cabang"
+                    className={`w-full flex justify-between py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] text-start text-[#d9d9d9] bg-transparent focus:outline-none ${
+                      userData.branchId === 0
+                        ? "text-[#d9d9d9]"
+                        : "text-primary"
+                    }`}
+                    onClick={() => {
+                      setCabangOpen(!cabangOpen);
+                    }}
+                  >
+                    {userData.branchId === 0
+                      ? `Pilih Cabang`
+                      : `Cabang ${userData.branchId}`}
+                    <svg
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M17.2902 9.31002C17.1977 9.21732 17.0878 9.14377 16.9668 9.09359C16.8459 9.04341 16.7162 9.01758 16.5852 9.01758C16.4543 9.01758 16.3246 9.04341 16.2036 9.09359C16.0826 9.14377 15.9727 9.21732 15.8802 9.31002L12.0002 13.19L8.12022 9.31002C7.93324 9.12304 7.67965 9.018 7.41522 9.018C7.1508 9.018 6.8972 9.12304 6.71022 9.31002C6.52324 9.497 6.4182 9.7506 6.4182 10.015C6.4182 10.2794 6.52324 10.533 6.71022 10.72L11.3002 15.31C11.3927 15.4027 11.5026 15.4763 11.6236 15.5265C11.7446 15.5766 11.8743 15.6025 12.0052 15.6025C12.1362 15.6025 12.2659 15.5766 12.3868 15.5265C12.5078 15.4763 12.6177 15.4027 12.7102 15.31L17.3002 10.72C17.6802 10.34 17.6802 9.70002 17.2902 9.31002Z"
+                        fill="black"
+                      />
+                    </svg>
+                  </button>
+                  {cabangOpen && (
+                    <div className="w-full relative">
+                      <DropdownSelector
+                        selected={(option) =>
+                          setUserData({
+                            ...userData,
+                            branchId: parseInt(option.split(" ")[1]),
+                          })
+                        }
+                        options={branches.map(
+                          (branch) => `Cabang ${branch.id}`
+                        )}
+                        onClose={() => setCabangOpen(false)}
+                      />
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
             <div className="flex-1">
               <label htmlFor="namaPemilikAkun">Nama Pemilik Akun</label>
               <input
@@ -131,6 +222,10 @@ const TambahAkun = () => {
                 id="namaPemilikAkun"
                 name="namaPemilikAkun"
                 placeholder="Isi Nama Lengkap"
+                onChange={(e) =>
+                  setUserData({ ...userData, name: e.target.value })
+                }
+                required
                 className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white"
               />
             </div>
@@ -139,7 +234,13 @@ const TambahAkun = () => {
         <button
           type="button"
           className="w-[148px] px-[20px] py-[12px] text-white bg-primary rounded-lg ml-auto"
-          onClick={(e) => setProsesData(true)}
+          onClick={(e) => {
+            if (formRef.current.checkValidity()) {
+              setProsesData(true);
+            } else {
+              formRef.current.reportValidity();
+            }
+          }}
         >
           Simpan
         </button>
@@ -154,15 +255,17 @@ const TambahAkun = () => {
         <button
           type="submit"
           className="w-[450px] px-[20px] py-[12px] text-white bg-primary rounded-lg mx-auto"
-          onClick={(e) => {
-            setProsesData(false);
-            setBerhasil(true);
-          }}
         >
           Proses Data
         </button>
       </Modal>
-      <Modal isVisible={showBerhasil} onClose={() => setBerhasil(false)}>
+      <Modal
+        isVisible={showBerhasil}
+        onClose={() => {
+          setBerhasil(false);
+          router.push("/account-block");
+        }}
+      >
         <div className="w-[98px] h-[98px] rounded-full bg-primary place-self-center relative">
           <svg
             width="43"
@@ -197,6 +300,7 @@ const TambahAkun = () => {
           className="w-[450px] px-[20px] py-[12px] text-white bg-primary rounded-lg mx-auto"
           onClick={(e) => {
             setBerhasil(false);
+            router.push("/account-block");
           }}
         >
           OK

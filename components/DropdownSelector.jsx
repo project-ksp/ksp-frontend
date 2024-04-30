@@ -3,7 +3,7 @@ import React from "react";
 const DropdownSelector = ({ selected, options, onClose }) => {
   return (
     <>
-      <div className="absolute text-black w-full">
+      <div className="absolute text-black w-full z-10">
         <ul>
           {options.map((option, index) => (
             <li

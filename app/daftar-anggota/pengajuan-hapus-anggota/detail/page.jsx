@@ -675,7 +675,7 @@ const Detail = () => {
                 type="text"
                 name="alasanPenghapusan"
                 id="alasanPenghapusan"
-                placeholder="Auto Generated"
+                placeholder="Isi Alasan Penghapusan"
                 className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none italic"
               />
             </div>

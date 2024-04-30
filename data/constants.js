@@ -11,24 +11,13 @@ export const SIDENAV_ITEMS = [
     title: "Dashboard",
     path: "/dashboard",
     icon: <Grid />,
+    role: ["owner", "teller", "branch_head"],
   },
   {
     title: "Data Master",
     path: "/data-master",
     icon: <Shop />,
-  },
-  {
-    title: "Account Block",
-    path: "/account-block",
-    icon: <PersonPencil />,
-  },
-];
-
-export const SIDENAV_ITEMS_KEPCAB = [
-  {
-    title: "Dashboard",
-    path: "/dashboard",
-    icon: <Grid />,
+    role: ["owner"],
   },
   {
     title: "Daftar Anggota",
@@ -41,7 +30,7 @@ export const SIDENAV_ITEMS_KEPCAB = [
         path: "/daftar-anggota/tambah-anggota/anggota-baru",
       },
       {
-        title: "Form Pendaftaran Anggota",
+        title: "Formulir Pendaftaran",
         path: "/daftar-anggota/form-pendaftaran-anggota",
       },
       {
@@ -53,16 +42,19 @@ export const SIDENAV_ITEMS_KEPCAB = [
         path: "/daftar-anggota/rekap-anggota",
       },
     ],
+    role: ["branch_head", "teller"],
   },
   {
     title: "Daftar Ketua Kelompok",
     path: "/daftar-ketua-kelompok",
     icon: <PersonMedal />,
+    role: ["branch_head", "teller"],
   },
   {
     title: "Daftar Teller",
     path: "/daftar-teller",
     icon: <PersonBag />,
+    role: ["branch_head"],
   },
   {
     title: "Status Pengajuan",
@@ -83,10 +75,14 @@ export const SIDENAV_ITEMS_KEPCAB = [
         path: "/status-pengajuan/penghapusan-anggota",
       },
     ],
+    role: ["branch_head", "teller"],
   },
   {
     title: "Account Block",
     path: "/account-block",
     icon: <PersonPencil />,
+    role: ["owner", "branch_head"],
   },
 ];
+
+export const SIDENAV_ITEMS_KEPCAB = [];

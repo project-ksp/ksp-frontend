@@ -1,17 +1,23 @@
 "use client";
 
 import { use, useState } from "react";
+import { signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { SIDENAV_ITEMS, SIDENAV_ITEMS_KEPCAB } from "@/data/constants";
+import { SIDENAV_ITEMS } from "@/data/constants";
 import Modal from "./Modal";
 
 const Sidebar = () => {
   const [showProsesData, setProsesData] = useState(false);
+  const { data: session, status } = useSession();
+
+  if (status === "loading") return null;
+
   return (
     <>
-      <div className="w-[280px] flex flex-col justify-between p-[28px] bg-primary fixed h-screen overflow-scroll">
+      <div className="w-[280px] flex flex-col justify-between p-[28px] bg-primary fixed h-screen overflow-scroll overflow-x-hidden">
         <div className="flex flex-col">
           <div className="flex items-center mb-[60px] mt-[20px] gap-[10px]">
             <Image
@@ -30,13 +36,26 @@ const Sidebar = () => {
               </p>
             </div>
           </div>
-          {SIDENAV_ITEMS_KEPCAB.map((item, index) => (
-            <MenuItem key={index} item={item} />
-          ))}
+          {SIDENAV_ITEMS.map(
+            (item, index) =>
+              item.role.includes(session.user.role) && (
+                <MenuItem key={index} item={item} />
+              )
+          )}
         </div>
         <div className="flex flex-col">
-          <ButtonKeluar click={() => setProsesData(true)} />
-          <ButtonAccount jabatan="Teller" nama="Indah Sari" />
+          <ButtonKeluar
+            click={() =>
+              signOut({
+                callbackUrl: `/login`,
+                redirect: true,
+              })
+            }
+          />
+          <ButtonAccount
+            jabatan={`${session.user.role}`}
+            nama={`${session.user.name}`}
+          />
         </div>
       </div>
       <LogoutModal
@@ -99,7 +118,7 @@ const MenuItem = ({ item }) => {
             </div>
           </button>
           {subMenuOpen && (
-            <div className="bg-[#fff] -my-3 rounded-lg transition-all duration-300 absolute z-20 ">
+            <div className="bg-[#fff] -my-3 mb-1 rounded-lg transition-all duration-300 z-20 ">
               {item.subMenuItems.map((subItem, index) => {
                 return (
                   <div
