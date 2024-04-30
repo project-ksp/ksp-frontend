@@ -18,7 +18,7 @@ const Modal = ({ isVisible, onClose, children }) => {
 
   return isVisible ? (
     <div
-      className="fixed inset-0 ml-[280px] bg-[#022B94] bg-opacity-20 backdrop-blur-sm flex justify-center items-center z-50"
+      className="fixed inset-0 ml-[280px] bg-[#022B94] bg-opacity-20 backdrop-blur-sm flex justify-center items-center z-40"
       onClick={onClose}
     >
       <div
@@ -31,7 +31,7 @@ const Modal = ({ isVisible, onClose, children }) => {
         >
           +
         </p>
-        <div className="flex flex-col items-center gap-2">{children}</div>
+        <div className="flex flex-col gap-2">{children}</div>
       </div>
     </div>
   ) : null;

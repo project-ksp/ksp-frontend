@@ -20,12 +20,6 @@ export const SIDENAV_ITEMS = [
     role: ["owner"],
   },
   {
-    title: "Account Block",
-    path: "/account-block",
-    icon: <PersonPencil />,
-    role: ["owner"],
-  },
-  {
     title: "Daftar Anggota",
     path: "/daftar-anggota",
     icon: <TwoPerson />,
@@ -36,7 +30,7 @@ export const SIDENAV_ITEMS = [
         path: "/daftar-anggota/tambah-anggota/anggota-baru",
       },
       {
-        title: "Form Pendaftaran Anggota",
+        title: "Formulir Pendaftaran",
         path: "/daftar-anggota/form-pendaftaran-anggota",
       },
       {
@@ -48,16 +42,19 @@ export const SIDENAV_ITEMS = [
         path: "/daftar-anggota/rekap-anggota",
       },
     ],
+    role: ["branch_head", "teller"],
   },
   {
     title: "Daftar Ketua Kelompok",
     path: "/daftar-ketua-kelompok",
     icon: <PersonMedal />,
+    role: ["branch_head", "teller"],
   },
   {
     title: "Daftar Teller",
     path: "/daftar-teller",
     icon: <PersonBag />,
+    role: ["branch_head"],
   },
   {
     title: "Status Pengajuan",
@@ -78,11 +75,13 @@ export const SIDENAV_ITEMS = [
         path: "/status-pengajuan/penghapusan-anggota",
       },
     ],
+    role: ["branch_head", "teller"],
   },
   {
     title: "Account Block",
     path: "/account-block",
     icon: <PersonPencil />,
+    role: ["owner", "branch_head"],
   },
 ];
 

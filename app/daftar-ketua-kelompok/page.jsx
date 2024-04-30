@@ -1,7 +1,10 @@
+"use client";
 import React from "react";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 
 const DaftarKetuaKelompok = () => {
+  const { data: session, status } = useSession();
   return (
     <div className="flex flex-col gap-2">
       <h2 className="text-2xl font-bold text-black">Daftar Ketua Kelompok</h2>
@@ -37,12 +40,14 @@ const DaftarKetuaKelompok = () => {
             />
           </svg>
         </div>
-        <Link
-          href={`/daftar-ketua-kelompok/tambah`}
-          className="w-[250px] bg-primary px-[15px] py-[8px] flex justify-center items-center text-white rounded-md"
-        >
-          <p className="text-base font-regular">Tambah Ketua Kelompok</p>
-        </Link>
+        {session.user.role === "branch_head" && (
+          <Link
+            href={`/daftar-ketua-kelompok/tambah`}
+            className="w-[250px] bg-primary px-[15px] py-[8px] flex justify-center items-center text-white rounded-md"
+          >
+            <p className="text-base font-regular">Tambah Ketua Kelompok</p>
+          </Link>
+        )}
       </div>
       <div className="bg-white rounded-xl p-[20px]">
         <table className="table-fixed w-full text-left">

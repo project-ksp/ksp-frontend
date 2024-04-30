@@ -7,7 +7,7 @@ export const authOptions = {
     CredentialsProvider({
       name: "Credentials",
       async authorize(credentials, req) {
-        const res = await fetch(`${process.env.API_URI}login`, {
+        const res = await fetch(`${process.env.API_URI}auth/login`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

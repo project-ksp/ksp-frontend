@@ -1,7 +1,35 @@
-import React from "react";
+"use client";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
+import toast from "react-hot-toast";
 
 const DataMaster = () => {
+  const { data: session, status } = useSession();
+
+  const [members, setMembers] = useState([]);
+
+  useEffect(() => {
+    const getMembers = async () => {
+      if (status === "loading") return null;
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}members`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session.token}`,
+        },
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setMembers(data.data);
+      } else {
+        toast.error(data.message);
+      }
+    };
+    getMembers();
+  }, [status, session]);
+
+  if (status === "loading") return <>Loading...</>;
   return (
     <div className="flex flex-col gap-[20px]">
       <h2 className="text-xl font-bold text-black">Data Master</h2>
@@ -90,241 +118,54 @@ const DataMaster = () => {
               </th>
               <th className="w-[8%] font-semibold px-[10px]">Ketua Kelompok</th>
               <th className="w-[9%] font-semibold px-[10px]">Status</th>
-              <th className="w-[9%] font-semibold px-[10px]">Detail Anggota</th>
             </tr>
           </thead>
           <tbody>
-            <tr className=" border-b border-[#DDE1E6] ">
-              <td className="px-[10px]">01</td>
-              <td className="px-[10px]">Nama Anggota</td>
-              <td className="px-[10px]">3522061124020111</td>
-              <td className="px-[10px]">P</td>
-              <td className="px-[10px]">Rp. 99,999,999</td>
-              <td className="px-[10px]">Rp. 99,999,999</td>
-              <td className="px-[10px]">M. Zidan</td>
-              <td className="px-[10px]">
-                <div className="flex justify-center items-center h-[64px]">
-                  <button className="bg-green-status-1 w-[86px] py-[1px] text-white rounded-lg mx-auto my-auto">
-                    Aktif
-                  </button>
-                </div>
-              </td>
-              <td className="px-[10px]">
-                <div className="flex justify-center items-center h-[64px]">
-                  <button className="bg-primary w-[98px] py-[1px] text-white rounded-lg mx-auto my-auto">
-                    Cek Detail
-                  </button>
-                </div>
-              </td>
-            </tr>
-            <tr className=" border-b border-[#DDE1E6] ">
-              <td className="px-[10px]">01</td>
-              <td className="px-[10px]">Nama Anggota</td>
-              <td className="px-[10px]">3522061124020111</td>
-              <td className="px-[10px]">P</td>
-              <td className="px-[10px]">Rp. 99,999,999</td>
-              <td className="px-[10px]">Rp. 99,999,999</td>
-              <td className="px-[10px]">M. Zidan</td>
-              <td className="px-[10px]">
-                <div className="flex justify-center items-center h-[64px]">
-                  <button className="bg-green-status-1 w-[86px] py-[1px] text-white rounded-lg mx-auto my-auto">
-                    Aktif
-                  </button>
-                </div>
-              </td>
-              <td className="px-[10px]">
-                <div className="flex justify-center items-center h-[64px]">
-                  <button className="bg-primary w-[98px] py-[1px] text-white rounded-lg mx-auto my-auto">
-                    Cek Detail
-                  </button>
-                </div>
-              </td>
-            </tr>
-            <tr className=" border-b border-[#DDE1E6] ">
-              <td className="px-[10px]">01</td>
-              <td className="px-[10px]">Nama Anggota</td>
-              <td className="px-[10px]">3522061124020111</td>
-              <td className="px-[10px]">P</td>
-              <td className="px-[10px]">Rp. 99,999,999</td>
-              <td className="px-[10px]">Rp. 99,999,999</td>
-              <td className="px-[10px]">M. Zidan</td>
-              <td className="px-[10px]">
-                <div className="flex justify-center items-center h-[64px]">
-                  <button className="bg-green-status-1 w-[86px] py-[1px] text-white rounded-lg mx-auto my-auto">
-                    Aktif
-                  </button>
-                </div>
-              </td>
-              <td className="px-[10px]">
-                <div className="flex justify-center items-center h-[64px]">
-                  <button className="bg-primary w-[98px] py-[1px] text-white rounded-lg mx-auto my-auto">
-                    Cek Detail
-                  </button>
-                </div>
-              </td>
-            </tr>
-            <tr className=" border-b border-[#DDE1E6] ">
-              <td className="px-[10px]">01</td>
-              <td className="px-[10px]">Nama Anggota</td>
-              <td className="px-[10px]">3522061124020111</td>
-              <td className="px-[10px]">P</td>
-              <td className="px-[10px]">Rp. 99,999,999</td>
-              <td className="px-[10px]">Rp. 99,999,999</td>
-              <td className="px-[10px]">M. Zidan</td>
-              <td className="px-[10px]">
-                <div className="flex justify-center items-center h-[64px]">
-                  <button className="bg-green-status-1 w-[86px] py-[1px] text-white rounded-lg mx-auto my-auto">
-                    Aktif
-                  </button>
-                </div>
-              </td>
-              <td className="px-[10px]">
-                <div className="flex justify-center items-center h-[64px]">
-                  <button className="bg-primary w-[98px] py-[1px] text-white rounded-lg mx-auto my-auto">
-                    Cek Detail
-                  </button>
-                </div>
-              </td>
-            </tr>
-            <tr className=" border-b border-[#DDE1E6] ">
-              <td className="px-[10px]">01</td>
-              <td className="px-[10px]">Nama Anggota</td>
-              <td className="px-[10px]">3522061124020111</td>
-              <td className="px-[10px]">P</td>
-              <td className="px-[10px]">Rp. 99,999,999</td>
-              <td className="px-[10px]">Rp. 99,999,999</td>
-              <td className="px-[10px]">M. Zidan</td>
-              <td className="px-[10px]">
-                <div className="flex justify-center items-center h-[64px]">
-                  <button className="bg-green-status-1 w-[86px] py-[1px] text-white rounded-lg mx-auto my-auto">
-                    Aktif
-                  </button>
-                </div>
-              </td>
-              <td className="px-[10px]">
-                <div className="flex justify-center items-center h-[64px]">
-                  <button className="bg-primary w-[98px] py-[1px] text-white rounded-lg mx-auto my-auto">
-                    Cek Detail
-                  </button>
-                </div>
-              </td>
-            </tr>
-
-            <tr className=" border-b border-[#DDE1E6]">
-              <td className="px-[10px]">01</td>
-              <td className="px-[10px]">Nama Anggota</td>
-              <td className="px-[10px]">3522061124020111</td>
-              <td className="px-[10px]">P</td>
-              <td className="px-[10px]">Rp. 99,999,999</td>
-              <td className="px-[10px]">Rp. 99,999,999</td>
-              <td className="px-[10px]">M. Zidan</td>
-              <td className="px-[10px]">
-                <div className="flex justify-center items-center h-[64px]">
-                  <button className="bg-red-status-1 w-[86px] py-[1px] text-white rounded-lg mx-auto my-auto">
-                    Tidak Aktif
-                  </button>
-                </div>
-              </td>
-              <td className="px-[10px]">
-                <div className="flex justify-center items-center h-[64px]">
-                  <button className="bg-primary w-[98px] py-[1px] text-white rounded-lg mx-auto my-auto">
-                    Cek Detail
-                  </button>
-                </div>
-              </td>
-            </tr>
-            <tr className=" border-b border-[#DDE1E6]">
-              <td className="px-[10px]">01</td>
-              <td className="px-[10px]">Nama Anggota</td>
-              <td className="px-[10px]">3522061124020111</td>
-              <td className="px-[10px]">P</td>
-              <td className="px-[10px]">Rp. 99,999,999</td>
-              <td className="px-[10px]">Rp. 99,999,999</td>
-              <td className="px-[10px]">M. Zidan</td>
-              <td className="px-[10px]">
-                <div className="flex justify-center items-center h-[64px]">
-                  <button className="bg-red-status-1 w-[86px] py-[1px] text-white rounded-lg mx-auto my-auto">
-                    Tidak Aktif
-                  </button>
-                </div>
-              </td>
-              <td className="px-[10px]">
-                <div className="flex justify-center items-center h-[64px]">
-                  <button className="bg-primary w-[98px] py-[1px] text-white rounded-lg mx-auto my-auto">
-                    Cek Detail
-                  </button>
-                </div>
-              </td>
-            </tr>
-            <tr className=" border-b border-[#DDE1E6]">
-              <td className="px-[10px]">01</td>
-              <td className="px-[10px]">Nama Anggota</td>
-              <td className="px-[10px]">3522061124020111</td>
-              <td className="px-[10px]">P</td>
-              <td className="px-[10px]">Rp. 99,999,999</td>
-              <td className="px-[10px]">Rp. 99,999,999</td>
-              <td className="px-[10px]">M. Zidan</td>
-              <td className="px-[10px]">
-                <div className="flex justify-center items-center h-[64px]">
-                  <button className="bg-red-status-1 w-[86px] py-[1px] text-white rounded-lg mx-auto my-auto">
-                    Tidak Aktif
-                  </button>
-                </div>
-              </td>
-              <td className="px-[10px]">
-                <div className="flex justify-center items-center h-[64px]">
-                  <button className="bg-primary w-[98px] py-[1px] text-white rounded-lg mx-auto my-auto">
-                    Cek Detail
-                  </button>
-                </div>
-              </td>
-            </tr>
-            <tr className=" border-b border-[#DDE1E6]">
-              <td className="px-[10px]">01</td>
-              <td className="px-[10px]">Nama Anggota</td>
-              <td className="px-[10px]">3522061124020111</td>
-              <td className="px-[10px]">P</td>
-              <td className="px-[10px]">Rp. 99,999,999</td>
-              <td className="px-[10px]">Rp. 99,999,999</td>
-              <td className="px-[10px]">M. Zidan</td>
-              <td className="px-[10px]">
-                <div className="flex justify-center items-center h-[64px]">
-                  <button className="bg-red-status-1 w-[86px] py-[1px] text-white rounded-lg mx-auto my-auto">
-                    Tidak Aktif
-                  </button>
-                </div>
-              </td>
-              <td className="px-[10px]">
-                <div className="flex justify-center items-center h-[64px]">
-                  <button className="bg-primary w-[98px] py-[1px] text-white rounded-lg mx-auto my-auto">
-                    Cek Detail
-                  </button>
-                </div>
-              </td>
-            </tr>
-            <tr className=" border-b border-[#DDE1E6]">
-              <td className="px-[10px]">01</td>
-              <td className="px-[10px]">Nama Anggota</td>
-              <td className="px-[10px]">3522061124020111</td>
-              <td className="px-[10px]">P</td>
-              <td className="px-[10px]">Rp. 99,999,999</td>
-              <td className="px-[10px]">Rp. 99,999,999</td>
-              <td className="px-[10px]">M. Zidan</td>
-              <td className="px-[10px]">
-                <div className="flex justify-center items-center h-[64px]">
-                  <button className="bg-red-status-1 w-[86px] py-[1px] text-white rounded-lg mx-auto my-auto">
-                    Tidak Aktif
-                  </button>
-                </div>
-              </td>
-              <td className="px-[10px]">
-                <div className="flex justify-center items-center h-[64px]">
-                  <button className="bg-primary w-[98px] py-[1px] text-white rounded-lg mx-auto my-auto">
-                    Cek Detail
-                  </button>
-                </div>
-              </td>
-            </tr>
+            {members ? (
+              members.map((data, index) => (
+                <tr
+                  key={data.id}
+                  className=" border-b border-[#DDE1E6] break-words"
+                >
+                  <td className="px-[10px]">{data.branchId}</td>
+                  <td className="px-[10px]">{data.name}</td>
+                  <td className="px-[10px]">{data.nik}</td>
+                  <td className="px-[10px]">
+                    {data.gender === "laki-laki" ? "L" : "P"}
+                  </td>
+                  <td className="px-[10px]">
+                    {Intl.NumberFormat("id-ID", {
+                      style: "currency",
+                      currency: "IDR",
+                      maximumFractionDigits: 0,
+                    }).format(data.totalSaving)}
+                  </td>
+                  <td className="px-[10px]">
+                    {Intl.NumberFormat("id-ID", {
+                      style: "currency",
+                      currency: "IDR",
+                      maximumFractionDigits: 0,
+                    }).format(data.totalLoan)}
+                  </td>
+                  <td className="px-[10px]">{data.leader}</td>
+                  <td className="px-[10px]">
+                    <div className="flex justify-center items-center h-[64px]">
+                      {data.isActive ? (
+                        <button className="bg-green-status-1 w-[86px] py-[1px] text-white rounded-lg mx-auto my-auto">
+                          Aktif
+                        </button>
+                      ) : (
+                        <button className="bg-red-status-1 w-[86px] py-[1px] text-white rounded-lg mx-auto my-auto">
+                          Tidak Aktif
+                        </button>
+                      )}
+                    </div>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <>Loading...</>
+            )}
           </tbody>
         </table>
         <div className="flex justify-center items-center mt-[20px] gap-[12px]">

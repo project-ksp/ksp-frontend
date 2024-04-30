@@ -79,18 +79,25 @@ export default function LoginPage() {
 
   return (
     <div className="flex h-screen">
-      <div className="w-1/2 justify-center items-center bg-mainBg">
-        <div className="mx-[129px]">
-          <div className="w-10 h-10 relative">
+      <div className="w-1/2 bg-mainBg">
+        <div className="mx-[129px] flex flex-col justify-center items-center min-h-screen">
+          <div className="w-full h-[468px] relative">
             <Image
               fill
-              src="/images/login_image.png"
+              src="/images/logo_dekopin.png"
               alt="Sentosa Makmur"
               style={{ objectFit: "cover" }}
               sizes="100%"
               priority
             />
           </div>
+          <h4 className="text-xl font-bold text-black">
+            KOPERASI SIMPAN PINJAM
+          </h4>
+          <h2 className="text-black text-title-large font-bold">
+            SENTOSA MAKMUR
+          </h2>
+          <h3 className="text-black text-2xl font-bold">JAWA TIMUR</h3>
         </div>
       </div>
       <div className="w-1/2 flex justify-center items-center bg-primary">

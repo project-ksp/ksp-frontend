@@ -17,7 +17,7 @@ const Sidebar = () => {
 
   return (
     <>
-      <div className="w-[280px] flex flex-col justify-between p-[28px] bg-primary fixed h-screen overflow-scroll">
+      <div className="w-[280px] flex flex-col justify-between p-[28px] bg-primary fixed h-screen overflow-scroll overflow-x-hidden">
         <div className="flex flex-col">
           <div className="flex items-center mb-[60px] mt-[20px] gap-[10px]">
             <Image
@@ -36,9 +36,12 @@ const Sidebar = () => {
               </p>
             </div>
           </div>
-          {SIDENAV_ITEMS.map((item, index) => (
-            <MenuItem key={index} item={item} />
-          ))}
+          {SIDENAV_ITEMS.map(
+            (item, index) =>
+              item.role.includes(session.user.role) && (
+                <MenuItem key={index} item={item} />
+              )
+          )}
         </div>
         <div className="flex flex-col">
           <ButtonKeluar
@@ -115,7 +118,7 @@ const MenuItem = ({ item }) => {
             </div>
           </button>
           {subMenuOpen && (
-            <div className="bg-[#fff] -my-3 rounded-lg transition-all duration-300 absolute z-20 ">
+            <div className="bg-[#fff] -my-3 mb-1 rounded-lg transition-all duration-300 z-20 ">
               {item.subMenuItems.map((subItem, index) => {
                 return (
                   <div

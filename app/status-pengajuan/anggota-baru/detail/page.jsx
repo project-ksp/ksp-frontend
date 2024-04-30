@@ -34,7 +34,7 @@ const DetailPinjamanAnggotaBaru = () => {
             onClick={() => setProsesData(true)}
             className="bg-primary text-white w-[228px] h-[48px] rounded-md text-center"
           >
-            Submit Data
+            Verifikasi Data
           </button>
         </div>
       </div>
