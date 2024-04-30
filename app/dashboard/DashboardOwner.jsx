@@ -5,9 +5,13 @@ import { useState } from "react";
 import Modal from "@/components/Modal";
 import { useSession } from "next-auth/react";
 import toast from "react-hot-toast";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import crypto from "crypto";
 
 const DashboardOwner = () => {
   const { data: session, status } = useSession();
+  const router = useRouter();
 
   const [branches, setBranches] = useState([]);
   const [showAturPublish, setAturPublish] = useState(false);
@@ -98,6 +102,59 @@ const DashboardOwner = () => {
     setError("");
     return true;
   };
+
+  const accessBranch = async (id) => {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}auth/access-branch`,
+      {
+        method: "POST",
+        headers: {
+          "Content-type": "Application/json",
+          Authorization: `Bearer ${session.token}`,
+        },
+        body: JSON.stringify({ branchId: id }),
+      }
+    );
+    const data = await res.json();
+
+    if (res.ok) {
+      const resBranch = await signIn("credentials", {
+        username: data.data.username,
+        password: decrypt(data.data.password),
+        redirect: false,
+      });
+      if (resBranch.ok) {
+        router.push("/dashboard");
+      } else {
+        toast.error("Gagal mengakses cabang");
+        return;
+      }
+    } else {
+      toast.error(data.message);
+    }
+  };
+
+  function decrypt(data) {
+    const buffer = Buffer.from(data, "base64");
+    const [ivBase64, encrypted] = buffer.toString("utf8").split(".");
+    if (!ivBase64 || !encrypted) {
+      throw new Error("Invalid data");
+    }
+    const iv = Buffer.from(ivBase64, "base64");
+    const key = crypto.pbkdf2Sync(
+      process.env.NEXT_PUBLIC_APP_KEY,
+      iv,
+      2000,
+      32,
+      "sha256"
+    );
+
+    const decipher = crypto.createDecipheriv("aes-256-cbc", key, iv);
+    const decrypted =
+      decipher.update(encrypted, "base64", "utf8") + decipher.final("utf8");
+
+    return decrypted;
+  }
 
   if (status === "loading") return <>Loading...</>;
 
@@ -446,7 +503,12 @@ const DashboardOwner = () => {
                     </td>
                     <td className="px-[10px]">
                       <div className="flex justify-center items-center h-[50px]">
-                        <button className="bg-primary w-[68px] py-[1px] text-white rounded-lg mx-auto my-auto">
+                        <button
+                          onClick={() => {
+                            accessBranch(data.id);
+                          }}
+                          className="bg-primary w-[68px] py-[1px] text-white rounded-lg mx-auto my-auto"
+                        >
                           Akses
                         </button>
                       </div>
