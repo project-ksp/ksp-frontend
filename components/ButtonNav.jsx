@@ -10,7 +10,7 @@ const ButtonNav = () => {
   return (
     <>
       <Link
-        href={"/daftar-anggota/tambah-anggota/anggota-baru"}
+        href={"/daftar-anggota/form-simpanan-pinjaman/anggota-baru"}
         className={`${
           pathname.includes("anggota-baru")
             ? "bg-primary text-white"
@@ -20,7 +20,7 @@ const ButtonNav = () => {
         Anggota Baru
       </Link>
       <Link
-        href={"/daftar-anggota/tambah-anggota/anggota-lama"}
+        href={"/daftar-anggota/form-simpanan-pinjaman/anggota-lama"}
         className={`${
           pathname.includes("anggota-lama")
             ? "bg-primary text-white"
