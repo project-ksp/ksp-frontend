@@ -3,38 +3,54 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import toast from "react-hot-toast";
+import ReactPaginate from "react-paginate";
+import NextLabel from "@/components/icons/NextLabel";
+import PreviousLabel from "@/components/icons/PreviousLabel";
 
 const DataMaster = () => {
   const { data: session, status } = useSession();
 
   const [members, setMembers] = useState([]);
+  const [page, setPage] = useState(1);
+  const [itemOffset, setItemOffset] = useState(0);
+
+  const [pageCount, setPageCount] = useState(0);
+  const itemsPerPage = 10;
 
   useEffect(() => {
     const getMembers = async () => {
       if (status === "loading") return null;
-      const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}members`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${session.token}`,
-        },
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}members?page=${page}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${session.token}`,
+          },
+        }
+      );
       const data = await res.json();
       if (res.ok) {
-        setMembers(data.data);
+        setMembers(data.data.members);
+        setPageCount(data.data.totalPages);
       } else {
         toast.error(data.message);
       }
     };
     getMembers();
-  }, [status, session]);
+  }, [status, session, page]);
+
+  const handlePageClick = (event) => {
+    setPage(event.selected + 1);
+  };
 
   if (status === "loading") return <>Loading...</>;
   return (
     <div className="flex flex-col gap-[20px]">
       <h2 className="text-xl font-bold text-black">Data Master</h2>
       <Link
-        href={`/account-block/tambah-akun`}
+        href={`/data-master-print`}
         className="w-1/5 bg-primary h-[48px] flex justify-center items-center text-white rounded-md"
       >
         <svg
@@ -168,61 +184,21 @@ const DataMaster = () => {
             )}
           </tbody>
         </table>
-        <div className="flex justify-center items-center mt-[20px] gap-[12px]">
-          <div className="h-[32px] w-[32px] bg-white rounded-lg text-black border border-[#f1f1f1]">
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 16 16"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              className="m-auto h-full"
-            >
-              <path
-                d="M11.726 12L12.666 11.06L9.61268 8L12.666 4.94L11.726 4L7.72602 8L11.726 12Z"
-                fill="#333333"
-              />
-              <path
-                d="M7.33344 12L8.27344 11.06L5.2201 8L8.27344 4.94L7.33344 4L3.33344 8L7.33344 12Z"
-                fill="#333333"
-              />
-            </svg>
-          </div>
-          <div className="h-[32px] w-[32px] flex justify-center items-center bg-[#2F80ED] rounded-lg text-white border border-[#f1f1f1]">
-            1
-          </div>
-          <div className="h-[32px] w-[32px] flex justify-center items-center bg-[#f1f1f1] rounded-lg text-black border border-[#f1f1f1]">
-            2
-          </div>
-          <div className="h-[32px] w-[32px] flex justify-center items-center bg-[#f1f1f1] rounded-lg text-black border border-[#f1f1f1]">
-            3
-          </div>
-          <div className="h-[32px] w-[32px] flex justify-center items-center bg-white rounded-lg text-black">
-            ...
-          </div>
-          <div className="h-[32px] w-[32px] flex justify-center items-center bg-[#f1f1f1] rounded-lg text-black border border-[#f1f1f1]">
-            10
-          </div>
-          <div className="h-[32px] w-[32px] flex justify-center items-center bg-white rounded-lg text-black border border-[#f1f1f1]">
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 16 16"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              className="m-auto h-full rotate-180"
-            >
-              <path
-                d="M11.726 12L12.666 11.06L9.61268 8L12.666 4.94L11.726 4L7.72602 8L11.726 12Z"
-                fill="#333333"
-              />
-              <path
-                d="M7.33344 12L8.27344 11.06L5.2201 8L8.27344 4.94L7.33344 4L3.33344 8L7.33344 12Z"
-                fill="#333333"
-              />
-            </svg>
-          </div>
-        </div>
+        <ReactPaginate
+          breakLabel="..."
+          nextLabel=<NextLabel />
+          onPageChange={handlePageClick}
+          pageRangeDisplayed={3}
+          marginPagesDisplayed={1}
+          pageCount={pageCount}
+          previousLabel=<PreviousLabel />
+          renderOnZeroPageCount={null}
+          containerClassName="flex justify-center items-center mt-[20px] gap-[12px]"
+          pageClassName="h-[32px] w-[32px] flex justify-center items-center bg-[#f1f1f1] rounded-lg text-black border border-[#f1f1f1] cursor-pointer"
+          previousClassName="h-[32px] w-[32px] bg-white rounded-lg text-black border border-[#f1f1f1]"
+          nextClassName="h-[32px] w-[32px] bg-white rounded-lg text-black border border-[#f1f1f1]"
+          activeLinkClassName="h-[32px] w-[32px] flex justify-center items-center bg-[#2F80ED] rounded-lg text-white border border-[#f1f1f1]"
+        />
       </div>
     </div>
   );

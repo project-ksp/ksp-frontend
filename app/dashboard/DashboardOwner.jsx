@@ -20,6 +20,7 @@ const DashboardOwner = () => {
 
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [search, setSearch] = useState("");
 
   const [currentBranch, setCurrentBranch] = useState({
     id: "",
@@ -156,6 +157,10 @@ const DashboardOwner = () => {
     return decrypted;
   }
 
+  const filteredBranches = branches.filter((data) => {
+    return data.id.toString().toLowerCase().includes(search.toLowerCase());
+  });
+
   if (status === "loading") return <>Loading...</>;
 
   return (
@@ -166,7 +171,8 @@ const DashboardOwner = () => {
           <input
             type="text"
             name="search"
-            placeholder="Cari cabang"
+            placeholder="Cari Cabang Berdasarkan ID"
+            onChange={(e) => setSearch(e.target.value)}
             className="w-full bg-white rounded-md p-[12px] focus:outline-none text-base font-regular"
           />
           <svg
@@ -455,8 +461,8 @@ const DashboardOwner = () => {
             </tr>
           </thead>
           <tbody>
-            {branches &&
-              branches.map((data, index) => {
+            {filteredBranches.length > 0 ? (
+              filteredBranches.map((data, index) => {
                 return (
                   <tr
                     key={data.id}
@@ -515,7 +521,26 @@ const DashboardOwner = () => {
                     </td>
                   </tr>
                 );
-              })}
+              })
+            ) : filteredBranches.length === 0 ? (
+              <tr>
+                <td
+                  colSpan={10}
+                  className="text-center font-bold h-[48px] pt-5"
+                >
+                  Data tidak ditemukan
+                </td>
+              </tr>
+            ) : (
+              <tr>
+                <td
+                  colSpan={10}
+                  className="text-center font-bold h-[48px] pt-5"
+                >
+                  Loading...
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>
