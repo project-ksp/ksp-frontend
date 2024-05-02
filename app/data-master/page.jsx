@@ -50,7 +50,7 @@ const DataMaster = () => {
     <div className="flex flex-col gap-[20px]">
       <h2 className="text-xl font-bold text-black">Data Master</h2>
       <Link
-        href={`/account-block/tambah-akun`}
+        href={`/data-master-print`}
         className="w-1/5 bg-primary h-[48px] flex justify-center items-center text-white rounded-md"
       >
         <svg

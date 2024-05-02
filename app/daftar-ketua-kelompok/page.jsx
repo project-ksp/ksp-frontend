@@ -5,6 +5,8 @@ import { useSession } from "next-auth/react";
 
 const DaftarKetuaKelompok = () => {
   const { data: session, status } = useSession();
+
+  if (status === "loading") return null;
   return (
     <div className="flex flex-col gap-2">
       <h2 className="text-2xl font-bold text-black">Daftar Ketua Kelompok</h2>
