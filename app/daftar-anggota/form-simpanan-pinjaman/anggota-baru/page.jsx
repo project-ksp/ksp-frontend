@@ -521,12 +521,20 @@ const TambahAnggota = () => {
       </div>
       <div className="flex gap-5 place-self-end">
         <button className="bg-primary text-white w-[228px] h-[48px] rounded-md text-center">
-          <Link href={"/daftar-anggota/tambah-anggota/anggota-baru/simpanan"}>
+          <Link
+            href={
+              "/daftar-anggota/form-simpanan-pinjaman/anggota-baru/simpanan"
+            }
+          >
             Tambah Simpanan
           </Link>
         </button>
         <button className="bg-primary text-white w-[228px] h-[48px] rounded-md text-center">
-          <Link href={"/daftar-anggota/tambah-anggota/anggota-baru/pinjaman"}>
+          <Link
+            href={
+              "/daftar-anggota/form-simpanan-pinjaman/anggota-baru/pinjaman"
+            }
+          >
             Tambah Pinjaman
           </Link>
         </button>

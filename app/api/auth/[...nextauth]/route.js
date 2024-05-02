@@ -38,6 +38,7 @@ export const authOptions = {
         username: decoded.username,
         role: decoded.role,
         name: decoded.name,
+        branchId: decoded.branchId,
       };
       return session;
     },

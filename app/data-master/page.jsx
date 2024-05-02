@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import toast from "react-hot-toast";
@@ -9,6 +9,7 @@ import PreviousLabel from "@/components/icons/PreviousLabel";
 
 const DataMaster = () => {
   const { data: session, status } = useSession();
+  const ref = useRef();
 
   const [members, setMembers] = useState([]);
   const [page, setPage] = useState(1);
@@ -49,8 +50,10 @@ const DataMaster = () => {
   return (
     <div className="flex flex-col gap-[20px]">
       <h2 className="text-xl font-bold text-black">Data Master</h2>
-      <Link
-        href={`/data-master-print`}
+      <button
+        onClick={() => {
+          ref.current.contentWindow.print();
+        }}
         className="w-1/5 bg-primary h-[48px] flex justify-center items-center text-white rounded-md"
       >
         <svg
@@ -66,7 +69,7 @@ const DataMaster = () => {
           />
         </svg>
         <p className="ml-5 text-base font-regular">Cetak Data Master</p>
-      </Link>
+      </button>
       <div className="bg-white p-[20px] rounded-xl">
         <table className="table-fixed w-full text-left">
           <thead>
@@ -200,6 +203,12 @@ const DataMaster = () => {
           activeLinkClassName="h-[32px] w-[32px] flex justify-center items-center bg-[#2F80ED] rounded-lg text-white border border-[#f1f1f1]"
         />
       </div>
+      <iframe
+        src="/data-master-print"
+        frameborder="0"
+        ref={ref}
+        className="hidden"
+      ></iframe>
     </div>
   );
 };

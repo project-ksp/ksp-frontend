@@ -267,12 +267,20 @@ const Detail = () => {
       </div>
       <div className="flex gap-5 place-self-end">
         <button className="bg-primary text-white w-[228px] h-[48px] rounded-md text-center">
-          <Link href={"/daftar-anggota/tambah-anggota/anggota-lama/simpanan"}>
+          <Link
+            href={
+              "/daftar-anggota/form-simpanan-pinjaman/anggota-lama/simpanan"
+            }
+          >
             Tambah Simpanan
           </Link>
         </button>
         <button className="bg-primary text-white w-[228px] h-[48px] rounded-md text-center">
-          <Link href={"/daftar-anggota/tambah-anggota/anggota-lama/pinjaman"}>
+          <Link
+            href={
+              "/daftar-anggota/form-simpanan-pinjaman/anggota-lama/pinjaman"
+            }
+          >
             Tambah Pinjaman
           </Link>
         </button>
