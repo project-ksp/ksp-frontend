@@ -27,11 +27,7 @@ export const SIDENAV_ITEMS = [
     subMenuItems: [
       {
         title: "Form Simpanan/ Pinjaman",
-        path: "/daftar-anggota/tambah-anggota/anggota-baru",
-      },
-      {
-        title: "Formulir Pendaftaran",
-        path: "/daftar-anggota/form-pendaftaran-anggota",
+        path: "/daftar-anggota/form-simpanan-pinjaman",
       },
       {
         title: "Pengajuan Hapus Anggota",
@@ -77,6 +73,13 @@ export const SIDENAV_ITEMS = [
     ],
     role: ["branch_head", "teller"],
   },
+  {
+    title: "Cetak Berkas",
+    path: "/cetak-berkas",
+    icon: <TwoPaper />,
+    role: ["branch_head", "teller"],
+  },
+
   {
     title: "Account Block",
     path: "/account-block",
