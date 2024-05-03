@@ -854,7 +854,7 @@ const BuatAkunCabang = () => {
         isVisible={showBerhasil}
         onClose={() => {
           setBerhasil(false);
-          router.push("/account-block");
+          router.push("/dashboard");
         }}
       >
         <div className="w-[98px] h-[98px] rounded-full bg-primary place-self-center relative">

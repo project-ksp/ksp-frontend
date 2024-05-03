@@ -1,7 +1,44 @@
-import React from "react";
+"use client";
+
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
+import toast from "react-hot-toast";
 
 const DaftarTeller = () => {
+  const { data: session, status } = useSession();
+
+  const [tellers, setTellers] = useState([]);
+  const [search, setSearch] = useState("");
+
+  useEffect(() => {
+    if (status === "loading") return;
+    const getTellers = async () => {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}tellers`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${session.token}`,
+        },
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setTellers(data.data);
+      } else {
+        toast.error(data.message);
+      }
+    };
+
+    getTellers();
+  }, [status, session]);
+
+  const filteredTeller = tellers.filter((teller) => {
+    return (
+      teller.name.toLowerCase().includes(search.toLowerCase()) ||
+      teller.id.toString().toLowerCase().includes(search.toLowerCase())
+    );
+  });
+
+  if (status === "loading") return <p>Loading...</p>;
   return (
     <div className="flex flex-col gap-2">
       <h2 className="text-2xl font-bold text-black">Daftar Teller</h2>
@@ -11,6 +48,7 @@ const DaftarTeller = () => {
             type="text"
             name="search"
             placeholder="Cari Teller"
+            onChange={(e) => setSearch(e.target.value)}
             className="w-full bg-white rounded-md p-[12px] focus:outline-none text-base font-regular"
           />
           <svg
@@ -67,158 +105,35 @@ const DaftarTeller = () => {
             </tr>
           </thead>
           <tbody>
-            <tr className=" border-b border-[#DDE1E6]">
-              <td className="break-words px-[10px]">01.02.004</td>
-              <td className="px-[10px]">Nama Anggota</td>
-              <td className="px-[10px]">3522061124020111</td>
-              <td className="px-[10px]">Umur (Th.)</td>
-              <td className="px-[10px]">L</td>
-              <td className="px-[10px]">Kediri</td>
-              <td className="px-[10px]">088231746821</td>
-              <td className="px-[10px]">
-                <div className="flex justify-center items-center h-[48px]">
-                  <Link
-                    href={"/daftar-teller/detail"}
-                    className="bg-primary w-[98px] py-[1px] text-white rounded-lg text-center"
-                  >
-                    Cek Detail
-                  </Link>
-                </div>
-              </td>
-            </tr>
-            <tr className=" border-b border-[#DDE1E6]">
-              <td className="break-words px-[10px]">01.02.004</td>
-              <td className="px-[10px]">Nama Anggota</td>
-              <td className="px-[10px]">3522061124020111</td>
-              <td className="px-[10px]">Umur (Th.)</td>
-              <td className="px-[10px]">L</td>
-              <td className="px-[10px]">Kediri</td>
-              <td className="px-[10px]">088231746821</td>
-              <td className="px-[10px]">
-                <div className="flex justify-center items-center h-[48px]">
-                  <Link
-                    href={"/daftar-teller/detail"}
-                    className="bg-primary w-[98px] py-[1px] text-white rounded-lg text-center"
-                  >
-                    Cek Detail
-                  </Link>
-                </div>
-              </td>
-            </tr>
-            <tr className=" border-b border-[#DDE1E6]">
-              <td className="break-words px-[10px]">01.02.004</td>
-              <td className="px-[10px]">Nama Anggota</td>
-              <td className="px-[10px]">3522061124020111</td>
-              <td className="px-[10px]">Umur (Th.)</td>
-              <td className="px-[10px]">L</td>
-              <td className="px-[10px]">Kediri</td>
-              <td className="px-[10px]">088231746821</td>
-              <td className="px-[10px]">
-                <div className="flex justify-center items-center h-[48px]">
-                  <Link
-                    href={"/daftar-teller/detail"}
-                    className="bg-primary w-[98px] py-[1px] text-white rounded-lg text-center"
-                  >
-                    Cek Detail
-                  </Link>
-                </div>
-              </td>
-            </tr>
-            <tr className=" border-b border-[#DDE1E6]">
-              <td className="break-words px-[10px]">01.02.004</td>
-              <td className="px-[10px]">Nama Anggota</td>
-              <td className="px-[10px]">3522061124020111</td>
-              <td className="px-[10px]">Umur (Th.)</td>
-              <td className="px-[10px]">L</td>
-              <td className="px-[10px]">Kediri</td>
-              <td className="px-[10px]">088231746821</td>
-              <td className="px-[10px]">
-                <div className="flex justify-center items-center h-[48px]">
-                  <Link
-                    href={"/daftar-teller/detail"}
-                    className="bg-primary w-[98px] py-[1px] text-white rounded-lg text-center"
-                  >
-                    Cek Detail
-                  </Link>
-                </div>
-              </td>
-            </tr>
-            <tr className=" border-b border-[#DDE1E6]">
-              <td className="break-words px-[10px]">01.02.004</td>
-              <td className="px-[10px]">Nama Anggota</td>
-              <td className="px-[10px]">3522061124020111</td>
-              <td className="px-[10px]">Umur (Th.)</td>
-              <td className="px-[10px]">L</td>
-              <td className="px-[10px]">Kediri</td>
-              <td className="px-[10px]">088231746821</td>
-              <td className="px-[10px]">
-                <div className="flex justify-center items-center h-[48px]">
-                  <Link
-                    href={"/daftar-teller/detail"}
-                    className="bg-primary w-[98px] py-[1px] text-white rounded-lg text-center"
-                  >
-                    Cek Detail
-                  </Link>
-                </div>
-              </td>
-            </tr>
-            <tr className=" border-b border-[#DDE1E6]">
-              <td className="break-words px-[10px]">01.02.004</td>
-              <td className="px-[10px]">Nama Anggota</td>
-              <td className="px-[10px]">3522061124020111</td>
-              <td className="px-[10px]">Umur (Th.)</td>
-              <td className="px-[10px]">L</td>
-              <td className="px-[10px]">Kediri</td>
-              <td className="px-[10px]">088231746821</td>
-              <td className="px-[10px]">
-                <div className="flex justify-center items-center h-[48px]">
-                  <Link
-                    href={"/daftar-teller/detail"}
-                    className="bg-primary w-[98px] py-[1px] text-white rounded-lg text-center"
-                  >
-                    Cek Detail
-                  </Link>
-                </div>
-              </td>
-            </tr>
-            <tr className=" border-b border-[#DDE1E6]">
-              <td className="break-words px-[10px]">01.02.004</td>
-              <td className="px-[10px]">Nama Anggota</td>
-              <td className="px-[10px]">3522061124020111</td>
-              <td className="px-[10px]">Umur (Th.)</td>
-              <td className="px-[10px]">L</td>
-              <td className="px-[10px]">Kediri</td>
-              <td className="px-[10px]">088231746821</td>
-              <td className="px-[10px]">
-                <div className="flex justify-center items-center h-[48px]">
-                  <Link
-                    href={"/daftar-teller/detail"}
-                    className="bg-primary w-[98px] py-[1px] text-white rounded-lg text-center"
-                  >
-                    Cek Detail
-                  </Link>
-                </div>
-              </td>
-            </tr>
-            <tr className=" border-b border-[#DDE1E6]">
-              <td className="break-words px-[10px]">01.02.004</td>
-              <td className="px-[10px]">Nama Anggota</td>
-              <td className="px-[10px]">3522061124020111</td>
-              <td className="px-[10px]">Umur (Th.)</td>
-              <td className="px-[10px]">L</td>
-              <td className="px-[10px]">Kediri</td>
-              <td className="px-[10px]">088231746821</td>
-              <td className="px-[10px]">
-                <div className="flex justify-center items-center h-[48px]">
-                  <Link
-                    href={"/daftar-teller/detail"}
-                    className="bg-primary w-[98px] py-[1px] text-white rounded-lg text-center"
-                  >
-                    Cek Detail
-                  </Link>
-                </div>
-              </td>
-            </tr>
+            {filteredTeller.length > 0 ? (
+              filteredTeller.map((item, index) => (
+                <tr key={item.id} className=" border-b border-[#DDE1E6]">
+                  <td className="break-words px-[10px]">{item.id}</td>
+                  <td className="px-[10px]">{item.name}</td>
+                  <td className="px-[10px]">{item.nik}</td>
+                  <td className="px-[10px]">{item.age}</td>
+                  <td className="px-[10px]">
+                    {item.gender === "laku-laki" ? "L" : "P"}
+                  </td>
+                  <td className="px-[10px]">{item.city}</td>
+                  <td className="px-[10px]">{item.phoneNumber}</td>
+                  <td className="px-[10px]">
+                    <div className="flex justify-center items-center h-[48px]">
+                      <Link
+                        href={`/daftar-teller/detail/${item.id}`}
+                        className="bg-primary w-[98px] py-[1px] text-white rounded-lg text-center"
+                      >
+                        Cek Detail
+                      </Link>
+                    </div>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan={8}>Belum ada Data...</td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>
