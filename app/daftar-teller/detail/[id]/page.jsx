@@ -7,6 +7,7 @@ import toast from "react-hot-toast";
 import { useParams } from "next/navigation";
 import DropdownSelector from "@/components/DropdownSelector";
 import Modal from "@/components/Modal";
+import Loading from "@/components/Loading";
 
 const DetailTeller = () => {
   const { data: session, status } = useSession();
@@ -44,6 +45,7 @@ const DetailTeller = () => {
     if (status === "loading") return;
     if (!id) return;
     const getTeller = async () => {
+      setLoading(true);
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_BASE_URL}tellers/${id}`,
         {
@@ -59,6 +61,7 @@ const DetailTeller = () => {
       } else {
         toast.error(data.message);
       }
+      setLoading(false);
     };
 
     getTeller();
@@ -109,7 +112,7 @@ const DetailTeller = () => {
     setProsesData(false);
   };
 
-  if (status === "loading") return <p>Loading...</p>;
+  if (status === "loading") return <Loading />;
 
   return (
     <form

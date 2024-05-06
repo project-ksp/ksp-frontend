@@ -166,7 +166,7 @@ const DataMaster = () => {
                       maximumFractionDigits: 0,
                     }).format(data.totalLoan)}
                   </td>
-                  <td className="px-[10px]">{data.leader}</td>
+                  <td className="px-[10px]">{data.leader.name}</td>
                   <td className="px-[10px]">
                     <div className="flex justify-center items-center h-[64px]">
                       {data.isActive ? (
@@ -203,12 +203,7 @@ const DataMaster = () => {
           activeLinkClassName="h-[32px] w-[32px] flex justify-center items-center bg-[#2F80ED] rounded-lg text-white border border-[#f1f1f1]"
         />
       </div>
-      <iframe
-        src="/data-master-print"
-        frameborder="0"
-        ref={ref}
-        className="hidden"
-      ></iframe>
+      <iframe src="/data-master-print" ref={ref} className="hidden"></iframe>
     </div>
   );
 };

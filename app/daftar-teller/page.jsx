@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import toast from "react-hot-toast";
+import Loading from "@/components/Loading";
 
 const DaftarTeller = () => {
   const { data: session, status } = useSession();
@@ -38,7 +39,7 @@ const DaftarTeller = () => {
     );
   });
 
-  if (status === "loading") return <p>Loading...</p>;
+  if (status === "loading") return <Loading />;
   return (
     <div className="flex flex-col gap-2">
       <h2 className="text-2xl font-bold text-black">Daftar Teller</h2>

@@ -110,7 +110,7 @@ const PrintDataMaster = () => {
                     maximumFractionDigits: 0,
                   }).format(data.totalLoan)}
                 </td>
-                <td className="px-[10px]">{data.leader}</td>
+                <td className="px-[10px]">{data.leader.name}</td>
                 <td className="px-[10px]">
                   <div className="flex justify-center items-center h-[64px]">
                     {data.isActive ? (

@@ -77,7 +77,7 @@ const RekapAnggota = () => {
               </th>
               <th className="w-[8%] font-semibold px-[10px]">Ketua Kelompok</th>
               <th className="w-[9%] font-semibold px-[10px]">Status</th>
-              <th className="w-[9%] font-semibold px-[10px]">Hapus Anggota</th>
+              <th className="w-[9%] font-semibold px-[10px]">Detail Anggota</th>
             </tr>
           </thead>
           <tbody>
@@ -90,15 +90,23 @@ const RekapAnggota = () => {
                   <td className="px-[10px]">
                     {item.gender === "laki-laki" ? "L" : "P"}
                   </td>
-                  <td className="px-[10px]">Rp. 99,999,999</td>
-                  <td className="px-[10px]">Rp. 99,999,999</td>
-                  <td className="px-[10px]">M. Zidan</td>
+                  <td className="px-[10px]">{item.totalSaving}</td>
+                  <td className="px-[10px]">{item.totalLoan}</td>
+                  <td className="px-[10px]">{item.leader.name}</td>
                   <td className="px-[10px]">
-                    <div className="flex justify-center items-center h-[64px]">
-                      <button className="bg-green-status-1 w-[86px] py-[1px] text-white rounded-lg mx-auto my-auto">
-                        Aktif
-                      </button>
-                    </div>
+                    {item.isActive ? (
+                      <div className="flex justify-center items-center h-[64px]">
+                        <button className="bg-green-status-1 w-[86px] py-[1px] text-white rounded-lg mx-auto my-auto">
+                          Aktif
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="flex justify-center items-center h-[64px]">
+                        <button className="bg-red-status-1 w-[86px] py-[1px] text-white rounded-lg mx-auto my-auto">
+                          Tidak Aktif
+                        </button>
+                      </div>
+                    )}
                   </td>
                   <td className="px-[10px]">
                     <div className="flex justify-center items-center h-[64px]">
