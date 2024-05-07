@@ -466,7 +466,7 @@ const DetailKetuaKelompok = () => {
                     id="noHpKetuaKelompok"
                     name="noHpKetuaKelompok"
                     placeholder="Isi NoHp Ketua Kelompok"
-                    defaultValue={leader.age}
+                    defaultValue={leader.phoneNumber}
                     disabled={!allowEdit}
                     onChange={(e) =>
                       setLeader({ ...leader, phoneNumber: e.target.value })
