@@ -48,7 +48,7 @@ const DaftarTeller = () => {
           <input
             type="text"
             name="search"
-            placeholder="Cari Teller"
+            placeholder="Cari Teller Berdasarkan ID atau nama..."
             onChange={(e) => setSearch(e.target.value)}
             className="w-full bg-white rounded-md p-[12px] focus:outline-none text-base font-regular"
           />

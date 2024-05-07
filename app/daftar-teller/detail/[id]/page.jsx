@@ -30,7 +30,6 @@ const DetailTeller = () => {
     nik: "",
     age: 0,
     religion: "",
-    occupation: "",
     address: "",
     kelurahan: "",
     kecamatan: "",
@@ -79,6 +78,7 @@ const DetailTeller = () => {
   };
 
   const submitData = async (e) => {
+    setLoading(true);
     e.preventDefault();
     if (
       teller.gender === "Pilih Jenis Kelamin" ||
@@ -87,6 +87,7 @@ const DetailTeller = () => {
     ) {
       toast.error("Mohon lengkapi data teller");
       setProsesData(false);
+      setLoading(false);
       return;
     }
 
@@ -168,7 +169,6 @@ const DetailTeller = () => {
                 placeholder="Isi ID Teller"
                 defaultValue={teller.id}
                 disabled
-                onChange={(e) => setTeller({ ...teller, id: e.target.value })}
                 className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:bg-black/5 disabled:cursor-not-allowed"
               />
             </div>
@@ -353,8 +353,9 @@ const DetailTeller = () => {
                   value={teller.birthDate}
                   disabled={!allowEdit}
                   onChange={(e) =>
-                    new Date(e.target.value) < Date.now() &&
-                    setTeller({ ...teller, birthDate: e.target.value })
+                    new Date(e.target.value) < Date.now()
+                      ? setTeller({ ...teller, birthDate: e.target.value })
+                      : setTeller({ ...teller, birthDate: Date.now() })
                   }
                   required
                   className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:bg-black/5 disabled:cursor-not-allowed"
@@ -551,7 +552,12 @@ const DetailTeller = () => {
         </button>
       </div>
 
-      <Modal isVisible={showProsesData} onClose={() => setProsesData(false)}>
+      <Modal
+        isVisible={showProsesData}
+        onClose={() => {
+          setProsesData(false);
+        }}
+      >
         <h3 className="text-xl text-center font-bold text-black">
           Proses Data?
         </h3>
@@ -561,9 +567,6 @@ const DetailTeller = () => {
         <button
           type="submit"
           className="w-[450px] px-[20px] py-[12px] text-white bg-primary rounded-lg mx-auto"
-          onClick={() => {
-            setLoading(true);
-          }}
         >
           {!loading ? "Proses Data" : "Menyimpan data..."}
         </button>
