@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import toast from "react-hot-toast";
+import Loading from "@/components/Loading";
 
 const RekapAnggota = () => {
   const { data: session, status } = useSession();
@@ -36,7 +37,7 @@ const RekapAnggota = () => {
     getAnggota();
   }, [status, session]);
 
-  if (status === "loading") return <>Loading...</>;
+  if (status === "loading") return <Loading />;
   return (
     <div className="flex flex-col gap-2">
       <h2 className="text-2xl font-bold text-black">Rekap Anggota</h2>
@@ -90,8 +91,20 @@ const RekapAnggota = () => {
                   <td className="px-[10px]">
                     {item.gender === "laki-laki" ? "L" : "P"}
                   </td>
-                  <td className="px-[10px]">{item.totalSaving}</td>
-                  <td className="px-[10px]">{item.totalLoan}</td>
+                  <td className="px-[10px]">
+                    {Intl.NumberFormat("id-ID", {
+                      style: "currency",
+                      currency: "IDR",
+                      maximumFractionDigits: 0,
+                    }).format(item.totalDeposit)}
+                  </td>
+                  <td className="px-[10px]">
+                    {Intl.NumberFormat("id-ID", {
+                      style: "currency",
+                      currency: "IDR",
+                      maximumFractionDigits: 0,
+                    }).format(item.totalLoan)}
+                  </td>
                   <td className="px-[10px]">{item.leader.name}</td>
                   <td className="px-[10px]">
                     {item.isActive ? (

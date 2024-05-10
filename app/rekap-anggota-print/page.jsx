@@ -80,14 +80,32 @@ const PrintRekapAnggota = () => {
                 <td className="px-[10px]">
                   {item.gender === "laki-laki" ? "L" : "P"}
                 </td>
-                <td className="px-[10px]">Rp. 99,999,999</td>
-                <td className="px-[10px]">Rp. 99,999,999</td>
-                <td className="px-[10px]">M. Zidan</td>
+                <td className="px-[10px]">
+                  {Intl.NumberFormat("id-ID", {
+                    style: "currency",
+                    currency: "IDR",
+                    maximumFractionDigits: 0,
+                  }).format(item.totalDeposit)}
+                </td>
+                <td className="px-[10px]">
+                  {Intl.NumberFormat("id-ID", {
+                    style: "currency",
+                    currency: "IDR",
+                    maximumFractionDigits: 0,
+                  }).format(item.totalLoan)}
+                </td>
+                <td className="px-[10px]">{item.leader.name}</td>
                 <td className="px-[10px]">
                   <div className="flex justify-center items-center h-[64px]">
-                    <button className="bg-green-status-1 w-[86px] py-[1px] text-white rounded-lg mx-auto my-auto">
-                      Aktif
-                    </button>
+                    {item.isActive ? (
+                      <button className="bg-green-status-1 w-[86px] py-[1px] text-white rounded-lg mx-auto my-auto">
+                        Aktif
+                      </button>
+                    ) : (
+                      <button className="bg-red-status-1 w-[86px] py-[1px] text-white rounded-lg mx-auto my-auto">
+                        Tidak Aktif
+                      </button>
+                    )}
                   </div>
                 </td>
               </tr>

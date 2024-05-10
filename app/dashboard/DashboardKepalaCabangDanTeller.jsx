@@ -35,7 +35,9 @@ const DashboardKepalaCabangDanTeller = () => {
         }
       )
         .then((res) => res.json())
-        .then((data) => setDataMember(data.data));
+        .then((data) => {
+          setDataMember(data.data);
+        });
     }, 1000);
 
     return () => clearTimeout(getData);
@@ -357,7 +359,7 @@ const DashboardKepalaCabangDanTeller = () => {
                       style: "currency",
                       currency: "IDR",
                       maximumFractionDigits: 0,
-                    }).format(item.totalSaving)}
+                    }).format(item.totalDeposit)}
                   </td>
                   <td className="px-[10px]">
                     {Intl.NumberFormat("id-ID", {
@@ -366,7 +368,7 @@ const DashboardKepalaCabangDanTeller = () => {
                       maximumFractionDigits: 0,
                     }).format(item.totalLoan)}
                   </td>
-                  <td className="px-[10px]">{item.leader}</td>
+                  <td className="px-[10px]">{item.leader.name}</td>
                   <td className="px-[10px]">
                     <div className="flex justify-center items-center h-[64px]">
                       {item.isActive ? (

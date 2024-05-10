@@ -19,6 +19,13 @@ const TambahAnggota = () => {
   const [statusPernikahanOpen, setStatusPernikahanOpen] = useState(false);
   const [idCabangOpen, setIdCabangOpen] = useState(false);
 
+  const [member, setMember] = useState({
+    name: "",
+    nik: "",
+    gender: "",
+    isMarried: false,
+  });
+
   return (
     <>
       <div className="bg-white p-[20px] rounded-xl">

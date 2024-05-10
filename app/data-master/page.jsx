@@ -157,7 +157,7 @@ const DataMaster = () => {
                       style: "currency",
                       currency: "IDR",
                       maximumFractionDigits: 0,
-                    }).format(data.totalSaving)}
+                    }).format(data.totalDeposit)}
                   </td>
                   <td className="px-[10px]">
                     {Intl.NumberFormat("id-ID", {
