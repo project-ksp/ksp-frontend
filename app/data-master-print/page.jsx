@@ -1,11 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import Link from "next/link";
 import { useSession } from "next-auth/react";
 import toast from "react-hot-toast";
-import ReactPaginate from "react-paginate";
-import NextLabel from "@/components/icons/NextLabel";
-import PreviousLabel from "@/components/icons/PreviousLabel";
 
 const PrintDataMaster = () => {
   const { data: session, status } = useSession();
@@ -14,7 +10,7 @@ const PrintDataMaster = () => {
 
   useEffect(() => {
     const getMembers = async () => {
-      if (status === "loading") return null;
+      if (status === "loading") return;
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_BASE_URL}members?page=${1}`,
         {
@@ -38,7 +34,6 @@ const PrintDataMaster = () => {
   const [print, setPrint] = useState(false);
   useEffect(() => {
     if (members.length > 0 && !print) {
-      window.print();
       setPrint(true);
     }
   }, [members, print]);
@@ -115,7 +110,7 @@ const PrintDataMaster = () => {
                     maximumFractionDigits: 0,
                   }).format(data.totalLoan)}
                 </td>
-                <td className="px-[10px]">{data.leader}</td>
+                <td className="px-[10px]">{data.leader.name}</td>
                 <td className="px-[10px]">
                   <div className="flex justify-center items-center h-[64px]">
                     {data.isActive ? (

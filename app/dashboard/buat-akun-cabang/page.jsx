@@ -112,6 +112,7 @@ const BuatAkunCabang = () => {
 
   const submitData = async (e) => {
     e.preventDefault();
+    setLoading(true);
     if (
       branchHeadData.isMarried === "Pilih Status" ||
       branchHeadData.gender === "Pilih Jenis Kelamin" ||
@@ -120,6 +121,7 @@ const BuatAkunCabang = () => {
     ) {
       toast.error("Mohon lengkapi data kepala cabang");
       setProsesData(false);
+      setLoading(false);
       return;
     }
 
@@ -129,6 +131,7 @@ const BuatAkunCabang = () => {
     ) {
       toast.error("Mohon lengkapi foto diri dan foto KTP");
       setProsesData(false);
+      setLoading(false);
       return;
     }
 
@@ -843,9 +846,6 @@ const BuatAkunCabang = () => {
         <button
           type="submit"
           className="w-[450px] px-[20px] py-[12px] text-white bg-primary rounded-lg mx-auto"
-          onClick={() => {
-            setLoading(true);
-          }}
         >
           {!loading ? "Proses Data" : "Menyimpan data..."}
         </button>
@@ -854,7 +854,7 @@ const BuatAkunCabang = () => {
         isVisible={showBerhasil}
         onClose={() => {
           setBerhasil(false);
-          router.push("/account-block");
+          router.push("/dashboard");
         }}
       >
         <div className="w-[98px] h-[98px] rounded-full bg-primary place-self-center relative">

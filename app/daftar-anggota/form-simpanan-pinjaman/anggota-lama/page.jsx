@@ -124,7 +124,9 @@ const AnggotaLama = () => {
               <td className="px-[10px]">
                 <div className="flex justify-center items-center h-[64px]">
                   <Link
-                    href={"/daftar-anggota/tambah-anggota/anggota-lama/detail"}
+                    href={
+                      "/daftar-anggota/form-simpanan-pinjaman/anggota-lama/detail"
+                    }
                     className="bg-primary w-[98px] py-[1px] text-white rounded-lg text-center"
                   >
                     Cek Detail

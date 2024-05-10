@@ -1,24 +1,150 @@
 "use client";
-import React, { useState } from "react";
-import Modal from "@/components/Modal";
-import DropdownSelector from "@/components/DropdownSelector";
+import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
+import Link from "next/link";
+import { useSession } from "next-auth/react";
+import toast from "react-hot-toast";
+import { useParams } from "next/navigation";
+import DropdownSelector from "@/components/DropdownSelector";
+import Modal from "@/components/Modal";
+import Loading from "@/components/Loading";
+import { useRouter } from "next/navigation";
 
 const TambahTeller = () => {
+  const { data: session, status } = useSession();
+  const formRef = useRef();
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+
   const [showProsesData, setProsesData] = useState(false);
   const [showBerhasil, setBerhasil] = useState(false);
-  const [statusPernikahanOpen, setStatusPernikahanOpen] = useState(false);
   const [agamaOpen, setAgamaOpen] = useState(false);
   const [pendidikanOpen, setPendidikanOpen] = useState(false);
   const [jenisKelaminOpen, setJenisKelaminOpen] = useState(false);
-  const [statusPernikahan, setStatusPernikahan] = useState("Pilih Status");
-  const [agama, setAgama] = useState("Pilih Agama");
-  const [pendidikan, setPendidikan] = useState("Pilih Pendidikan Terakhir");
-  const [jenisKelamin, setJenisKelamin] = useState("Pilih Jenis Kelamin");
+
   const [fotoDiri, setFotoDiri] = useState(null);
   const [fotoKtp, setFotoKtp] = useState(null);
+
+  const [tellerData, setTellerData] = useState({
+    name: "",
+    birthPlace: "",
+    birthDate: "",
+    gender: "Pilih Jenis Kelamin",
+    nik: "",
+    age: 0,
+    religion: "Pilih Agama",
+    address: "",
+    kelurahan: "",
+    kecamatan: "",
+    city: "",
+    postalCode: "",
+    phoneNumber: "",
+    education: "Pilih Pendidikan Terakhir",
+    profilePictureUrl: "",
+    idPictureUrl: "",
+  });
+
+  const countAge = (date) => {
+    const today = new Date();
+    const birthDate = new Date(date);
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const month = today.getMonth() - birthDate.getMonth();
+    if (month < 0 || (month === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    return age;
+  };
+
+  const uploadFotoKtp = async (e) => {
+    setFotoKtp(e.target.files[0]);
+    const formData = new FormData();
+    formData.append("file", e.target.files[0]);
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}uploads/temp/image`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${session.token}`,
+        },
+        body: formData,
+      }
+    );
+    const data = await res.json();
+    if (res.ok) {
+      setTellerData({ ...tellerData, idPictureUrl: data.data });
+    } else {
+      setFotoKtp(null);
+      toast.error(data.message);
+    }
+  };
+
+  const uploadFotoDiri = async (e) => {
+    setFotoDiri(e.target.files[0]);
+    const formData = new FormData();
+    formData.append("file", e.target.files[0]);
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}uploads/temp/image`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${session.token}`,
+        },
+        body: formData,
+      }
+    );
+    const data = await res.json();
+    if (res.ok) {
+      setTellerData({ ...tellerData, profilePictureUrl: data.data });
+    } else {
+      setFotoDiri(null);
+      toast.error(data.message);
+    }
+  };
+
+  const submitData = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    if (
+      tellerData.gender === "Pilih Jenis Kelamin" ||
+      tellerData.religion === "Pilih Agama" ||
+      tellerData.education === "Pilih Pendidikan Terakhir"
+    ) {
+      toast.error("Mohon lengkapi data teller");
+      setProsesData(false);
+      setLoading(false);
+      return;
+    }
+
+    if (tellerData.profilePictureUrl === "" || tellerData.idPictureUrl === "") {
+      toast.error("Mohon lengkapi foto diri dan foto KTP");
+      setProsesData(false);
+      setLoading(false);
+      return;
+    }
+
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}tellers`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${session.token}`,
+      },
+      body: JSON.stringify(tellerData),
+    });
+
+    const data = await res.json();
+    if (res.ok) {
+      setBerhasil(true);
+    } else {
+      toast.error(data.message);
+    }
+    setLoading(false);
+    setProsesData(false);
+  };
+
+  if (status === "loading") return <Loading />;
   return (
-    <>
+    <form onSubmit={(e) => submitData(e)} ref={formRef}>
+      {loading && <div className="inset-0 fixed bg-black/20 z-50"></div>}
       <div className="flex flex-col gap-[10px]">
         <h2 className="text-2xl font-bold text-black">Tambah Teller</h2>
         <div className="bg-white p-[20px] rounded-xl">
@@ -34,7 +160,7 @@ const TambahTeller = () => {
                   id="cabang"
                   name="cabang"
                   placeholder="Auto Generated"
-                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none italic"
+                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none italic disabled:bg-black/5 disabled:cursor-not-allowed"
                   disabled
                 />
               </div>
@@ -45,7 +171,7 @@ const TambahTeller = () => {
                   id="idTeller"
                   name="idTeller"
                   placeholder="Auto Generated"
-                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none italic"
+                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none italic disabled:bg-black/5 disabled:cursor-not-allowed"
                   disabled
                 />
               </div>
@@ -57,6 +183,10 @@ const TambahTeller = () => {
                 id="namaLengkap"
                 name="namaLengkap"
                 placeholder="Isi Nama Sesuai KTP"
+                onChange={(e) =>
+                  setTellerData({ ...tellerData, name: e.target.value })
+                }
+                required
                 className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
               />
             </div>
@@ -68,6 +198,10 @@ const TambahTeller = () => {
                   id="tempatLahir"
                   name="tempatLahir"
                   placeholder="Isi Tempat Lahir Sesuai KTP"
+                  onChange={(e) =>
+                    setTellerData({ ...tellerData, birthPlace: e.target.value })
+                  }
+                  required
                   className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
                 />
               </div>
@@ -77,6 +211,15 @@ const TambahTeller = () => {
                   type="date"
                   id="tanggalLahir"
                   name="tanggalLahir"
+                  onChange={(e) =>
+                    new Date(e.target.value) < Date.now()
+                      ? setTellerData({
+                          ...tellerData,
+                          birthDate: e.target.value,
+                        })
+                      : setTellerData({ ...tellerData, birthDate: Date.now() })
+                  }
+                  required
                   className="w-full py-[10px] px-[20px] border border-[#d9d9d9] text-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
                 />
               </div>
@@ -86,8 +229,11 @@ const TambahTeller = () => {
                   type="text"
                   id="umur"
                   name="umur"
-                  placeholder="Auto generate"
-                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
+                  value={
+                    (tellerData.birthDate && countAge(tellerData.birthDate)) ||
+                    tellerData.age
+                  }
+                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:bg-black/5 disabled:cursor-not-allowed"
                   disabled
                 />
               </div>
@@ -98,13 +244,14 @@ const TambahTeller = () => {
                   name="jenisKelamin"
                   id="jenisKelamin"
                   className={`w-full flex justify-between py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] text-start text-[#d9d9d9] bg-transparent focus:outline-none ${
-                    jenisKelamin === "Pilih Jenis Kelamin"
+                    tellerData.gender === "Pilih Jenis Kelamin"
                       ? "text-[#d9d9d9]"
                       : "text-primary"
                   }`}
                   onClick={() => setJenisKelaminOpen(!jenisKelaminOpen)}
                 >
-                  {jenisKelamin}
+                  {tellerData.gender.charAt(0).toUpperCase() +
+                    tellerData.gender.slice(1)}
                   <svg
                     width="24"
                     height="24"
@@ -118,12 +265,16 @@ const TambahTeller = () => {
                     />
                   </svg>
                 </button>
-
                 {jenisKelaminOpen && (
                   <div className="w-full relative">
                     <DropdownSelector
-                      selected={(option) => setJenisKelamin(option)}
-                      options={["Laki - Laki", "Perempuan"]}
+                      selected={(option) =>
+                        setTellerData({
+                          ...tellerData,
+                          gender: option.toLowerCase(),
+                        })
+                      }
+                      options={["Laki-Laki", "Perempuan"]}
                       onClose={() => setJenisKelaminOpen(false)}
                     />
                   </div>
@@ -138,6 +289,10 @@ const TambahTeller = () => {
                   id="nik"
                   name="nik"
                   placeholder="NIK Harus Sesuai KTP dan Terdaftar di Dukcapil"
+                  onChange={(e) =>
+                    setTellerData({ ...tellerData, nik: e.target.value })
+                  }
+                  required
                   className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
                 />
               </div>
@@ -148,11 +303,14 @@ const TambahTeller = () => {
                   name="agama"
                   id="agama"
                   className={`w-full flex justify-between py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] text-start text-[#d9d9d9] bg-transparent focus:outline-none ${
-                    agama === "Pilih Agama" ? "text-[#d9d9d9]" : "text-primary"
+                    tellerData.religion === "Pilih Agama"
+                      ? "text-[#d9d9d9]"
+                      : "text-primary"
                   }`}
                   onClick={() => setAgamaOpen(!agamaOpen)}
                 >
-                  {agama}
+                  {tellerData.religion.charAt(0).toUpperCase() +
+                    tellerData.religion.slice(1)}
                   <svg
                     width="24"
                     height="24"
@@ -170,13 +328,18 @@ const TambahTeller = () => {
                 {agamaOpen && (
                   <div className="w-full relative">
                     <DropdownSelector
-                      selected={(option) => setAgama(option)}
+                      selected={(option) =>
+                        setTellerData({
+                          ...tellerData,
+                          religion: option.toLowerCase(),
+                        })
+                      }
                       options={[
                         "Islam",
                         "Kristen",
                         "Katolik",
                         "Hindu",
-                        "Budha",
+                        "Buddha",
                         "Konghucu",
                       ]}
                       onClose={() => setAgamaOpen(false)}
@@ -194,6 +357,10 @@ const TambahTeller = () => {
                     id="alamatCabang"
                     name="alamatCabang"
                     placeholder="Isi Alamat Lengkap Sesuai KTP"
+                    onChange={(e) =>
+                      setTellerData({ ...tellerData, address: e.target.value })
+                    }
+                    required
                     className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
                   />
                 </div>
@@ -206,6 +373,13 @@ const TambahTeller = () => {
                     id="kelurahan"
                     name="kelurahan"
                     placeholder="Isi Sesuai KTP"
+                    onChange={(e) =>
+                      setTellerData({
+                        ...tellerData,
+                        kelurahan: e.target.value,
+                      })
+                    }
+                    required
                     className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
                   />
                 </div>
@@ -216,6 +390,13 @@ const TambahTeller = () => {
                     id="kecamatan"
                     name="kecamatan"
                     placeholder="Isi"
+                    onChange={(e) =>
+                      setTellerData({
+                        ...tellerData,
+                        kecamatan: e.target.value,
+                      })
+                    }
+                    required
                     className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
                   />
                 </div>
@@ -226,6 +407,10 @@ const TambahTeller = () => {
                     id="kota"
                     name="kota"
                     placeholder="Isi"
+                    onChange={(e) =>
+                      setTellerData({ ...tellerData, city: e.target.value })
+                    }
+                    required
                     className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
                   />
                 </div>
@@ -236,26 +421,33 @@ const TambahTeller = () => {
                     id="kodePos"
                     name="kodePos"
                     placeholder="Isi"
+                    onChange={(e) =>
+                      setTellerData({
+                        ...tellerData,
+                        postalCode: e.target.value,
+                      })
+                    }
+                    required
                     className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
                   />
                 </div>
               </div>
             </div>
             <div className="flex gap-3">
-              <div className="w-2/5">
+              <div className="w-3/5">
                 <label htmlFor="pendidikan">Pendidikan Terakhir</label>
                 <button
                   type="button"
                   name="pendidikan"
                   id="pendidikan"
                   className={`w-full flex justify-between py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] text-start text-[#d9d9d9] bg-transparent focus:outline-none ${
-                    pendidikan === "Pilih Pendidikan Terakhir"
+                    tellerData.education === "Pilih Pendidikan Terakhir"
                       ? "text-[#d9d9d9]"
                       : "text-primary"
                   }`}
                   onClick={() => setPendidikanOpen(!pendidikanOpen)}
                 >
-                  {pendidikan}
+                  {tellerData.education.toUpperCase()}
                   <svg
                     width="24"
                     height="24"
@@ -273,8 +465,13 @@ const TambahTeller = () => {
                 {pendidikanOpen && (
                   <div className="w-full relative">
                     <DropdownSelector
-                      selected={(option) => setPendidikan(option)}
-                      options={["S1", "SMA"]}
+                      selected={(option) =>
+                        setTellerData({
+                          ...tellerData,
+                          education: option.toLowerCase(),
+                        })
+                      }
+                      options={["SD", "SMP", "SMA", "S1", "S2"]}
                       onClose={() => setPendidikanOpen(false)}
                     />
                   </div>
@@ -287,6 +484,13 @@ const TambahTeller = () => {
                   id="noHp"
                   name="noHp"
                   placeholder="Isi Nomor HP (WhatsApp)"
+                  onChange={(e) =>
+                    setTellerData({
+                      ...tellerData,
+                      phoneNumber: e.target.value,
+                    })
+                  }
+                  required
                   className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
                 />
               </div>
@@ -346,7 +550,9 @@ const TambahTeller = () => {
                     name="fotoDiri"
                     id="fotoDiri"
                     hidden
-                    onChange={(e) => setFotoDiri(e.target.files[0])}
+                    onChange={(e) => {
+                      uploadFotoDiri(e);
+                    }}
                   />
                 </div>
               </label>
@@ -404,7 +610,9 @@ const TambahTeller = () => {
                     name="fotoKtp"
                     id="fotoKtp"
                     hidden
-                    onChange={(e) => setFotoKtp(e.target.files[0])}
+                    onChange={(e) => {
+                      uploadFotoKtp(e);
+                    }}
                   />
                 </div>
               </label>
@@ -415,7 +623,13 @@ const TambahTeller = () => {
         <button
           type="button"
           className="w-[148px] px-[20px] py-[12px] text-white bg-primary rounded-lg ml-auto"
-          onClick={(e) => setProsesData(true)}
+          onClick={(e) => {
+            if (formRef.current.checkValidity()) {
+              setProsesData(true);
+            } else {
+              formRef.current.reportValidity();
+            }
+          }}
         >
           Simpan
         </button>
@@ -430,15 +644,17 @@ const TambahTeller = () => {
         <button
           type="submit"
           className="w-[450px] px-[20px] py-[12px] text-white bg-primary rounded-lg mx-auto"
-          onClick={(e) => {
-            setProsesData(false);
-            setBerhasil(true);
-          }}
         >
           Proses Data
         </button>
       </Modal>
-      <Modal isVisible={showBerhasil} onClose={() => setBerhasil(false)}>
+      <Modal
+        isVisible={showBerhasil}
+        onClose={() => {
+          setBerhasil(false);
+          router.push("/daftar-teller");
+        }}
+      >
         <div className="w-[98px] h-[98px] rounded-full bg-primary place-self-center relative">
           <svg
             width="43"
@@ -473,12 +689,13 @@ const TambahTeller = () => {
           className="w-[450px] px-[20px] py-[12px] text-white bg-primary rounded-lg mx-auto"
           onClick={(e) => {
             setBerhasil(false);
+            router.push("/daftar-teller");
           }}
         >
           OK
         </button>
       </Modal>
-    </>
+    </form>
   );
 };
 

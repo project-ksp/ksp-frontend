@@ -1,12 +1,22 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import DropdownSelector from "@/components/DropdownSelector";
 import Modal from "@/components/Modal";
+import Loading from "@/components/Loading";
+import { useSession } from "next-auth/react";
+import { useParams } from "next/navigation";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
-const DetailPinjamanAnggotaBaru = () => {
+const DetailAnggotaBaru = () => {
+  const { data: session, status } = useSession();
+  const { id } = useParams();
+
+  const router = useRouter();
+
   const [showProsesData, setProsesData] = useState(false);
   const [showBerhasil, setBerhasil] = useState(false);
   const [idCabang, setIdCabang] = useState("Pilih Cabang");
@@ -20,16 +30,90 @@ const DetailPinjamanAnggotaBaru = () => {
   const [statusPernikahanOpen, setStatusPernikahanOpen] = useState(false);
   const [idCabangOpen, setIdCabangOpen] = useState(false);
   const [buktiPendukung, setBuktiPendukung] = useState(null);
+
+  const [loading, setLoading] = useState(false);
+
+  const [member, setMember] = useState({});
+  const [deposit, setDeposit] = useState({});
+  const [monthlyDeposits, setMonthlyDeposits] = useState({});
+
+  useEffect(() => {
+    if (!id) return;
+    const getMember = async () => {
+      if (status === "loading") return;
+      setLoading(true);
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}members/${id}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${session.token}`,
+          },
+        }
+      );
+      const data = await res.json();
+      if (res.ok) {
+        setMember(data.data);
+      } else {
+        toast.error(data.message);
+      }
+      setLoading(false);
+    };
+
+    getMember();
+  }, [status, session, id]);
+
+  const countAge = (date) => {
+    const today = new Date();
+    const birthDate = new Date(date);
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const month = today.getMonth() - birthDate.getMonth();
+    if (month < 0 || (month === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    return age;
+  };
+
+  const verifyData = async () => {
+    setLoading(true);
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}members/${id}/verify`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session.token}`,
+        },
+        body: JSON.stringify({
+          status: member.status,
+        }),
+      }
+    );
+
+    const data = await res.json();
+    if (res.ok) {
+      setBerhasil(true);
+    } else {
+      toast.error(data.message);
+    }
+    setLoading(false);
+    setProsesData(false);
+  };
+
+  if (status === "loading") return <Loading />;
   return (
     <div className="flex flex-col gap-2">
+      {loading && <div className="inset-0 fixed bg-black/20 z-50"></div>}
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold text-black">
           Detail Pengajuan Anggota Baru
         </h2>
         <div className="flex gap-4">
-          <button className="bg-primary text-white w-[228px] h-[48px] rounded-md text-center">
-            <Link href={"/status-pengajuan/anggota-baru"}>Kembali</Link>
-          </button>
+          <Link href={"/status-pengajuan/anggota-baru"}>
+            <button className="bg-primary text-white w-[228px] h-[48px] rounded-md text-center">
+              Kembali
+            </button>
+          </Link>
           <button
             onClick={() => setProsesData(true)}
             className="bg-primary text-white w-[228px] h-[48px] rounded-md text-center"
@@ -45,18 +129,24 @@ const DetailPinjamanAnggotaBaru = () => {
         <div className="flex flex-col gap-2">
           <div className="flex">
             <Image
-              src={"/images/dummy.jpg"}
+              src={`${process.env.NEXT_PUBLIC_BASE_URL}public/${member.profilePictureUrl}`}
               width={90}
               height={120}
               alt="Foto Diri"
-              className="mr-[25px] rounded-md"
+              className="mr-[25px] rounded-md object-cover"
             />
             <div className="flex flex-col gap-2">
-              <p className="text-xl text-black">Ifadatul K</p>
-              <p className="text-lg text-black">01-2024-12345</p>
-              <div className="bg-green-status-1 text-white text-center my-[8px] rounded-lg  w-[86px]">
-                Aktif
-              </div>
+              <p className="text-xl text-black">{member.name}</p>
+              <p className="text-lg text-black">{member.id}</p>
+              {member.isActive ? (
+                <div className="bg-green-status-1 text-white text-center my-[8px] rounded-lg  w-[86px]">
+                  Aktif
+                </div>
+              ) : (
+                <div className="bg-red-status-1 text-white text-center my-[8px] rounded-lg  w-[86px]">
+                  Tidak Aktif
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -68,41 +158,14 @@ const DetailPinjamanAnggotaBaru = () => {
             <div className="w-1/3">
               <div>
                 <label htmlFor="idCabang">ID Cabang</label>
-                <button
+                <input
                   type="button"
                   name="idCabang"
                   id="idCabang"
-                  className={`w-full flex justify-between py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] text-start text-[#d9d9d9] bg-transparent focus:outline-none ${
-                    idCabang === "Pilih Cabang"
-                      ? "text-[#d9d9d9]"
-                      : "text-primary"
-                  }`}
-                  onClick={() => setIdCabangOpen(!idCabangOpen)}
-                >
-                  {idCabang}
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M17.2902 9.31002C17.1977 9.21732 17.0878 9.14377 16.9668 9.09359C16.8459 9.04341 16.7162 9.01758 16.5852 9.01758C16.4543 9.01758 16.3246 9.04341 16.2036 9.09359C16.0826 9.14377 15.9727 9.21732 15.8802 9.31002L12.0002 13.19L8.12022 9.31002C7.93324 9.12304 7.67965 9.018 7.41522 9.018C7.1508 9.018 6.8972 9.12304 6.71022 9.31002C6.52324 9.497 6.4182 9.7506 6.4182 10.015C6.4182 10.2794 6.52324 10.533 6.71022 10.72L11.3002 15.31C11.3927 15.4027 11.5026 15.4763 11.6236 15.5265C11.7446 15.5766 11.8743 15.6025 12.0052 15.6025C12.1362 15.6025 12.2659 15.5766 12.3868 15.5265C12.5078 15.4763 12.6177 15.4027 12.7102 15.31L17.3002 10.72C17.6802 10.34 17.6802 9.70002 17.2902 9.31002Z"
-                      fill="black"
-                    />
-                  </svg>
-                </button>
-
-                {idCabangOpen && (
-                  <div className="w-full relative">
-                    <DropdownSelector
-                      selected={(option) => setIdCabang(option)}
-                      options={["Cabang 01", "Cabang 02", "Cabang 03"]}
-                      onClose={() => setIdCabangOpen(false)}
-                    />
-                  </div>
-                )}
+                  className={`w-full flex justify-between py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] text-start text-black bg-transparent focus:outline-none disabled:cursor-not-allowed`}
+                  defaultValue={member.branchId}
+                  disabled
+                />
               </div>
             </div>
             <div className="w-1/3">
@@ -112,7 +175,9 @@ const DetailPinjamanAnggotaBaru = () => {
                 id="namaKetuaKelompok"
                 name="namaKetuaKelompok"
                 placeholder="Isi Nama Ketua Kelompok"
-                className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
+                disabled
+                defaultValue={member.leader ? member.leader.name : ""}
+                className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed"
               />
             </div>
             <div className="w-1/3">
@@ -122,48 +187,25 @@ const DetailPinjamanAnggotaBaru = () => {
                 id="idKetuaKelompok"
                 name="idKetuaKelompok"
                 placeholder="Isi ID Ketua Kelompok"
-                className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
+                defaultValue={member.leaderId}
+                disabled
+                className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed"
               />
             </div>
           </div>
           <div className="flex w-full gap-2">
             <div className="w-1/3">
               <label htmlFor="statusPernikahan">Status Pernikahan</label>
-              <button
-                type="button"
+              <input
+                type="text"
                 name="statusPernikahan"
                 id="statusPernikahan"
-                className={`w-full flex justify-between py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] text-start text-[#d9d9d9] bg-transparent focus:outline-none ${
-                  statusPernikahan === "Pilih Status"
-                    ? "text-[#d9d9d9]"
-                    : "text-primary"
-                }`}
-                onClick={() => setStatusPernikahanOpen(!statusPernikahanOpen)}
-              >
-                {statusPernikahan}
-                <svg
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M17.2902 9.31002C17.1977 9.21732 17.0878 9.14377 16.9668 9.09359C16.8459 9.04341 16.7162 9.01758 16.5852 9.01758C16.4543 9.01758 16.3246 9.04341 16.2036 9.09359C16.0826 9.14377 15.9727 9.21732 15.8802 9.31002L12.0002 13.19L8.12022 9.31002C7.93324 9.12304 7.67965 9.018 7.41522 9.018C7.1508 9.018 6.8972 9.12304 6.71022 9.31002C6.52324 9.497 6.4182 9.7506 6.4182 10.015C6.4182 10.2794 6.52324 10.533 6.71022 10.72L11.3002 15.31C11.3927 15.4027 11.5026 15.4763 11.6236 15.5265C11.7446 15.5766 11.8743 15.6025 12.0052 15.6025C12.1362 15.6025 12.2659 15.5766 12.3868 15.5265C12.5078 15.4763 12.6177 15.4027 12.7102 15.31L17.3002 10.72C17.6802 10.34 17.6802 9.70002 17.2902 9.31002Z"
-                    fill="black"
-                  />
-                </svg>
-              </button>
-
-              {statusPernikahanOpen && (
-                <div className="w-full relative">
-                  <DropdownSelector
-                    selected={(option) => setStatusPernikahan(option)}
-                    options={["Sudah Menikah", "Belum Menikah"]}
-                    onClose={() => setStatusPernikahanOpen(false)}
-                  />
-                </div>
-              )}
+                defaultValue={
+                  member.isMarried ? "Sudah Menikah" : "Belum Menikah"
+                }
+                disabled
+                className={`w-full flex justify-between py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] text-start text-black  bg-transparent focus:outline-none disabled:cursor-not-allowed`}
+              />
             </div>
             <div className="w-2/3">
               <label htmlFor="namaSuamiIstri">Nama Suami/Istri</label>
@@ -172,6 +214,8 @@ const DetailPinjamanAnggotaBaru = () => {
                 id="namaSuamiIstri"
                 name="namaSuamiIstri"
                 placeholder="*Jika Sudah Menikah"
+                defaultValue={member.spouse ? member.spouse.name : "-"}
+                disabled
                 className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
               />
             </div>
@@ -184,7 +228,9 @@ const DetailPinjamanAnggotaBaru = () => {
                 id="tempatLahir"
                 name="tempatLahir"
                 placeholder="Isi Tempat Lahir Sesuai KTP"
-                className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
+                disabled
+                defaultValue={member.birthPlace}
+                className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed"
               />
             </div>
             <div className="w-1/4">
@@ -193,7 +239,9 @@ const DetailPinjamanAnggotaBaru = () => {
                 type="date"
                 id="tanggalLahir"
                 name="tanggalLahir"
-                className="w-full py-[10px] px-[20px] border border-[#d9d9d9] text-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
+                disabled
+                defaultValue={member.birthDate}
+                className="w-full py-[10px] px-[20px] border border-[#d9d9d9] text-black rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed"
               />
             </div>
             <div className="w-1/4">
@@ -203,47 +251,21 @@ const DetailPinjamanAnggotaBaru = () => {
                 id="umur"
                 name="umur"
                 placeholder="Auto generate"
-                className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
+                defaultValue={member.birthDate && countAge(member.birthDate)}
+                className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed"
                 disabled
               />
             </div>
             <div className="w-1/5">
               <label htmlFor="jenisKelamin">Jenis Kelamin</label>
-              <button
-                type="button"
+              <input
+                type="text"
                 name="jenisKelamin"
                 id="jenisKelamin"
-                className={`w-full flex justify-between py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] text-start text-[#d9d9d9] bg-transparent focus:outline-none ${
-                  jenisKelamin === "Pilih Jenis Kelamin"
-                    ? "text-[#d9d9d9]"
-                    : "text-primary"
-                }`}
-                onClick={() => setJenisKelaminOpen(!jenisKelaminOpen)}
-              >
-                {jenisKelamin}
-                <svg
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M17.2902 9.31002C17.1977 9.21732 17.0878 9.14377 16.9668 9.09359C16.8459 9.04341 16.7162 9.01758 16.5852 9.01758C16.4543 9.01758 16.3246 9.04341 16.2036 9.09359C16.0826 9.14377 15.9727 9.21732 15.8802 9.31002L12.0002 13.19L8.12022 9.31002C7.93324 9.12304 7.67965 9.018 7.41522 9.018C7.1508 9.018 6.8972 9.12304 6.71022 9.31002C6.52324 9.497 6.4182 9.7506 6.4182 10.015C6.4182 10.2794 6.52324 10.533 6.71022 10.72L11.3002 15.31C11.3927 15.4027 11.5026 15.4763 11.6236 15.5265C11.7446 15.5766 11.8743 15.6025 12.0052 15.6025C12.1362 15.6025 12.2659 15.5766 12.3868 15.5265C12.5078 15.4763 12.6177 15.4027 12.7102 15.31L17.3002 10.72C17.6802 10.34 17.6802 9.70002 17.2902 9.31002Z"
-                    fill="black"
-                  />
-                </svg>
-              </button>
-
-              {jenisKelaminOpen && (
-                <div className="w-full relative">
-                  <DropdownSelector
-                    selected={(option) => setJenisKelamin(option)}
-                    options={["Laki - Laki", "Perempuan"]}
-                    onClose={() => setJenisKelaminOpen(false)}
-                  />
-                </div>
-              )}
+                disabled
+                defaultValue={member.gender}
+                className={`w-full flex justify-between py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] text-start text-black bg-transparent focus:outline-none disabled:cursor-not-allowed`}
+              />
             </div>
           </div>
           <div className="flex w-full gap-2">
@@ -254,51 +276,21 @@ const DetailPinjamanAnggotaBaru = () => {
                 id="nik"
                 name="nik"
                 placeholder="NIK Harus Sesuai KTP dan Terdaftar di Dukcapil"
+                defaultValue={member.nik}
+                disabled
                 className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
               />
             </div>
             <div className="w-1/5">
               <label htmlFor="agama">Agama</label>
-              <button
-                type="button"
+              <input
+                type="text"
                 name="agama"
                 id="agama"
-                className={`w-full flex justify-between py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] text-start text-[#d9d9d9] bg-transparent focus:outline-none ${
-                  agama === "Pilih Agama" ? "text-[#d9d9d9]" : "text-primary"
-                }`}
-                onClick={() => setAgamaOpen(!agamaOpen)}
-              >
-                {agama}
-                <svg
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M17.2902 9.31002C17.1977 9.21732 17.0878 9.14377 16.9668 9.09359C16.8459 9.04341 16.7162 9.01758 16.5852 9.01758C16.4543 9.01758 16.3246 9.04341 16.2036 9.09359C16.0826 9.14377 15.9727 9.21732 15.8802 9.31002L12.0002 13.19L8.12022 9.31002C7.93324 9.12304 7.67965 9.018 7.41522 9.018C7.1508 9.018 6.8972 9.12304 6.71022 9.31002C6.52324 9.497 6.4182 9.7506 6.4182 10.015C6.4182 10.2794 6.52324 10.533 6.71022 10.72L11.3002 15.31C11.3927 15.4027 11.5026 15.4763 11.6236 15.5265C11.7446 15.5766 11.8743 15.6025 12.0052 15.6025C12.1362 15.6025 12.2659 15.5766 12.3868 15.5265C12.5078 15.4763 12.6177 15.4027 12.7102 15.31L17.3002 10.72C17.6802 10.34 17.6802 9.70002 17.2902 9.31002Z"
-                    fill="black"
-                  />
-                </svg>
-              </button>
-
-              {agamaOpen && (
-                <div className="w-full relative">
-                  <DropdownSelector
-                    selected={(option) => setAgama(option)}
-                    options={[
-                      "Islam",
-                      "Kristen",
-                      "Katolik",
-                      "Hindu",
-                      "Budha",
-                      "Konghucu",
-                    ]}
-                    onClose={() => setAgamaOpen(false)}
-                  />
-                </div>
-              )}
+                disabled
+                defaultValue={member.religion}
+                className={`w-full flex justify-between py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] text-start text-black bg-transparent focus:outline-none disabled:cursor-not-allowed`}
+              />
             </div>
             <div className="w-2/5">
               <label htmlFor="pekerjaan">Pekerjaan</label>
@@ -307,6 +299,8 @@ const DetailPinjamanAnggotaBaru = () => {
                 id="pekerjaan"
                 name="pekerjaan"
                 placeholder="Isi Sesuai KTP"
+                defaultValue={member.occupation}
+                disabled
                 className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
               />
             </div>
@@ -320,7 +314,9 @@ const DetailPinjamanAnggotaBaru = () => {
                   id="alamatCabang"
                   name="alamatCabang"
                   placeholder="Isi Alamat Lengkap Sesuai KTP"
-                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
+                  disabled
+                  defaultValue={member.address}
+                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed"
                 />
               </div>
             </div>
@@ -332,7 +328,9 @@ const DetailPinjamanAnggotaBaru = () => {
                   id="kelurahan"
                   name="kelurahan"
                   placeholder="Isi Sesuai KTP"
-                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
+                  defaultValue={member.kelurahan}
+                  disabled
+                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed"
                 />
               </div>
               <div>
@@ -342,7 +340,9 @@ const DetailPinjamanAnggotaBaru = () => {
                   id="kecamatan"
                   name="kecamatan"
                   placeholder="Isi Sesuai KTP"
-                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
+                  defaultValue={member.kecamatan}
+                  disabled
+                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed"
                 />
               </div>
               <div>
@@ -352,7 +352,9 @@ const DetailPinjamanAnggotaBaru = () => {
                   id="kota"
                   name="kota"
                   placeholder="Isi Sesuai KTP"
-                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
+                  defaultValue={member.city}
+                  disabled
+                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed"
                 />
               </div>
               <div>
@@ -362,7 +364,9 @@ const DetailPinjamanAnggotaBaru = () => {
                   id="kodePos"
                   name="kodePos"
                   placeholder="Isi Sesuai KTP"
-                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
+                  disabled
+                  defaultValue={member.postalCode}
+                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed"
                 />
               </div>
             </div>
@@ -370,41 +374,14 @@ const DetailPinjamanAnggotaBaru = () => {
           <div className="flex w-full gap-2">
             <div className="w-2/5">
               <label htmlFor="pendidikan">Pendidikan Terakhir</label>
-              <button
-                type="button"
+              <input
+                type="text"
                 name="pendidikan"
                 id="pendidikan"
-                className={`w-full flex justify-between py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] text-start text-[#d9d9d9] bg-transparent focus:outline-none ${
-                  pendidikan === "Pilih Pendidikan Terakhir"
-                    ? "text-[#d9d9d9]"
-                    : "text-primary"
-                }`}
-                onClick={() => setPendidikanOpen(!pendidikanOpen)}
-              >
-                {pendidikan}
-                <svg
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M17.2902 9.31002C17.1977 9.21732 17.0878 9.14377 16.9668 9.09359C16.8459 9.04341 16.7162 9.01758 16.5852 9.01758C16.4543 9.01758 16.3246 9.04341 16.2036 9.09359C16.0826 9.14377 15.9727 9.21732 15.8802 9.31002L12.0002 13.19L8.12022 9.31002C7.93324 9.12304 7.67965 9.018 7.41522 9.018C7.1508 9.018 6.8972 9.12304 6.71022 9.31002C6.52324 9.497 6.4182 9.7506 6.4182 10.015C6.4182 10.2794 6.52324 10.533 6.71022 10.72L11.3002 15.31C11.3927 15.4027 11.5026 15.4763 11.6236 15.5265C11.7446 15.5766 11.8743 15.6025 12.0052 15.6025C12.1362 15.6025 12.2659 15.5766 12.3868 15.5265C12.5078 15.4763 12.6177 15.4027 12.7102 15.31L17.3002 10.72C17.6802 10.34 17.6802 9.70002 17.2902 9.31002Z"
-                    fill="black"
-                  />
-                </svg>
-              </button>
-
-              {pendidikanOpen && (
-                <div className="w-full relative">
-                  <DropdownSelector
-                    selected={(option) => setPendidikan(option)}
-                    options={["S1", "SMA"]}
-                    onClose={() => setPendidikanOpen(false)}
-                  />
-                </div>
-              )}
+                defaultValue={member.education}
+                disabled
+                className={`w-full flex justify-between py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] text-start text-black bg-transparent focus:outline-none`}
+              />
             </div>
             <div className="w-3/5">
               <label htmlFor="noHp">No. Hp (WhatsApp)</label>
@@ -413,6 +390,8 @@ const DetailPinjamanAnggotaBaru = () => {
                 id="noHp"
                 name="noHp"
                 placeholder="Isi Nomor HP (WhatsApp)"
+                defaultValue={member.phoneNumber}
+                disabled
                 className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
               />
             </div>
@@ -472,14 +451,19 @@ const DetailPinjamanAnggotaBaru = () => {
           type="submit"
           className="w-[450px] px-[20px] py-[12px] text-white bg-primary rounded-lg mx-auto"
           onClick={(e) => {
-            setProsesData(false);
-            setBerhasil(true);
+            verifyData();
           }}
         >
           Proses Data
         </button>
       </Modal>
-      <Modal isVisible={showBerhasil} onClose={() => setBerhasil(false)}>
+      <Modal
+        isVisible={showBerhasil}
+        onClose={() => {
+          setBerhasil(false);
+          router.push("/status-pengajuan/anggota-baru");
+        }}
+      >
         <div className="w-[98px] h-[98px] rounded-full bg-primary place-self-center relative">
           <svg
             width="43"
@@ -511,6 +495,7 @@ const DetailPinjamanAnggotaBaru = () => {
           className="w-[450px] px-[20px] py-[12px] text-white bg-primary rounded-lg mx-auto"
           onClick={(e) => {
             setBerhasil(false);
+            router.push("/status-pengajuan/anggota-baru");
           }}
         >
           OK
@@ -520,4 +505,4 @@ const DetailPinjamanAnggotaBaru = () => {
   );
 };
 
-export default DetailPinjamanAnggotaBaru;
+export default DetailAnggotaBaru;

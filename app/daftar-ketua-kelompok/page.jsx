@@ -1,10 +1,40 @@
 "use client";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 
 const DaftarKetuaKelompok = () => {
   const { data: session, status } = useSession();
+
+  const [leaders, setLeaders] = useState([]);
+  const [search, setSearch] = useState("");
+
+  useEffect(() => {
+    if (status === "loading") return;
+    const getLeaders = async () => {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}leaders`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${session.token}`,
+        },
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setLeaders(data.data);
+      } else {
+        toast.error(data.message);
+      }
+    };
+
+    getLeaders();
+  }, [status, session]);
+
+  const filteredLeaders = leaders.filter((leader) => {
+    return (
+      leader.name.toLowerCase().includes(search.toLowerCase()) ||
+      leader.id.toString().toLowerCase().includes(search.toLowerCase())
+    );
+  });
 
   if (status === "loading") return null;
   return (
@@ -15,7 +45,8 @@ const DaftarKetuaKelompok = () => {
           <input
             type="text"
             name="search"
-            placeholder="Cari Ketua Kelompok"
+            placeholder="Cari Ketua Kelompok Berdasarkan ID dan nama..."
+            onChange={(e) => setSearch(e.target.value)}
             className="w-full bg-white rounded-md p-[12px] focus:outline-none text-base font-regular"
           />
           <svg
@@ -75,186 +106,37 @@ const DaftarKetuaKelompok = () => {
             </tr>
           </thead>
           <tbody>
-            <tr className=" border-b border-[#DDE1E6]">
-              <td className="break-words px-[10px]">01.02.004</td>
-              <td className="px-[10px]">Nama Anggota</td>
-              <td className="px-[10px]">3522061124020111</td>
-              <td className="px-[10px]">Umur (Th.)</td>
-              <td className="px-[10px]">L</td>
-              <td className="px-[10px]">Kediri</td>
-              <td className="px-[10px]">088231746821</td>
-              <td className="px-[10px]">10</td>
-              <td className="px-[10px]">
-                <div className="flex justify-center items-center h-[48px]">
-                  <Link
-                    href={"/daftar-ketua-kelompok/detail"}
-                    className="bg-primary w-[98px] py-[1px] text-white rounded-lg text-center"
-                  >
-                    Cek Detail
-                  </Link>
-                </div>
-              </td>
-            </tr>
-            <tr className=" border-b border-[#DDE1E6]">
-              <td className="break-words px-[10px]">01.02.004</td>
-              <td className="px-[10px]">Nama Anggota</td>
-              <td className="px-[10px]">3522061124020111</td>
-              <td className="px-[10px]">Umur (Th.)</td>
-              <td className="px-[10px]">L</td>
-              <td className="px-[10px]">Kediri</td>
-              <td className="px-[10px]">088231746821</td>
-              <td className="px-[10px]">10</td>
-              <td className="px-[10px]">
-                <div className="flex justify-center items-center h-[48px]">
-                  <Link
-                    href={"/daftar-ketua-kelompok/detail"}
-                    className="bg-primary w-[98px] py-[1px] text-white rounded-lg text-center"
-                  >
-                    Cek Detail
-                  </Link>
-                </div>
-              </td>
-            </tr>
-            <tr className=" border-b border-[#DDE1E6]">
-              <td className="break-words px-[10px]">01.02.004</td>
-              <td className="px-[10px]">Nama Anggota</td>
-              <td className="px-[10px]">3522061124020111</td>
-              <td className="px-[10px]">Umur (Th.)</td>
-              <td className="px-[10px]">L</td>
-              <td className="px-[10px]">Kediri</td>
-              <td className="px-[10px]">088231746821</td>
-              <td className="px-[10px]">10</td>
-              <td className="px-[10px]">
-                <div className="flex justify-center items-center h-[48px]">
-                  <Link
-                    href={"/daftar-ketua-kelompok/detail"}
-                    className="bg-primary w-[98px] py-[1px] text-white rounded-lg text-center"
-                  >
-                    Cek Detail
-                  </Link>
-                </div>
-              </td>
-            </tr>
-            <tr className=" border-b border-[#DDE1E6]">
-              <td className="break-words px-[10px]">01.02.004</td>
-              <td className="px-[10px]">Nama Anggota</td>
-              <td className="px-[10px]">3522061124020111</td>
-              <td className="px-[10px]">Umur (Th.)</td>
-              <td className="px-[10px]">L</td>
-              <td className="px-[10px]">Kediri</td>
-              <td className="px-[10px]">088231746821</td>
-              <td className="px-[10px]">10</td>
-              <td className="px-[10px]">
-                <div className="flex justify-center items-center h-[48px]">
-                  <Link
-                    href={"/daftar-ketua-kelompok/detail"}
-                    className="bg-primary w-[98px] py-[1px] text-white rounded-lg text-center"
-                  >
-                    Cek Detail
-                  </Link>
-                </div>
-              </td>
-            </tr>
-            <tr className=" border-b border-[#DDE1E6]">
-              <td className="break-words px-[10px]">01.02.004</td>
-              <td className="px-[10px]">Nama Anggota</td>
-              <td className="px-[10px]">3522061124020111</td>
-              <td className="px-[10px]">Umur (Th.)</td>
-              <td className="px-[10px]">L</td>
-              <td className="px-[10px]">Kediri</td>
-              <td className="px-[10px]">088231746821</td>
-              <td className="px-[10px]">10</td>
-              <td className="px-[10px]">
-                <div className="flex justify-center items-center h-[48px]">
-                  <Link
-                    href={"/daftar-ketua-kelompok/detail"}
-                    className="bg-primary w-[98px] py-[1px] text-white rounded-lg text-center"
-                  >
-                    Cek Detail
-                  </Link>
-                </div>
-              </td>
-            </tr>
-            <tr className=" border-b border-[#DDE1E6]">
-              <td className="break-words px-[10px]">01.02.004</td>
-              <td className="px-[10px]">Nama Anggota</td>
-              <td className="px-[10px]">3522061124020111</td>
-              <td className="px-[10px]">Umur (Th.)</td>
-              <td className="px-[10px]">L</td>
-              <td className="px-[10px]">Kediri</td>
-              <td className="px-[10px]">088231746821</td>
-              <td className="px-[10px]">10</td>
-              <td className="px-[10px]">
-                <div className="flex justify-center items-center h-[48px]">
-                  <Link
-                    href={"/daftar-ketua-kelompok/detail"}
-                    className="bg-primary w-[98px] py-[1px] text-white rounded-lg text-center"
-                  >
-                    Cek Detail
-                  </Link>
-                </div>
-              </td>
-            </tr>
-            <tr className=" border-b border-[#DDE1E6]">
-              <td className="break-words px-[10px]">01.02.004</td>
-              <td className="px-[10px]">Nama Anggota</td>
-              <td className="px-[10px]">3522061124020111</td>
-              <td className="px-[10px]">Umur (Th.)</td>
-              <td className="px-[10px]">L</td>
-              <td className="px-[10px]">Kediri</td>
-              <td className="px-[10px]">088231746821</td>
-              <td className="px-[10px]">10</td>
-              <td className="px-[10px]">
-                <div className="flex justify-center items-center h-[48px]">
-                  <Link
-                    href={"/daftar-ketua-kelompok/detail"}
-                    className="bg-primary w-[98px] py-[1px] text-white rounded-lg text-center"
-                  >
-                    Cek Detail
-                  </Link>
-                </div>
-              </td>
-            </tr>
-            <tr className=" border-b border-[#DDE1E6]">
-              <td className="break-words px-[10px]">01.02.004</td>
-              <td className="px-[10px]">Nama Anggota</td>
-              <td className="px-[10px]">3522061124020111</td>
-              <td className="px-[10px]">Umur (Th.)</td>
-              <td className="px-[10px]">L</td>
-              <td className="px-[10px]">Kediri</td>
-              <td className="px-[10px]">088231746821</td>
-              <td className="px-[10px]">10</td>
-              <td className="px-[10px]">
-                <div className="flex justify-center items-center h-[48px]">
-                  <Link
-                    href={"/daftar-ketua-kelompok/detail"}
-                    className="bg-primary w-[98px] py-[1px] text-white rounded-lg text-center"
-                  >
-                    Cek Detail
-                  </Link>
-                </div>
-              </td>
-            </tr>
-            <tr className=" border-b border-[#DDE1E6]">
-              <td className="break-words px-[10px]">01.02.004</td>
-              <td className="px-[10px]">Nama Anggota</td>
-              <td className="px-[10px]">3522061124020111</td>
-              <td className="px-[10px]">Umur (Th.)</td>
-              <td className="px-[10px]">L</td>
-              <td className="px-[10px]">Kediri</td>
-              <td className="px-[10px]">088231746821</td>
-              <td className="px-[10px]">10</td>
-              <td className="px-[10px]">
-                <div className="flex justify-center items-center h-[48px]">
-                  <Link
-                    href={"/daftar-ketua-kelompok/detail"}
-                    className="bg-primary w-[98px] py-[1px] text-white rounded-lg text-center"
-                  >
-                    Cek Detail
-                  </Link>
-                </div>
-              </td>
-            </tr>
+            {filteredLeaders.length > 0 ? (
+              filteredLeaders.map((item, index) => (
+                <tr key={item.id} className=" border-b border-[#DDE1E6]">
+                  <td className="break-words px-[10px]">{item.id}</td>
+                  <td className="px-[10px]">{item.name}</td>
+                  <td className="px-[10px]">{item.nik}</td>
+                  <td className="px-[10px]">{item.age}</td>
+                  <td className="px-[10px]">
+                    {" "}
+                    {item.gender === "laku-laki" ? "L" : "P"}
+                  </td>
+                  <td className="px-[10px]">{item.city}</td>
+                  <td className="px-[10px]">{item.phoneNumber}</td>
+                  <td className="px-[10px]">{item.memberCount}</td>
+                  <td className="px-[10px]">
+                    <div className="flex justify-center items-center h-[48px]">
+                      <Link
+                        href={`/daftar-ketua-kelompok/detail/${item.id}`}
+                        className="bg-primary w-[98px] py-[1px] text-white rounded-lg text-center"
+                      >
+                        Cek Detail
+                      </Link>
+                    </div>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan={8}>Belum ada Data...</td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>
