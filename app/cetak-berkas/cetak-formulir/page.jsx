@@ -13,9 +13,11 @@ const CetakFormulir = () => {
           height={1578}
         />
       </div>
-      <button className="bg-primary text-white w-[228px] h-[48px] rounded-md text-center ml-auto mt-2">
-        Print
-      </button>
+      <Link href={"/documents/formulir_pendaftaran.pdf"} className="ml-auto ">
+        <button className="bg-primary text-white w-[228px] h-[48px] rounded-md text-center mt-2">
+          Print
+        </button>
+      </Link>
     </div>
   );
 };

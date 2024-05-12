@@ -46,8 +46,10 @@ export const authOptions = {
       const data = await res.json();
 
       if (!res.ok) {
-        console.log(data.message);
+        return null;
       }
+
+      session.branch = data.data.branch;
 
       session.user = {
         id: decoded.id,
