@@ -5,7 +5,7 @@ import ButtonNav from "@/components/ButtonNav";
 const Layout = ({ children }) => {
   return (
     <div className="flex flex-col gap-2">
-      <h2 className="text-2xl font-bold text-black">Form Simpanan/Pinjaman</h2>
+      <h2 className="text-2xl font-bold text-black">Form Anggota</h2>
       <div className="flex gap-5">
         <ButtonNav />
       </div>

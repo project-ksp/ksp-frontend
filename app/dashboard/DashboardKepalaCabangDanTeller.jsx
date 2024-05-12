@@ -6,6 +6,7 @@ import Modal from "@/components/Modal";
 import { useSession } from "next-auth/react";
 import toast from "react-hot-toast";
 import { data } from "autoprefixer";
+import Loading from "@/components/Loading";
 
 const DashboardKepalaCabangDanTeller = () => {
   const { data: session, status } = useSession();
@@ -43,7 +44,7 @@ const DashboardKepalaCabangDanTeller = () => {
     return () => clearTimeout(getData);
   }, [search, status, session]);
 
-  if (status === "loading") return <div>Loading...</div>;
+  if (status === "loading") return <Loading />;
   return (
     <div className="flex flex-col gap-[13px]">
       <div className="bg-gradient-to-r from-[#134cb0] from-0% via-[#007daa] via-35% to-[#00358f] h-[215px] py-[74px] px-[77px] text-white relative rounded-2xl overflow-hidden">
@@ -385,7 +386,7 @@ const DashboardKepalaCabangDanTeller = () => {
                   <td className="px-[10px]">
                     <div className="flex justify-center items-center h-[64px]">
                       <Link
-                        href={"/detail"}
+                        href={`/daftar-anggota/detail/${item.id}`}
                         className="bg-primary w-[98px] py-[1px] text-white rounded-lg text-center"
                       >
                         Cek Detail

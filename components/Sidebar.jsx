@@ -53,7 +53,11 @@ const Sidebar = () => {
             }
           />
           <ButtonAccount
-            jabatan={`${session.user.role}`}
+            jabatan={`${
+              session.user.role === "branch_head"
+                ? "Kepala Cabang"
+                : session.user.role.charAt(0) + session.user.role.slice(1)
+            }`}
             nama={`${session.user.name}`}
           />
         </div>

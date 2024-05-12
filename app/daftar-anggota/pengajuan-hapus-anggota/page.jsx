@@ -1,7 +1,45 @@
-import React from "react";
+"use client";
+
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
+import Loading from "@/components/Loading";
+import toast from "react-hot-toast";
 
 const PengajuanHapusAnggota = () => {
+  const { data: session, status } = useSession();
+
+  const [members, setMembers] = useState([]);
+  const [search, setSearch] = useState("");
+
+  useEffect(() => {
+    if (status === "loading") return;
+    const getMembers = async () => {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}tellers`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${session.token}`,
+        },
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setMembers(data.data);
+      } else {
+        toast.error(data.message);
+      }
+    };
+
+    getMembers();
+  }, [status, session]);
+
+  const filteredMember = members.filter((member) => {
+    return (
+      member.name.toLowerCase().includes(search.toLowerCase()) ||
+      member.id.toString().toLowerCase().includes(search.toLowerCase())
+    );
+  });
+
+  if (status === "loading") return <Loading />;
   return (
     <div className="flex flex-col gap-2">
       <h2 className="text-2xl font-bold text-black">
@@ -11,7 +49,8 @@ const PengajuanHapusAnggota = () => {
         <input
           type="text"
           name="search"
-          placeholder="Cari ID Anggota"
+          placeholder="Cari Berdasarkan ID dan Nama Anggota..."
+          onChange={(e) => setSearch(e.target.value)}
           className="w-full bg-white rounded-md p-[12px] focus:outline-none text-base font-regular"
         />
         <svg
@@ -135,6 +174,42 @@ const PengajuanHapusAnggota = () => {
                 </div>
               </td>
             </tr>
+            {filteredMember.length > 0 ? (
+              filteredMember.map((item, index) => (
+                <tr key={item.id} className=" border-b border-[#DDE1E6]">
+                  <td className="break-words px-[10px]">{item.id}</td>
+                  <td className="px-[10px]">{item.name}</td>
+                  <td className="px-[10px]">{item.nik}</td>
+                  <td className="px-[10px]">
+                    {item.gender === "laki-laki" ? "L" : "P"}
+                  </td>
+                  <td className="px-[10px]">{item.age}</td>
+                  <td className="px-[10px]">{item.city}</td>
+                  <td className="px-[10px] break-words">{item.phoneNumber}</td>
+                  <td className="px-[10px]">
+                    <div className="flex justify-center items-center h-[64px]">
+                      <button className="bg-red-status-1 w-[86px] py-[1px] text-white rounded-lg mx-auto my-auto">
+                        Tidak Aktif
+                      </button>
+                    </div>
+                  </td>
+                  <td className="px-[10px]">
+                    <div className="flex justify-center items-center h-[48px]">
+                      <Link
+                        href={`/daftar-anggota/pengajuan-hapus-anggota/detail/${item.id}`}
+                        className="bg-primary w-[98px] py-[1px] text-white rounded-lg text-center"
+                      >
+                        Cek Detail
+                      </Link>
+                    </div>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan={8}>Belum ada Data...</td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>

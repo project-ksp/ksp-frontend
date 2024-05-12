@@ -3,6 +3,7 @@ import React, { useState, useEffect, Suspense } from "react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import crypto from "crypto";
+import Loading from "@/components/Loading";
 
 const AccountBlock = () => {
   const { data: session, status } = useSession();
@@ -71,10 +72,13 @@ const AccountBlock = () => {
   };
 
   const filteredAccount = data.filter((data) => {
-    return data.username.toLowerCase().includes(search.toLowerCase());
+    return (
+      data.username.toLowerCase().includes(search.toLowerCase()) ||
+      data.branchId.toString().toLowerCase().includes(search.toLowerCase())
+    );
   });
 
-  if (status === "loading") return <p>Loading... </p>;
+  if (status === "loading") return <Loading />;
 
   return (
     <div className="flex flex-col gap-[20px]">

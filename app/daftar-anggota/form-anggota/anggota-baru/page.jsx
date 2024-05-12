@@ -1,30 +1,161 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import DropdownSelector from "@/components/DropdownSelector";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import Loading from "@/components/Loading";
 
 const TambahAnggota = () => {
-  const [idCabang, setIdCabang] = useState("Pilih Cabang");
-  const [statusPernikahan, setStatusPernikahan] = useState("Pilih Status");
-  const [jenisKelamin, setJenisKelamin] = useState("Pilih Jenis Kelamin");
-  const [agama, setAgama] = useState("Pilih Agama");
-  const [pendidikan, setPendidikan] = useState("Pilih Pendidikan Terakhir");
+  const { data: session, status } = useSession();
+  const router = useRouter();
+  const formRef = useRef();
+
   const [fotoDiri, setFotoDiri] = useState(null);
   const [fotoKtp, setFotoKtp] = useState(null);
   const [pendidikanOpen, setPendidikanOpen] = useState(false);
   const [agamaOpen, setAgamaOpen] = useState(false);
   const [jenisKelaminOpen, setJenisKelaminOpen] = useState(false);
   const [statusPernikahanOpen, setStatusPernikahanOpen] = useState(false);
-  const [idCabangOpen, setIdCabangOpen] = useState(false);
 
   const [member, setMember] = useState({
     name: "",
     nik: "",
-    gender: "",
-    isMarried: false,
+    gender: "Pilih Jenis Kelamin",
+    isMarried: "Pilih Status",
+    spouse: "",
+    birthPlace: "",
+    birthDate: "",
+    religion: "Pilih Agama",
+    occupation: "",
+    address: "",
+    kelurahan: "",
+    kecamatan: "",
+    city: "",
+    postalCode: "",
+    education: "Pilih Pendidikan Terakhir",
+    phoneNumber: "",
+    profilePictureUrl: "",
+    idPictureUrl: "",
+    leaderId: "",
   });
+
+  const countAge = (date) => {
+    const today = new Date();
+    const birthDate = new Date(date);
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const month = today.getMonth() - birthDate.getMonth();
+    if (month < 0 || (month === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    return age;
+  };
+
+  const uploadFotoDiri = async (e) => {
+    setFotoDiri(e.target.files[0]);
+    const formData = new FormData();
+    formData.append("file", e.target.files[0]);
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}uploads/temp/image`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${session.token}`,
+        },
+        body: formData,
+      }
+    );
+    const data = await res.json();
+    if (res.ok) {
+      setMember({ ...member, profilePictureUrl: data.data });
+      localStorage.setItem("profilePictureUrl", data.data);
+    } else {
+      setFotoDiri(null);
+      toast.error(data.message);
+    }
+  };
+
+  const uploadFotoKtp = async (e) => {
+    setFotoKtp(e.target.files[0]);
+    const formData = new FormData();
+    formData.append("file", e.target.files[0]);
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}uploads/temp/image`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${session.token}`,
+        },
+        body: formData,
+      }
+    );
+    const data = await res.json();
+    if (res.ok) {
+      setMember({ ...member, idPictureUrl: data.data });
+      localStorage.setItem("idPictureUrl", data.data);
+    } else {
+      setFotoKtp(null);
+      toast.error(data.message);
+    }
+  };
+
+  useEffect(() => {
+    if (status === "loading") return;
+
+    const storedName = localStorage.getItem("name") || "";
+    const storedNik = localStorage.getItem("nik") || "";
+    const storedGender =
+      localStorage.getItem("gender") || "Pilih Jenis Kelamin";
+    const storedIsMarried = localStorage.getItem("isMarried") || "Pilih Status";
+    const storedBirthPlace = localStorage.getItem("birthPlace") || "";
+    const storedBirthDate = localStorage.getItem("birthDate") || "";
+    const storedReligion = localStorage.getItem("religion") || "Pilih Agama";
+    const storedOccupation = localStorage.getItem("occupation") || "";
+    const storedAddress = localStorage.getItem("address") || "";
+    const storedKelurahan = localStorage.getItem("kelurahan") || "";
+    const storedKecamatan = localStorage.getItem("kecamatan") || "";
+    const storedCity = localStorage.getItem("city") || "";
+    const storedPostalCode = localStorage.getItem("postalCode") || "";
+    const storedEducation =
+      localStorage.getItem("education") || "Pilih Pendidikan Terakhir";
+    const storedPhoneNumber = localStorage.getItem("phoneNumber") || "";
+    const storedProfilePictureUrl =
+      localStorage.getItem("profilePictureUrl") || "";
+    const storedIdPictureUrl = localStorage.getItem("idPictureUrl") || "";
+    const storedLeaderId = localStorage.getItem("leaderId") || "";
+    const storedSpouse = localStorage.getItem("spouse") || "";
+
+    setMember({
+      name: storedName,
+      nik: storedNik,
+      gender: storedGender,
+      isMarried:
+        storedIsMarried === "Pilih Status"
+          ? storedIsMarried
+          : storedIsMarried === "true"
+          ? true
+          : false,
+      birthPlace: storedBirthPlace,
+      birthDate: storedBirthDate,
+      religion: storedReligion,
+      occupation: storedOccupation,
+      address: storedAddress,
+      kelurahan: storedKelurahan,
+      kecamatan: storedKecamatan,
+      city: storedCity,
+      postalCode: storedPostalCode,
+      education: storedEducation,
+      phoneNumber: storedPhoneNumber,
+      profilePictureUrl: storedProfilePictureUrl,
+      idPictureUrl: storedIdPictureUrl,
+      leaderId: storedLeaderId,
+      spouse: storedSpouse,
+    });
+  }, [status]);
+
+  if (status === "loading") return <Loading />;
 
   return (
     <>
@@ -37,60 +168,29 @@ const TambahAnggota = () => {
             <div className="w-1/3">
               <div>
                 <label htmlFor="idCabang">Cabang</label>
-                <button
-                  type="button"
+                <input
+                  type="text"
                   name="idCabang"
                   id="idCabang"
-                  className={`w-full flex justify-between py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] text-start text-[#d9d9d9] bg-transparent focus:outline-none ${
-                    idCabang === "Pilih Cabang"
-                      ? "text-[#d9d9d9]"
-                      : "text-primary"
-                  }`}
-                  onClick={() => setIdCabangOpen(!idCabangOpen)}
-                >
-                  {idCabang}
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M17.2902 9.31002C17.1977 9.21732 17.0878 9.14377 16.9668 9.09359C16.8459 9.04341 16.7162 9.01758 16.5852 9.01758C16.4543 9.01758 16.3246 9.04341 16.2036 9.09359C16.0826 9.14377 15.9727 9.21732 15.8802 9.31002L12.0002 13.19L8.12022 9.31002C7.93324 9.12304 7.67965 9.018 7.41522 9.018C7.1508 9.018 6.8972 9.12304 6.71022 9.31002C6.52324 9.497 6.4182 9.7506 6.4182 10.015C6.4182 10.2794 6.52324 10.533 6.71022 10.72L11.3002 15.31C11.3927 15.4027 11.5026 15.4763 11.6236 15.5265C11.7446 15.5766 11.8743 15.6025 12.0052 15.6025C12.1362 15.6025 12.2659 15.5766 12.3868 15.5265C12.5078 15.4763 12.6177 15.4027 12.7102 15.31L17.3002 10.72C17.6802 10.34 17.6802 9.70002 17.2902 9.31002Z"
-                      fill="black"
-                    />
-                  </svg>
-                </button>
-
-                {idCabangOpen && (
-                  <div className="w-full relative">
-                    <DropdownSelector
-                      selected={(option) => setIdCabang(option)}
-                      options={["Cabang 01", "Cabang 02", "Cabang 03"]}
-                      onClose={() => setIdCabangOpen(false)}
-                    />
-                  </div>
-                )}
+                  placeholder="Auto generate"
+                  disabled
+                  className={`w-full flex justify-between py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] text-start text-[#d9d9d9] bg-transparent focus:outline-none disabled:bg-black/5 disabled:cursor-not-allowed`}
+                />
               </div>
             </div>
-            <div className="w-1/3">
-              <label htmlFor="namaKetuaKelompok">Nama Ketua Kelompok</label>
-              <input
-                type="text"
-                id="namaKetuaKelompok"
-                name="namaKetuaKelompok"
-                placeholder="Isi Nama Ketua Kelompok"
-                className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
-              />
-            </div>
-            <div className="w-1/3">
+            <div className="w-2/3">
               <label htmlFor="idKetuaKelompok">ID Ketua Kelompok</label>
               <input
                 type="text"
                 id="idKetuaKelompok"
                 name="idKetuaKelompok"
                 placeholder="Isi ID Ketua Kelompok"
+                defaultValue={member.leaderId}
+                onChange={(e) => {
+                  setMember({ ...member, leaderId: e.target.value });
+                  localStorage.setItem("leaderId", e.target.value);
+                }}
+                required
                 className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
               />
             </div>
@@ -103,6 +203,12 @@ const TambahAnggota = () => {
                 id="namaLengkap"
                 name="namaLengkap"
                 placeholder="Isi"
+                defaultValue={member.name}
+                onChange={(e) => {
+                  setMember({ ...member, name: e.target.value });
+                  localStorage.setItem("name", e.target.value);
+                }}
+                required
                 className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
               />
             </div>
@@ -113,13 +219,18 @@ const TambahAnggota = () => {
                 name="statusPernikahan"
                 id="statusPernikahan"
                 className={`w-full flex justify-between py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] text-start text-[#d9d9d9] bg-transparent focus:outline-none ${
-                  statusPernikahan === "Pilih Status"
+                  member.isMarried === "Pilih Status"
                     ? "text-[#d9d9d9]"
                     : "text-primary"
                 }`}
                 onClick={() => setStatusPernikahanOpen(!statusPernikahanOpen)}
               >
-                {statusPernikahan}
+                {member.isMarried === "Pilih Status"
+                  ? "Pilih Status"
+                  : member.isMarried
+                  ? "Sudah Menikah"
+                  : "Belum Menikah"}
+
                 <svg
                   width="24"
                   height="24"
@@ -133,11 +244,19 @@ const TambahAnggota = () => {
                   />
                 </svg>
               </button>
-
               {statusPernikahanOpen && (
                 <div className="w-full relative">
                   <DropdownSelector
-                    selected={(option) => setStatusPernikahan(option)}
+                    selected={(option) => {
+                      setMember({
+                        ...member,
+                        isMarried: option === "Sudah Menikah" ? true : false,
+                      });
+                      localStorage.setItem(
+                        "isMarried",
+                        option === "Sudah Menikah" ? true : false
+                      );
+                    }}
                     options={["Sudah Menikah", "Belum Menikah"]}
                     onClose={() => setStatusPernikahanOpen(false)}
                   />
@@ -151,7 +270,21 @@ const TambahAnggota = () => {
                 id="namaSuamiIstri"
                 name="namaSuamiIstri"
                 placeholder="*Jika Sudah Menikah"
-                className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
+                defaultValue={member.spouse}
+                onChange={(e) => {
+                  setMember({
+                    ...member,
+                    spouse: e.target.value,
+                  });
+                  localStorage.setItem("spouse", e.target.value);
+                }}
+                className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:bg-black/5 disabled:cursor-not-allowed"
+                disabled={
+                  member.isMarried === "Pilih Status" ||
+                  member.isMarried === false
+                    ? true
+                    : false
+                }
               />
             </div>
           </div>
@@ -163,6 +296,12 @@ const TambahAnggota = () => {
                 id="tempatLahir"
                 name="tempatLahir"
                 placeholder="Isi Tempat Lahir Sesuai KTP"
+                defaultValue={member.birthPlace}
+                onChange={(e) => {
+                  setMember({ ...member, birthPlace: e.target.value });
+                  localStorage.setItem("birthPlace", e.target.value);
+                }}
+                required
                 className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
               />
             </div>
@@ -172,6 +311,17 @@ const TambahAnggota = () => {
                 type="date"
                 id="tanggalLahir"
                 name="tanggalLahir"
+                defaultValue={member.birthDate}
+                onChange={(e) => {
+                  new Date(e.target.value) < Date.now()
+                    ? setMember({
+                        ...member,
+                        birthDate: e.target.value,
+                      })
+                    : setMember({ ...member, birthDate: Date.now() });
+                  localStorage.setItem("birthDate", e.target.value);
+                }}
+                required
                 className="w-full py-[10px] px-[20px] border border-[#d9d9d9] text-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
               />
             </div>
@@ -182,24 +332,29 @@ const TambahAnggota = () => {
                 id="umur"
                 name="umur"
                 placeholder="Auto generate"
-                className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
+                value={
+                  member.birthDate === ""
+                    ? "Auto Generated"
+                    : countAge(member.birthDate)
+                }
+                className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:bg-black/5 disabled:cursor-not-allowed"
                 disabled
               />
             </div>
-            <div className="w-1/5">
+            <div className="w-1/4">
               <label htmlFor="jenisKelamin">Jenis Kelamin</label>
               <button
                 type="button"
                 name="jenisKelamin"
                 id="jenisKelamin"
                 className={`w-full flex justify-between py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] text-start text-[#d9d9d9] bg-transparent focus:outline-none ${
-                  jenisKelamin === "Pilih Jenis Kelamin"
+                  member.gender === "Pilih Jenis Kelamin"
                     ? "text-[#d9d9d9]"
                     : "text-primary"
                 }`}
                 onClick={() => setJenisKelaminOpen(!jenisKelaminOpen)}
               >
-                {jenisKelamin}
+                {member.gender.charAt(0).toUpperCase() + member.gender.slice(1)}
                 <svg
                   width="24"
                   height="24"
@@ -213,12 +368,17 @@ const TambahAnggota = () => {
                   />
                 </svg>
               </button>
-
               {jenisKelaminOpen && (
                 <div className="w-full relative">
                   <DropdownSelector
-                    selected={(option) => setJenisKelamin(option)}
-                    options={["Laki - Laki", "Perempuan"]}
+                    selected={(option) => {
+                      setMember({
+                        ...member,
+                        gender: option.toLowerCase(),
+                      });
+                      localStorage.setItem("gender", option.toLowerCase());
+                    }}
+                    options={["Laki-Laki", "Perempuan"]}
                     onClose={() => setJenisKelaminOpen(false)}
                   />
                 </div>
@@ -233,6 +393,12 @@ const TambahAnggota = () => {
                 id="nik"
                 name="nik"
                 placeholder="NIK Harus Sesuai KTP dan Terdaftar di Dukcapil"
+                defaultValue={member.nik}
+                onChange={(e) => {
+                  setMember({ ...member, nik: e.target.value });
+                  localStorage.setItem("nik", e.target.value);
+                }}
+                required
                 className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
               />
             </div>
@@ -243,11 +409,14 @@ const TambahAnggota = () => {
                 name="agama"
                 id="agama"
                 className={`w-full flex justify-between py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] text-start text-[#d9d9d9] bg-transparent focus:outline-none ${
-                  agama === "Pilih Agama" ? "text-[#d9d9d9]" : "text-primary"
+                  member.religion === "Pilih Agama"
+                    ? "text-[#d9d9d9]"
+                    : "text-primary"
                 }`}
                 onClick={() => setAgamaOpen(!agamaOpen)}
               >
-                {agama}
+                {member.religion.charAt(0).toUpperCase() +
+                  member.religion.slice(1)}
                 <svg
                   width="24"
                   height="24"
@@ -265,13 +434,19 @@ const TambahAnggota = () => {
               {agamaOpen && (
                 <div className="w-full relative">
                   <DropdownSelector
-                    selected={(option) => setAgama(option)}
+                    selected={(option) => {
+                      setMember({
+                        ...member,
+                        religion: option.toLowerCase(),
+                      });
+                      localStorage.setItem("religion", option.toLowerCase());
+                    }}
                     options={[
                       "Islam",
                       "Kristen",
                       "Katolik",
                       "Hindu",
-                      "Budha",
+                      "Buddha",
                       "Konghucu",
                     ]}
                     onClose={() => setAgamaOpen(false)}
@@ -286,6 +461,12 @@ const TambahAnggota = () => {
                 id="pekerjaan"
                 name="pekerjaan"
                 placeholder="Isi Sesuai KTP"
+                defaultValue={member.occupation}
+                onChange={(e) => {
+                  setMember({ ...member, occupation: e.target.value });
+                  localStorage.setItem("occupation", e.target.value);
+                }}
+                required
                 className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
               />
             </div>
@@ -299,6 +480,12 @@ const TambahAnggota = () => {
                   id="alamatCabang"
                   name="alamatCabang"
                   placeholder="Isi Alamat Lengkap Sesuai KTP"
+                  defaultValue={member.address}
+                  onChange={(e) => {
+                    setMember({ ...member, address: e.target.value });
+                    localStorage.setItem("address", e.target.value);
+                  }}
+                  required
                   className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
                 />
               </div>
@@ -311,6 +498,12 @@ const TambahAnggota = () => {
                   id="kelurahan"
                   name="kelurahan"
                   placeholder="Isi Sesuai KTP"
+                  defaultValue={member.kelurahan}
+                  onChange={(e) => {
+                    setMember({ ...member, kelurahan: e.target.value });
+                    localStorage.setItem("kelurahan", e.target.value);
+                  }}
+                  required
                   className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
                 />
               </div>
@@ -321,6 +514,12 @@ const TambahAnggota = () => {
                   id="kecamatan"
                   name="kecamatan"
                   placeholder="Isi Sesuai KTP"
+                  defaultValue={member.kecamatan}
+                  onChange={(e) => {
+                    setMember({ ...member, kecamatan: e.target.value });
+                    localStorage.setItem("kecamatan", e.target.value);
+                  }}
+                  required
                   className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
                 />
               </div>
@@ -331,6 +530,12 @@ const TambahAnggota = () => {
                   id="kota"
                   name="kota"
                   placeholder="Isi Sesuai KTP"
+                  defaultValue={member.city}
+                  onChange={(e) => {
+                    setMember({ ...member, city: e.target.value });
+                    localStorage.setItem("city", e.target.value);
+                  }}
+                  required
                   className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
                 />
               </div>
@@ -341,6 +546,11 @@ const TambahAnggota = () => {
                   id="kodePos"
                   name="kodePos"
                   placeholder="Isi Sesuai KTP"
+                  defaultValue={member.postalCode}
+                  onChange={(e) => {
+                    setMember({ ...member, postalCode: e.target.value });
+                    localStorage.setItem("postalCode", e.target.value);
+                  }}
                   className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
                 />
               </div>
@@ -354,13 +564,13 @@ const TambahAnggota = () => {
                 name="pendidikan"
                 id="pendidikan"
                 className={`w-full flex justify-between py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] text-start text-[#d9d9d9] bg-transparent focus:outline-none ${
-                  pendidikan === "Pilih Pendidikan Terakhir"
+                  member.education === "Pilih Pendidikan Terakhir"
                     ? "text-[#d9d9d9]"
                     : "text-primary"
                 }`}
                 onClick={() => setPendidikanOpen(!pendidikanOpen)}
               >
-                {pendidikan}
+                {member.education.toUpperCase()}
                 <svg
                   width="24"
                   height="24"
@@ -378,8 +588,14 @@ const TambahAnggota = () => {
               {pendidikanOpen && (
                 <div className="w-full relative">
                   <DropdownSelector
-                    selected={(option) => setPendidikan(option)}
-                    options={["S1", "SMA"]}
+                    selected={(option) => {
+                      setMember({
+                        ...member,
+                        education: option.toLowerCase(),
+                      });
+                      localStorage.setItem("education", option.toLowerCase());
+                    }}
+                    options={["SD", "SMP", "SMA", "S1", "S2"]}
                     onClose={() => setPendidikanOpen(false)}
                   />
                 </div>
@@ -392,12 +608,18 @@ const TambahAnggota = () => {
                 id="noHp"
                 name="noHp"
                 placeholder="Isi Nomor HP (WhatsApp)"
+                defaultValue={member.phoneNumber}
+                onChange={(e) => {
+                  setMember({ ...member, phoneNumber: e.target.value });
+                  localStorage.setItem("phoneNumber", e.target.value);
+                }}
+                required
                 className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
               />
             </div>
           </div>
           <div className="flex w-full gap-2">
-            <label htmlFor="fotoDiri" className="flex w-2/5">
+            <label htmlFor="fotoDiri" className="flex w-1/2">
               {fotoDiri === null ? (
                 <div className="relative h-[80px] w-[80px]">
                   <Image
@@ -419,8 +641,8 @@ const TambahAnggota = () => {
               )}
               <div className="flex flex-col ml-2 flex-grow">
                 <p>Upload Foto Diri</p>
-                <div className="border border-[#d9d9d9] rounded-lg flex mt-1 items-center h-[48px]">
-                  <div className=" my-[10px] w-[177px] border border-secondary rounded-lg text-primary flex items-center justify-between px-[10px] ml-[10px]">
+                <div className="border border-[#d9d9d9] rounded-lg p-[10px] flex mt-1 items-center">
+                  <div className="px-[25px] py-[2px] w-[177px] border border-secondary rounded-lg text-primary flex items-center">
                     <p>Tambah Foto</p>
                     <svg
                       width="17"
@@ -451,11 +673,13 @@ const TambahAnggota = () => {
                   name="fotoDiri"
                   id="fotoDiri"
                   hidden
-                  onChange={(e) => setFotoDiri(e.target.files[0])}
+                  onChange={(e) => {
+                    uploadFotoDiri(e);
+                  }}
                 />
               </div>
             </label>
-            <label htmlFor="fotoKtp" className="flex w-2/5">
+            <label htmlFor="fotoKtp" className="flex w-1/2">
               {fotoKtp === null ? (
                 <div className="relative h-[80px] w-[80px]">
                   <Image
@@ -477,8 +701,8 @@ const TambahAnggota = () => {
               )}
               <div className="flex flex-col ml-2 flex-grow">
                 <p>Upload Foto KTP</p>
-                <div className="border border-[#d9d9d9] rounded-lg flex mt-1 items-center h-[48px]">
-                  <div className=" my-[10px] w-[177px] border border-secondary rounded-lg text-primary flex items-center justify-between px-[10px] ml-[10px]">
+                <div className="border border-[#d9d9d9] rounded-lg p-[10px] flex mt-1 items-center">
+                  <div className="px-[25px] py-[2px] w-[177px] border border-secondary rounded-lg text-primary flex items-center">
                     <p>Tambah Foto</p>
                     <svg
                       width="17"
@@ -509,42 +733,26 @@ const TambahAnggota = () => {
                   name="fotoKtp"
                   id="fotoKtp"
                   hidden
-                  onChange={(e) => setFotoKtp(e.target.files[0])}
+                  onChange={(e) => {
+                    uploadFotoKtp(e);
+                  }}
                 />
               </div>
             </label>
-            <div className="w-1/5">
-              <label htmlFor="namaTeller">Nama Petugas/Teller</label>
-              <input
-                type="text"
-                id="namaTeller"
-                name="namaTeller"
-                placeholder="Isi Nama Petugas/Teller"
-                className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
-              />
-            </div>
           </div>
         </div>
       </div>
       <div className="flex gap-5 place-self-end">
-        <button className="bg-primary text-white w-[228px] h-[48px] rounded-md text-center">
-          <Link
-            href={
-              "/daftar-anggota/form-simpanan-pinjaman/anggota-baru/simpanan"
-            }
-          >
+        <Link href={"/daftar-anggota/form-anggota/anggota-baru/simpanan"}>
+          <button className="bg-primary text-white w-[228px] h-[48px] rounded-md text-center">
             Tambah Simpanan
-          </Link>
-        </button>
-        <button className="bg-primary text-white w-[228px] h-[48px] rounded-md text-center">
-          <Link
-            href={
-              "/daftar-anggota/form-simpanan-pinjaman/anggota-baru/pinjaman"
-            }
-          >
+          </button>
+        </Link>
+        <Link href={"/daftar-anggota/form-anggota/anggota-baru/pinjaman"}>
+          <button className="bg-primary text-white w-[228px] h-[48px] rounded-md text-center">
             Tambah Pinjaman
-          </Link>
-        </button>
+          </button>
+        </Link>
       </div>
     </>
   );

@@ -124,7 +124,7 @@ const RekapAnggota = () => {
                   <td className="px-[10px]">
                     <div className="flex justify-center items-center h-[64px]">
                       <Link
-                        href={"/detail"}
+                        href={`/daftar-anggota/detail/${item.id}`}
                         className="bg-primary w-[98px] py-[1px] text-white rounded-lg text-center"
                       >
                         Cek Detail

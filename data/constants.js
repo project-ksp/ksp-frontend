@@ -26,8 +26,8 @@ export const SIDENAV_ITEMS = [
     submenu: true,
     subMenuItems: [
       {
-        title: "Form Simpanan/ Pinjaman",
-        path: "/daftar-anggota/form-simpanan-pinjaman",
+        title: "Form Anggota",
+        path: "/daftar-anggota/form-anggota",
       },
       {
         title: "Pengajuan Hapus Anggota",

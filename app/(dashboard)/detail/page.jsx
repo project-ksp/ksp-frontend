@@ -616,7 +616,6 @@ const DetailAnggota = () => {
           </div>
         </div>
       </div>
-
       <Modal isVisible={showProsesData} onClose={() => setProsesData(false)}>
         <h3 className="text-xl text-center font-bold text-black">
           Proses Data?

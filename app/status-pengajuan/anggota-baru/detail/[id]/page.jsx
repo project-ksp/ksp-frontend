@@ -19,17 +19,6 @@ const DetailAnggotaBaru = () => {
 
   const [showProsesData, setProsesData] = useState(false);
   const [showBerhasil, setBerhasil] = useState(false);
-  const [idCabang, setIdCabang] = useState("Pilih Cabang");
-  const [statusPernikahan, setStatusPernikahan] = useState("Pilih Status");
-  const [jenisKelamin, setJenisKelamin] = useState("Pilih Jenis Kelamin");
-  const [agama, setAgama] = useState("Pilih Agama");
-  const [pendidikan, setPendidikan] = useState("Pilih Pendidikan Terakhir");
-  const [pendidikanOpen, setPendidikanOpen] = useState(false);
-  const [agamaOpen, setAgamaOpen] = useState(false);
-  const [jenisKelaminOpen, setJenisKelaminOpen] = useState(false);
-  const [statusPernikahanOpen, setStatusPernikahanOpen] = useState(false);
-  const [idCabangOpen, setIdCabangOpen] = useState(false);
-  const [buktiPendukung, setBuktiPendukung] = useState(null);
 
   const [loading, setLoading] = useState(false);
 
@@ -38,7 +27,6 @@ const DetailAnggotaBaru = () => {
   const [monthlyDeposits, setMonthlyDeposits] = useState({});
 
   useEffect(() => {
-    if (!id) return;
     const getMember = async () => {
       if (status === "loading") return;
       setLoading(true);
@@ -116,7 +104,8 @@ const DetailAnggotaBaru = () => {
           </Link>
           <button
             onClick={() => setProsesData(true)}
-            className="bg-primary text-white w-[228px] h-[48px] rounded-md text-center"
+            disabled={member.status !== "disetujui"}
+            className="bg-primary text-white w-[228px] h-[48px] rounded-md text-center disabled:bg-black/20 disabled:cursor-not-allowed"
           >
             Verifikasi Data
           </button>
@@ -214,7 +203,7 @@ const DetailAnggotaBaru = () => {
                 id="namaSuamiIstri"
                 name="namaSuamiIstri"
                 placeholder="*Jika Sudah Menikah"
-                defaultValue={member.spouse ? member.spouse.name : "-"}
+                defaultValue={member.spouse === "" ? "-" : member.spouse}
                 disabled
                 className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
               />
