@@ -38,33 +38,17 @@ const StatusPengajuanAnggotaBaru = () => {
       getMembers();
       return;
     }
-
-    const getData = setTimeout(() => {
-      fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}members/search?query=${search}`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${session.token}`,
-          },
-        }
-      )
-        .then((res) => res.json())
-        .then((data) => {
-          setMembers(data.data);
-        });
-    }, 1000);
-
-    return () => clearTimeout(getData);
   }, [search, status, session]);
 
-  const updateStatus = async (option, index) => {
-    let newArr = [...members];
-    newArr[index].status = option;
+  const updateStatus = async (option, id) => {
+    const newArr = members.map((member) => ({
+      ...member,
+      status: member.id === id ? option : member.status,
+    }));
     setMembers(newArr);
 
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}members/${newArr[index].id}/status`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}members/${id}/status`,
       {
         method: "PUT",
         headers: {
@@ -88,6 +72,10 @@ const StatusPengajuanAnggotaBaru = () => {
       setOpenItemId(id); // Open the dropdown for the clicked item
     }
   };
+
+  const filteredMembers = members.filter((member) =>
+    member.name.toLowerCase().includes(search.toLowerCase())
+  );
 
   if (status === "loading") return <Loading />;
   return (
@@ -170,8 +158,8 @@ const StatusPengajuanAnggotaBaru = () => {
             </tr>
           </thead>
           <tbody>
-            {members.length > 0 ? (
-              members.map((item, index) => (
+            {filteredMembers.length > 0 ? (
+              filteredMembers.map((item, index) => (
                 <tr key={item.id} className=" border-b border-[#DDE1E6]">
                   <td className="break-words px-[10px]">{item.id}</td>
                   <td className="px-[10px]">{item.name}</td>
@@ -202,7 +190,9 @@ const StatusPengajuanAnggotaBaru = () => {
                         {openItemId === item.id && (
                           <div className="w-full relative">
                             <VerificationSelector
-                              selected={(option) => updateStatus(option, index)}
+                              selected={(option) =>
+                                updateStatus(option, item.id)
+                              }
                               options={[
                                 "diproses",
                                 "disetujui",

@@ -244,7 +244,7 @@ const Simpanan = () => {
           Anda yakin telah mengisikan data dengan benar dan sesuai?
         </p>
         <button
-          type="submit"
+          type="button"
           className="w-[450px] px-[20px] py-[12px] text-white bg-primary rounded-lg mx-auto"
           onClick={(e) => {
             submitData(e);

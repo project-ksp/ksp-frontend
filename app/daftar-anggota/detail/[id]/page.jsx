@@ -16,8 +16,6 @@ const DetailAnggotaBaru = () => {
   const { id } = useParams();
   const formRef = useRef();
 
-  const router = useRouter();
-
   const [agamaOpen, setAgamaOpen] = useState();
   const [pendidikanOpen, setPendidikanOpen] = useState();
   const [statusPernikahanOpen, setStatusPernikahanOpen] = useState();
@@ -352,9 +350,7 @@ const DetailAnggotaBaru = () => {
                     id="jenisKelamin"
                     name="jenisKelamin"
                     placeholder="Isi Jenis Kelamin "
-                    defaultValue={
-                      member.isMarried ? "Sudah Menikah" : "Belum Menikah"
-                    }
+                    value={member.isMarried ? "Sudah Menikah" : "Belum Menikah"}
                     disabled={!allowEdit}
                     className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:bg-black/5 disabled:cursor-not-allowed"
                   />
@@ -373,6 +369,7 @@ const DetailAnggotaBaru = () => {
                       spouse: e.target.value,
                     });
                   }}
+                  value={member.spouse}
                   className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:bg-black/5 disabled:cursor-not-allowed"
                   disabled={!allowEdit || !member.isMarried}
                 />
@@ -686,24 +683,64 @@ const DetailAnggotaBaru = () => {
               </div>
             </div>
             <div className="flex w-full gap-2">
-              <div className="w-2/5">
-                <label htmlFor="pendidikan">Pendidikan Terakhir</label>
-                <input
-                  type="text"
-                  name="pendidikan"
-                  id="pendidikan"
-                  defaultValue={member.education}
-                  disabled={!allowEdit}
-                  onChange={(e) => {
-                    setMember({
-                      ...member,
-                      education: e.target.value,
-                    });
-                  }}
-                  required
-                  className={`w-full flex justify-between py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] text-start text-black bg-transparent focus:outline-none disabled:cursor-not-allowed disabled:bg-black/5`}
-                />
-              </div>
+              {allowEdit ? (
+                <div className="w-2/5">
+                  <label htmlFor="pendidikan">Pendidikan Terakhir</label>
+                  <button
+                    type="button"
+                    name="pendidikan"
+                    id="pendidikan"
+                    className={`w-full flex justify-between py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] text-start text-[#d9d9d9] bg-transparent focus:outline-none ${
+                      member.education === "Pilih Pendidikan Terakhir"
+                        ? "text-[#d9d9d9]"
+                        : "text-primary"
+                    }`}
+                    onClick={() => setPendidikanOpen(!pendidikanOpen)}
+                  >
+                    {member.education.toUpperCase()}
+                    <svg
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M17.2902 9.31002C17.1977 9.21732 17.0878 9.14377 16.9668 9.09359C16.8459 9.04341 16.7162 9.01758 16.5852 9.01758C16.4543 9.01758 16.3246 9.04341 16.2036 9.09359C16.0826 9.14377 15.9727 9.21732 15.8802 9.31002L12.0002 13.19L8.12022 9.31002C7.93324 9.12304 7.67965 9.018 7.41522 9.018C7.1508 9.018 6.8972 9.12304 6.71022 9.31002C6.52324 9.497 6.4182 9.7506 6.4182 10.015C6.4182 10.2794 6.52324 10.533 6.71022 10.72L11.3002 15.31C11.3927 15.4027 11.5026 15.4763 11.6236 15.5265C11.7446 15.5766 11.8743 15.6025 12.0052 15.6025C12.1362 15.6025 12.2659 15.5766 12.3868 15.5265C12.5078 15.4763 12.6177 15.4027 12.7102 15.31L17.3002 10.72C17.6802 10.34 17.6802 9.70002 17.2902 9.31002Z"
+                        fill="black"
+                      />
+                    </svg>
+                  </button>
+
+                  {pendidikanOpen && (
+                    <div className="w-full relative">
+                      <DropdownSelector
+                        selected={(option) =>
+                          setMember({
+                            ...member,
+                            education: option.toLowerCase(),
+                          })
+                        }
+                        options={["SD", "SMP", "SMA", "S1", "S2"]}
+                        onClose={() => setPendidikanOpen(false)}
+                      />
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div className="w-2/5">
+                  <label htmlFor="pendidikanMember">Pendidikan Terakhir</label>
+                  <input
+                    type="text"
+                    id="pendidikanMember"
+                    name="pendidikanMember"
+                    placeholder="Isi Pendidikan Member"
+                    defaultValue={member.education}
+                    disabled={!allowEdit}
+                    className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:bg-black/5 disabled:cursor-not-allowed"
+                  />
+                </div>
+              )}
               <div className="w-3/5">
                 <label htmlFor="noHp">No. Hp (WhatsApp)</label>
                 <input
@@ -878,9 +915,6 @@ const DetailAnggotaBaru = () => {
           <button
             type="submit"
             className="w-[450px] px-[20px] py-[12px] text-white bg-primary rounded-lg mx-auto"
-            onClick={(e) => {
-              verifyData();
-            }}
           >
             Proses Data
           </button>
@@ -889,6 +923,7 @@ const DetailAnggotaBaru = () => {
           isVisible={showBerhasil}
           onClose={() => {
             setBerhasil(false);
+            setAllowEdit(false);
           }}
         >
           <div className="w-[98px] h-[98px] rounded-full bg-primary place-self-center relative">
@@ -922,6 +957,7 @@ const DetailAnggotaBaru = () => {
             className="w-[450px] px-[20px] py-[12px] text-white bg-primary rounded-lg mx-auto"
             onClick={(e) => {
               setBerhasil(false);
+              setAllowEdit(false);
             }}
           >
             OK

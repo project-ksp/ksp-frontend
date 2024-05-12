@@ -4,8 +4,6 @@ import Link from "next/link";
 import { useState } from "react";
 import Modal from "@/components/Modal";
 import { useSession } from "next-auth/react";
-import toast from "react-hot-toast";
-import { data } from "autoprefixer";
 import Loading from "@/components/Loading";
 
 const DashboardKepalaCabangDanTeller = () => {
@@ -13,6 +11,8 @@ const DashboardKepalaCabangDanTeller = () => {
 
   const [search, setSearch] = useState("");
   const [dataMember, setDataMember] = useState([]);
+
+  const [dataBranch, setDataBranch] = useState({});
 
   const [showAturPublish, setAturPublish] = useState(false);
   const [showProsesData, setProsesData] = useState(false);
@@ -43,6 +43,22 @@ const DashboardKepalaCabangDanTeller = () => {
 
     return () => clearTimeout(getData);
   }, [search, status, session]);
+
+  useEffect(() => {
+    if (status === "loading") return null;
+
+    fetch(`${process.env.NEXT_PUBLIC_BASE_URL}auth/me`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${session.token}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setDataBranch(data.data);
+        console.log(data.data);
+      });
+  }, [status, session]);
 
   if (status === "loading") return <Loading />;
   return (
@@ -97,7 +113,9 @@ const DashboardKepalaCabangDanTeller = () => {
           <div className="bg-gradient-to-r from-[#c0deff] to-white p-[16px] shadow-lg rounded-xl w-1/3 relative overflow-hidden">
             <h4 className="text-[#192839] text-lg font-bold">Alamat Cabang</h4>
             <hr className="border border-[#192839] my-[12px] w-4/5" />
-            <p className="text-[#192839] text-xl font-bold">Jl. Candi 61</p>
+            <p className="text-[#192839] text-xl font-bold">
+              {session.branch.address}
+            </p>
             <svg
               width="71"
               height="61"
@@ -130,7 +148,9 @@ const DashboardKepalaCabangDanTeller = () => {
               Total Ketua Kelompok
             </h4>
             <hr className="border border-green-status-1 my-[12px] w-4/5" />
-            <p className="text-green-status-1 text-xl font-bold">20,0932</p>
+            <p className="text-green-status-1 text-xl font-bold">
+              {session.branch.leaderCount}
+            </p>
             <svg
               width="76"
               height="76"
@@ -207,7 +227,9 @@ const DashboardKepalaCabangDanTeller = () => {
               Total Pengurus Cabang
             </h4>
             <hr className="border border-red-status-1 my-[12px] w-4/5" />
-            <p className="text-red-status-1  text-xl font-bold">10,2314</p>
+            <p className="text-red-status-1  text-xl font-bold">
+              {session.branch.accountCount}
+            </p>
             <svg
               width="76"
               height="76"
