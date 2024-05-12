@@ -1,6 +1,5 @@
 import React from "react";
 import Image from "next/image";
-import { PDFViewer } from "@react-pdf/renderer";
 
 const FormulirPrint = () => {
   return (
