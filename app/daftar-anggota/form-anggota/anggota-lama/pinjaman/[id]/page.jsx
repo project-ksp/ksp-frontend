@@ -21,93 +21,80 @@ const Pinjaman = () => {
           <div className="flex-1">
             <label htmlFor="simpananPokok">Simpanan Pokok</label>
             <input
-              type="text"
+              type="number"
               name="simpananPokok"
               id="simpananPokok"
-              placeholder="Auto Generate"
-              className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none italic"
-              disabled
+              placeholder="Isikan Jumlah"
+              onChange={(e) =>
+                setDeposit({
+                  ...deposit,
+                  principalDeposit: parseInt(e.target.value),
+                })
+              }
+              className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
             />
-            <p className="text-filled-color text-sm mt-1">
-              *Minimal Rp.50.000,00/bulan
-            </p>
           </div>
           <div className="flex flex-col">
-            <label htmlFor="simpananWajib">Simpanan Wajib</label>
+            <p>Simpanan Wajib</p>
             <div className="flex mt-2 gap-3">
-              <div className="flex-grow">
-                <label htmlFor="bulan1">Bulan Ke-</label>
+              <div className="w-1/2">
+                <label htmlFor="totalSimpanan">Total Simpanan</label>
                 <input
-                  type="text"
-                  name="bulan1"
-                  id="bulan1"
-                  placeholder="Auto Generated"
-                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none italic"
-                  disabled
+                  type="number"
+                  name="totalSimpanan"
+                  id="totalSimpanan"
+                  placeholder="Isikan Jumlah"
+                  onChange={(e) =>
+                    setMonthlyDeposits({
+                      ...monthlyDeposits,
+                      deposit: parseInt(e.target.value),
+                    })
+                  }
+                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
                 />
               </div>
-              <div className="flex-grow">
-                <label htmlFor="bulan1">Bulan Ke-</label>
+              <div className="w-1/2">
+                <label htmlFor="tambahSimpanan">Tambah Simpanan</label>
                 <input
-                  type="text"
-                  name="bulan1"
-                  id="bulan1"
-                  placeholder="Auto Generated"
-                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none italic"
-                  disabled
-                />
-              </div>
-              <div className="flex-grow">
-                <label htmlFor="bulan1">Bulan Ke-</label>
-                <input
-                  type="text"
-                  name="bulan1"
-                  id="bulan1"
-                  placeholder="Auto Generated"
-                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none italic"
-                  disabled
-                />
-              </div>
-              <div className="flex-grow">
-                <label htmlFor="bulan1">Bulan Ke-</label>
-                <input
-                  type="text"
-                  name="bulan1"
-                  id="bulan1"
-                  placeholder="Auto Generated"
-                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none italic"
-                  disabled
-                />
-              </div>
-              <div className="flex-grow">
-                <label htmlFor="bulan1">Bulan Ke-</label>
-                <input
-                  type="text"
-                  name="bulan1"
-                  id="bulan1"
-                  placeholder="Auto Generated"
-                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none italic"
-                  disabled
+                  type="number"
+                  name="tambahSimpanan"
+                  id="tambahSimpanan"
+                  placeholder="Isikan Jumlah"
+                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
                 />
               </div>
             </div>
-            <p className="text-filled-color text-sm mt-1">
-              *Minimal Rp.50.000,00/bulan
-            </p>
           </div>
-          <div className="flex-1">
-            <label htmlFor="simpananSukarela">Simpanan Sukarela</label>
-            <input
-              type="text"
-              name="simpananSukarela"
-              id="simpananSukarela"
-              placeholder="Auto Generated"
-              className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none italic"
-              disabled
-            />
-            <p className="text-filled-color text-sm mt-1">
-              Diambil dari pinjaman
-            </p>
+          <div className="flex flex-col">
+            <p>Simpanan Sukarela</p>
+            <div className="flex mt-2 gap-3">
+              <div className="w-1/2">
+                <label htmlFor="simpananSukarela">Total Simpanan</label>
+                <input
+                  type="number"
+                  name="simpananSukarela"
+                  id="simpananSukarela"
+                  placeholder="Isikan Jumlah"
+                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
+                />
+              </div>
+              <div className="w-1/2">
+                <label htmlFor="tambahSimpanan">Tambah Simpanan</label>
+                <input
+                  type="number"
+                  name="tambahSimpanan"
+                  id="tambahSimpanan"
+                  placeholder="Isikan Jumlah"
+                  onChange={(e) =>
+                    setMonthlyDeposits({
+                      ...monthlyDeposits,
+                      deposit: parseInt(e.target.value),
+                    })
+                  }
+                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
+                />
+              </div>
+            </div>
           </div>
         </div>
       </div>

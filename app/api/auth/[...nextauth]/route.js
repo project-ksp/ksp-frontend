@@ -7,16 +7,19 @@ export const authOptions = {
     CredentialsProvider({
       name: "Credentials",
       async authorize(credentials, req) {
-        const res = await fetch(`${process.env.API_URI}auth/login`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            username: credentials.username,
-            password: credentials.password,
-          }),
-        });
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_BASE_URL}auth/login`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              username: credentials.username,
+              password: credentials.password,
+            }),
+          }
+        );
 
         if (res.ok) {
           return await res.json();
@@ -33,6 +36,19 @@ export const authOptions = {
     async session({ session, token }) {
       const decoded = jwtDecode(token.token);
       session.token = token.token;
+
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}auth/me`, {
+        headers: {
+          Authorization: `Bearer ${token.token}`,
+        },
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        console.log(data.message);
+      }
+
       session.user = {
         id: decoded.id,
         username: decoded.username,

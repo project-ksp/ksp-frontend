@@ -47,16 +47,6 @@ const CetakBerkasButtonNav = () => {
       >
         Cetak Buku Anggota
       </Link>
-      <Link
-        href={"/cetak-berkas/cetak-kartu-anggota"}
-        className={`${
-          pathname.includes("cetak-kartu-anggota")
-            ? "bg-primary text-white"
-            : "bg-white text-primary"
-        } w-[228px] h-[48px] rounded-md flex items-center justify-center`}
-      >
-        Cetak Kartu Anggota
-      </Link>
     </>
   );
 };

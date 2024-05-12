@@ -75,7 +75,7 @@ const DataMaster = () => {
           <thead>
             <tr className="border-b border-[#DDE1E6]">
               <th className="w-[8%] font-semibold py-[13px] px-[10px]">
-                ID Cabang
+                ID Anggota
               </th>
               <th className="w-[11%] font-semibold px-[10px]">
                 <div className="flex justify-between items-center">
@@ -146,7 +146,7 @@ const DataMaster = () => {
                   key={data.id}
                   className=" border-b border-[#DDE1E6] break-words"
                 >
-                  <td className="px-[10px]">{data.branchId}</td>
+                  <td className="px-[10px]">{data.id}</td>
                   <td className="px-[10px]">{data.name}</td>
                   <td className="px-[10px]">{data.nik}</td>
                   <td className="px-[10px]">
