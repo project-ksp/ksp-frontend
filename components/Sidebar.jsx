@@ -169,29 +169,11 @@ const ButtonAccount = ({ jabatan, nama }) => {
   return (
     <button className="flex items-center border-t border-white/10 pt-[15px] justify-between">
       <div className="flex items-center">
-        <Image
-          src={"/images/Image.png"}
-          alt="image"
-          width={32}
-          height={32}
-          className="mr-[12px]"
-        />
         <div className="flex flex-col items-start">
           <p className="text-white text-base font-semibold ">{jabatan}</p>
           <p className="text-white text-sm font-regular">{nama}</p>
         </div>
       </div>
-      <svg
-        width="4"
-        height="20"
-        viewBox="0 0 4 20"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <circle cx="2" cy="2" r="2" fill="white" />
-        <circle cx="2" cy="10" r="2" fill="white" />
-        <circle cx="2" cy="18" r="2" fill="white" />
-      </svg>
     </button>
   );
 };
