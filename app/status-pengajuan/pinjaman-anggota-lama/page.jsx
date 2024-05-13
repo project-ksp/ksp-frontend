@@ -5,19 +5,20 @@ import Link from "next/link";
 import Loading from "@/components/Loading";
 import { useSession } from "next-auth/react";
 import VerificationSelector from "@/components/VerificationSelector";
+import toast from "react-hot-toast";
 
 const StatusPengajuanAnggotaBaru = () => {
   const { data: session, status } = useSession();
 
-  const [members, setMembers] = useState([]);
+  const [loans, setLoans] = useState([]);
   const [openItemId, setOpenItemId] = useState(null);
   const [search, setSearch] = useState("");
 
   useEffect(() => {
     if (status === "loading") return;
-    const getMembers = async () => {
+    const getLoans = async () => {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}members/pending`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}loans/pending`,
         {
           method: "GET",
           headers: {
@@ -27,43 +28,27 @@ const StatusPengajuanAnggotaBaru = () => {
       );
       const data = await res.json();
       if (res.ok) {
-        setMembers(data.data);
+        setLoans(data.data);
       } else {
         toast.error(data.message);
       }
     };
 
     if (search === "") {
-      getMembers();
+      getLoans();
       return;
     }
-
-    const getData = setTimeout(() => {
-      fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}members/search?query=${search}`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${session.token}`,
-          },
-        }
-      )
-        .then((res) => res.json())
-        .then((data) => {
-          setMembers(data.data);
-        });
-    }, 1000);
-
-    return () => clearTimeout(getData);
   }, [search, status, session]);
 
-  const updateStatus = async (option, index) => {
-    let newArr = [...members];
-    newArr[index].status = option;
-    setMembers(newArr);
+  const updateStatus = async (option, id) => {
+    const newArr = loans.map((loan) => ({
+      ...loan,
+      status: loan.id === id ? option : loan.status,
+    }));
+    setLoans(newArr);
 
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}members/${newArr[index].id}/status`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}loans/${id}/status`,
       {
         method: "PUT",
         headers: {
@@ -87,6 +72,13 @@ const StatusPengajuanAnggotaBaru = () => {
       setOpenItemId(id); // Open the dropdown for the clicked item
     }
   };
+
+  const filteredLoans = loans.filter((loan) => {
+    return (
+      loan.deposit.member.id.toLowerCase().includes(search.toLowerCase()) ||
+      loan.deposit.member.name.toLowerCase().includes(search.toLowerCase())
+    );
+  });
 
   if (status === "loading") return <Loading />;
   return (
@@ -156,54 +148,24 @@ const StatusPengajuanAnggotaBaru = () => {
             </tr>
           </thead>
           <tbody>
-            <tr className=" border-b border-[#DDE1E6]">
-              <td className="break-words px-[10px]">01.02.004</td>
-              <td className="px-[10px]">Aji Santosa</td>
-              <td className="px-[10px]">3471t4718241</td>
-              <td className="px-[10px]">P</td>
-              <td className="px-[10px]">Rp. 10.000.000</td>
-              <td className="px-[10px]">
-                <div className="flex justify-center items-center h-[48px]">
-                  <button className="bg-green-status-2 w-[116px] h-[24px] text-black rounded-lg mx-auto my-auto text-sm">
-                    Disetujui
-                  </button>
-                </div>
-              </td>
-              <td className="px-[10px]">
-                <div className="flex justify-center items-center h-[48px]">
-                  <button className="bg-green-status-1 w-[86px] h-[24px] text-white rounded-lg mx-auto my-auto">
-                    Aktif
-                  </button>
-                </div>
-              </td>
-              <td className="px-[10px]">
-                <div className="flex justify-center items-center h-[48px]">
-                  <Link
-                    href={"/status-pengajuan/pinjaman-anggota-lama/detail"}
-                    className="bg-primary w-[100px] h-[24px] text-white rounded-lg text-center"
-                  >
-                    Cek Detail
-                  </Link>
-                </div>
-              </td>
-              <td className="px-[10px]">
-                <div className="flex justify-center items-center h-[48px]">
-                  <button className="bg-yellow-status-2 w-[100px] h-[24px] text-black rounded-lg mx-auto my-auto text-sm">
-                    Menunggu
-                  </button>
-                </div>
-              </td>
-            </tr>
-            {members.length > 0 ? (
-              members.map((item, index) => (
+            {filteredLoans.length > 0 ? (
+              filteredLoans.map((item, index) => (
                 <tr key={item.id} className=" border-b border-[#DDE1E6]">
-                  <td className="break-words px-[10px]">{item.id}</td>
-                  <td className="px-[10px]">{item.name}</td>
-                  <td className="px-[10px]">{item.nik}</td>
+                  <td className="break-words px-[10px]">
+                    {item.deposit.member.id}
+                  </td>
+                  <td className="px-[10px]">{item.deposit.member.name}</td>
+                  <td className="px-[10px]">{item.deposit.member.nik}</td>
                   <td className="px-[10px]">
                     {item.gender === "laki-laki" ? "L" : "P"}
                   </td>
-                  <td className="px-[10px]">Simpanan</td>
+                  <td className="px-[10px]">
+                    {Intl.NumberFormat("id-ID", {
+                      style: "currency",
+                      currency: "IDR",
+                      maximumFractionDigits: 0,
+                    }).format(item.loan)}
+                  </td>
                   <td className="px-[10px]">
                     <div className="flex justify-center items-center h-[48px]">
                       <div>
@@ -226,7 +188,9 @@ const StatusPengajuanAnggotaBaru = () => {
                         {openItemId === item.id && (
                           <div className="w-full relative">
                             <VerificationSelector
-                              selected={(option) => updateStatus(option, index)}
+                              selected={(option) =>
+                                updateStatus(option, item.id)
+                              }
                               options={[
                                 "diproses",
                                 "disetujui",
@@ -258,7 +222,7 @@ const StatusPengajuanAnggotaBaru = () => {
                   <td className="px-[10px]">
                     <div className="flex justify-center items-center h-[48px]">
                       <Link
-                        href={`/status-pengajuan/anggota-baru/detail/${item.id}`}
+                        href={`/status-pengajuan/pinjaman-anggota-lama/detail/${item.deposit.member.id}`}
                         className="bg-primary w-[100px] h-[24px] text-white rounded-lg text-center"
                       >
                         Cek Detail
