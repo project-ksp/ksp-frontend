@@ -1,15 +1,146 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Modal from "@/components/Modal";
 import Link from "next/link";
+import Loading from "@/components/Loading";
+import { useSession } from "next-auth/react";
+import { useParams, useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 const Simpanan = () => {
+  const { data: session, status } = useSession();
+  const router = useRouter();
+  const { id } = useParams();
+
   const [showProsesData, setProsesData] = useState(false);
   const [showBerhasil, setBerhasil] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [cabangOpen, setCabangOpen] = useState(false);
+  const [branches, setBranches] = useState([]);
+
+  const [oneClick, setOneClick] = useState(true);
+
+  const [simpanan, setSimpanan] = useState({
+    principalDeposit: 0,
+    mandatoryDeposit: 0,
+    voluntaryDeposit: 0,
+  });
+
+  const [member, setMember] = useState({
+    id: "",
+    name: "",
+    nik: "",
+    gender: "",
+    isActive: "",
+    branchId: "",
+    leaderId: "",
+    createdAt: "",
+    updatedAt: "",
+    isMarried: "",
+    spouse: null,
+    birthPlace: "",
+    birthDate: "",
+    religion: "",
+    occupation: "",
+    address: "",
+    kelurahan: "",
+    kecamatan: "",
+    city: "",
+    postalCode: "",
+    education: "",
+    phoneNumber: "",
+    profilePictureUrl: "",
+    idPictureUrl: "",
+    userId: "",
+    status: "",
+    verified: "",
+    leader: {
+      id: "",
+      name: "",
+    },
+    deposit: {
+      id: "",
+      principalDeposit: "",
+      mandatoryDeposit: "",
+      voluntaryDeposit: "",
+      memberId: "",
+      createdAt: "",
+      updatedAt: "",
+      loans: [],
+    },
+  });
+
+  const [deposit, setDeposit] = useState({
+    mandatoryDeposit: 0,
+    voluntaryDeposit: 0,
+  });
+
+  const submitData = async (e) => {
+    setLoading(true);
+    e.preventDefault();
+
+    if (deposit.mandatoryDeposit === 0 || deposit.voluntaryDeposit === 0) {
+      toast.error("Mohon masukkan simpanan wajib dan simpanan sukarela");
+      setProsesData(false);
+      setLoading(false);
+      return;
+    }
+
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}members/${member.id}/deposit`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session.token}`,
+        },
+        body: JSON.stringify({
+          ...deposit,
+        }),
+      }
+    );
+
+    const data = await res.json();
+    if (res.ok) {
+      setBerhasil(true);
+      localStorage.clear();
+    } else {
+      toast.error(data.message);
+    }
+    setLoading(false);
+    setProsesData(false);
+  };
+
+  useEffect(() => {
+    if (status === "loading") return;
+    const getMember = async () => {
+      setLoading(true);
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}members/${id}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${session.token}`,
+          },
+        }
+      );
+      const data = await res.json();
+      if (res.ok) {
+        setMember(data.data);
+      } else {
+        toast.error(data.message);
+      }
+      setLoading(false);
+    };
+    getMember();
+  }, [status, session, id]);
+
+  if (status === "loading") return <Loading />;
 
   return (
     <>
+      {loading && <div className="inset-0 fixed bg-black/20 z-50"></div>}
       <div className="bg-white p-[20px] rounded-xl">
         <p className="text-black font-bold text-lg mb-[10px]">
           Detail Simpanan
@@ -22,13 +153,9 @@ const Simpanan = () => {
               name="simpananPokok"
               id="simpananPokok"
               placeholder="Isikan Jumlah"
-              onChange={(e) =>
-                setDeposit({
-                  ...deposit,
-                  principalDeposit: parseInt(e.target.value),
-                })
-              }
-              className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
+              disabled
+              value="50000"
+              className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed disabled:bg-black/5"
             />
           </div>
           <div className="flex flex-col">
@@ -41,13 +168,9 @@ const Simpanan = () => {
                   name="totalSimpanan"
                   id="totalSimpanan"
                   placeholder="Isikan Jumlah"
-                  onChange={(e) =>
-                    setMonthlyDeposits({
-                      ...monthlyDeposits,
-                      deposit: parseInt(e.target.value),
-                    })
-                  }
-                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
+                  disabled
+                  value={member.deposit.mandatoryDeposit}
+                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:bg-black/5 disabled:cursor-not-allowed"
                 />
               </div>
               <div className="w-1/2">
@@ -57,6 +180,12 @@ const Simpanan = () => {
                   name="tambahSimpanan"
                   id="tambahSimpanan"
                   placeholder="Isikan Jumlah"
+                  onChange={(e) =>
+                    setDeposit({
+                      ...deposit,
+                      mandatoryDeposit: parseInt(e.target.value),
+                    })
+                  }
                   className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
                 />
               </div>
@@ -72,7 +201,9 @@ const Simpanan = () => {
                   name="simpananSukarela"
                   id="simpananSukarela"
                   placeholder="Isikan Jumlah"
-                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
+                  disabled
+                  value={member.deposit.voluntaryDeposit}
+                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:bg-black/5 disabled:cursor-not-allowed"
                 />
               </div>
               <div className="w-1/2">
@@ -83,9 +214,9 @@ const Simpanan = () => {
                   id="tambahSimpanan"
                   placeholder="Isikan Jumlah"
                   onChange={(e) =>
-                    setMonthlyDeposits({
-                      ...monthlyDeposits,
-                      deposit: parseInt(e.target.value),
+                    setDeposit({
+                      ...deposit,
+                      voluntaryDeposit: parseInt(e.target.value),
                     })
                   }
                   className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
@@ -115,14 +246,19 @@ const Simpanan = () => {
           type="submit"
           className="w-[450px] px-[20px] py-[12px] text-white bg-primary rounded-lg mx-auto"
           onClick={(e) => {
-            setProsesData(false);
-            setBerhasil(true);
+            submitData(e);
           }}
         >
           Proses Data
         </button>
       </Modal>
-      <Modal isVisible={showBerhasil} onClose={() => setBerhasil(false)}>
+      <Modal
+        isVisible={showBerhasil}
+        onClose={() => {
+          setBerhasil(false);
+          router.push("/dashboard");
+        }}
+      >
         <div className="w-[98px] h-[98px] rounded-full bg-primary place-self-center relative">
           <svg
             width="43"
@@ -157,6 +293,7 @@ const Simpanan = () => {
           className="w-[450px] px-[20px] py-[12px] text-white bg-primary rounded-lg mx-auto"
           onClick={(e) => {
             setBerhasil(false);
+            router.push("/dashboard");
           }}
         >
           OK

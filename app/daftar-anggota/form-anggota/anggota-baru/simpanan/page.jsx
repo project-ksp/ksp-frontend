@@ -40,13 +40,8 @@ const Simpanan = () => {
   });
 
   const [deposit, setDeposit] = useState({
-    principalDeposit: "",
+    mandatoryDeposit: "",
     voluntaryDeposit: "",
-  });
-
-  const [monthlyDeposits, setMonthlyDeposits] = useState({
-    month: 1,
-    deposit: "",
   });
 
   useEffect(() => {
@@ -127,20 +122,29 @@ const Simpanan = () => {
       return;
     }
 
-    let arrayMonthlyDeposits = Array(monthlyDeposits);
+    if (deposit.mandatoryDeposit === "" || deposit.voluntaryDeposit === "") {
+      toast.error(
+        "Mohon lengkapi data simpanan wajib dan sukarela terlebih dahulu"
+      );
+      setProsesData(false);
+      setLoading(false);
+      return;
+    }
 
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}members`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${session.token}`,
-      },
-      body: JSON.stringify({
-        member,
-        deposit,
-        monthlyDeposits: arrayMonthlyDeposits,
-      }),
-    });
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}members/deposit`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session.token}`,
+        },
+        body: JSON.stringify({
+          member,
+          deposit,
+        }),
+      }
+    );
 
     const data = await res.json();
     if (res.ok) {
@@ -169,14 +173,8 @@ const Simpanan = () => {
               type="number"
               name="simpananPokok"
               id="simpananPokok"
-              placeholder="Isikan Jumlah"
-              onChange={(e) =>
-                setDeposit({
-                  ...deposit,
-                  principalDeposit: parseInt(e.target.value),
-                })
-              }
-              className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
+              disabled
+              className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed disabled:bg-black/5"
             />
             <p className="text-filled-color text-sm mt-1">
               *Minimal Rp.50.000,00/bulan
@@ -193,9 +191,9 @@ const Simpanan = () => {
                   id="bulan1"
                   placeholder="Isikan Jumlah"
                   onChange={(e) =>
-                    setMonthlyDeposits({
-                      ...monthlyDeposits,
-                      deposit: parseInt(e.target.value),
+                    setDeposit({
+                      ...deposit,
+                      mandatoryDeposit: parseInt(e.target.value),
                     })
                   }
                   className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
@@ -203,7 +201,7 @@ const Simpanan = () => {
               </div>
             </div>
             <p className="text-filled-color text-sm mt-1">
-              *Minimal Rp.50.000,00/bulan
+              *Minimal Rp.5.000,00/bulan
             </p>
           </div>
           <div className="flex-1">
@@ -253,7 +251,13 @@ const Simpanan = () => {
           Proses Data
         </button>
       </Modal>
-      <Modal isVisible={showBerhasil} onClose={() => setBerhasil(false)}>
+      <Modal
+        isVisible={showBerhasil}
+        onClose={() => {
+          setBerhasil(false);
+          router.push("/status-pengajuan/anggota-baru");
+        }}
+      >
         <div className="w-[98px] h-[98px] rounded-full bg-primary place-self-center relative">
           <svg
             width="43"

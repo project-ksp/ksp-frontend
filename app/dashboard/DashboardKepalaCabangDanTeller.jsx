@@ -56,7 +56,6 @@ const DashboardKepalaCabangDanTeller = () => {
       .then((res) => res.json())
       .then((data) => {
         setDataBranch(data.data);
-        console.log(data.data);
       });
   }, [status, session]);
 

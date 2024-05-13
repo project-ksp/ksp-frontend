@@ -5,6 +5,7 @@ import Link from "next/link";
 import VerificationSelector from "@/components/VerificationSelector";
 import Loading from "@/components/Loading";
 import { useSession } from "next-auth/react";
+import toast from "react-hot-toast";
 
 const StatusPengajuanPenghapusanAnggota = () => {
   const { data: session, status } = useSession();
@@ -17,7 +18,7 @@ const StatusPengajuanPenghapusanAnggota = () => {
     if (status === "loading") return;
     const getMembers = async () => {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}members/pending`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}delete-requests`,
         {
           method: "GET",
           headers: {
@@ -37,33 +38,17 @@ const StatusPengajuanPenghapusanAnggota = () => {
       getMembers();
       return;
     }
-
-    const getData = setTimeout(() => {
-      fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}members/search?query=${search}`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${session.token}`,
-          },
-        }
-      )
-        .then((res) => res.json())
-        .then((data) => {
-          setMembers(data.data);
-        });
-    }, 1000);
-
-    return () => clearTimeout(getData);
   }, [search, status, session]);
 
-  const updateStatus = async (option, index) => {
-    let newArr = [...members];
-    newArr[index].status = option;
+  const updateStatus = async (option, id) => {
+    const newArr = members.map((member) => ({
+      ...member,
+      status: member.id === id ? option : member.status,
+    }));
     setMembers(newArr);
 
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}members/${newArr[index].id}/status`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}delete-requests/${id}/status`,
       {
         method: "PUT",
         headers: {
@@ -87,6 +72,10 @@ const StatusPengajuanPenghapusanAnggota = () => {
       setOpenItemId(id); // Open the dropdown for the clicked item
     }
   };
+
+  const filteredMembers = members.filter((member) =>
+    member.member.name.toLowerCase().includes(search.toLowerCase())
+  );
 
   if (status === "loading") return <Loading />;
   return (
@@ -167,54 +156,16 @@ const StatusPengajuanPenghapusanAnggota = () => {
             </tr>
           </thead>
           <tbody>
-            <tr className=" border-b border-[#DDE1E6]">
-              <td className="break-words px-[10px]">01.02.004</td>
-              <td className="px-[10px]">Aji Santosa</td>
-              <td className="px-[10px]">3471t4718241</td>
-              <td className="px-[10px]">P</td>
-              <td className="px-[10px]">Berhenti</td>
-              <td className="px-[10px]">
-                <div className="flex justify-center items-center h-[48px]">
-                  <button className="bg-green-status-2 w-[116px] h-[24px] text-black rounded-lg mx-auto my-auto text-sm">
-                    Disetujui
-                  </button>
-                </div>
-              </td>
-              <td className="px-[10px]">
-                <div className="flex justify-center items-center h-[48px]">
-                  <button className="bg-red-status-1 w-[86px] h-[24px] text-white rounded-lg mx-auto my-auto">
-                    Tidak Aktif
-                  </button>
-                </div>
-              </td>
-              <td className="px-[10px]">
-                <div className="flex justify-center items-center h-[48px]">
-                  <Link
-                    href={"/status-pengajuan/penghapusan-anggota/detail"}
-                    className="bg-primary w-[100px] h-[24px] text-white rounded-lg text-center"
-                  >
-                    Cek Detail
-                  </Link>
-                </div>
-              </td>
-              <td className="px-[10px]">
-                <div className="flex justify-center items-center h-[48px]">
-                  <button className="bg-yellow-status-2 w-[100px] h-[24px] text-black rounded-lg mx-auto my-auto text-sm">
-                    Menunggu
-                  </button>
-                </div>
-              </td>
-            </tr>
-            {members.length > 0 ? (
-              members.map((item, index) => (
+            {filteredMembers.length > 0 ? (
+              filteredMembers.map((item, index) => (
                 <tr key={item.id} className=" border-b border-[#DDE1E6]">
-                  <td className="break-words px-[10px]">{item.id}</td>
-                  <td className="px-[10px]">{item.name}</td>
-                  <td className="px-[10px]">{item.nik}</td>
+                  <td className="break-words px-[10px]">{item.member.id}</td>
+                  <td className="px-[10px]">{item.member.name}</td>
+                  <td className="px-[10px]">{item.member.nik}</td>
                   <td className="px-[10px]">
                     {item.gender === "laki-laki" ? "L" : "P"}
                   </td>
-                  <td className="px-[10px]">Simpanan</td>
+                  <td className="px-[10px]">{item.reason}</td>
                   <td className="px-[10px]">
                     <div className="flex justify-center items-center h-[48px]">
                       <div>
@@ -237,7 +188,9 @@ const StatusPengajuanPenghapusanAnggota = () => {
                         {openItemId === item.id && (
                           <div className="w-full relative">
                             <VerificationSelector
-                              selected={(option) => updateStatus(option, index)}
+                              selected={(option) =>
+                                updateStatus(option, item.id)
+                              }
                               options={[
                                 "diproses",
                                 "disetujui",
@@ -269,7 +222,7 @@ const StatusPengajuanPenghapusanAnggota = () => {
                   <td className="px-[10px]">
                     <div className="flex justify-center items-center h-[48px]">
                       <Link
-                        href={`/status-pengajuan/anggota-baru/detail/${item.id}`}
+                        href={`/status-pengajuan/penghapusan-anggota/detail/${item.member.id}`}
                         className="bg-primary w-[100px] h-[24px] text-white rounded-lg text-center"
                       >
                         Cek Detail

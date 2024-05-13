@@ -757,7 +757,7 @@ const DetailAnggotaBaru = () => {
             <div className="flex flex-col">
               <label htmlFor="simpananWajib">Simpanan Wajib</label>
               <div className="flex mt-2 gap-3">
-                <div className="flex-grow">
+                <div className="w-1/2">
                   <label htmlFor="bulan1">Total Simpanan</label>
                   <input
                     type="number"
@@ -765,6 +765,20 @@ const DetailAnggotaBaru = () => {
                     id="bulan1"
                     placeholder="Auto Generated"
                     value={member.deposit.mandatoryDeposit}
+                    disabled
+                    className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed"
+                  />
+                </div>
+                <div className="w-1/2">
+                  <label htmlFor="simpananSelanjutnya">
+                    Jadwal Simpanan Selanjutnya
+                  </label>
+                  <input
+                    type="date"
+                    name="simpananSelanjutnya"
+                    id="simpananSelanjutnya"
+                    placeholder="Auto Generated"
+                    defaultValue={member.deposit.createdAt.slice(0, 10)}
                     disabled
                     className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed"
                   />
@@ -791,13 +805,13 @@ const DetailAnggotaBaru = () => {
             </div>
           </div>
         </div>
-        {member.deposit.loans.length > 0 &&
-          member.deposit.loans.map((loan, index) => (
-            <div key={index} className="bg-white p-[20px] rounded-xl">
-              <p className="text-black font-bold text-lg mb-[10px]">
-                Detail Pinjaman
-              </p>
-              <div className="flex gap-2">
+        {member.deposit.loans.length > 0 && (
+          <div className="bg-white p-[20px] rounded-xl">
+            <p className="text-black font-bold text-lg mb-[10px]">
+              Detail Pinjaman
+            </p>
+            {member.deposit.loans.map((loan, index) => (
+              <div key={index} className="flex gap-2">
                 <div className="w-1/3">
                   <label htmlFor="cabang">ID Cabang</label>
                   <input
@@ -870,8 +884,9 @@ const DetailAnggotaBaru = () => {
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
+        )}
         <Modal isVisible={showProsesData} onClose={() => setProsesData(false)}>
           <h3 className="text-xl text-center font-bold text-black">
             Proses Data?

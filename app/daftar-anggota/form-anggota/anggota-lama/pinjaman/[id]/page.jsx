@@ -75,7 +75,7 @@ const Pinjaman = () => {
 
   const calculate = async () => {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}members/calculate-deposit`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}members/${member.id}/calculate-deposit`,
       {
         method: "POST",
         headers: {
@@ -94,13 +94,52 @@ const Pinjaman = () => {
     }
   };
 
-  useEffect(() => {
-    if (status === "loading") return;
-  }, [session, status]);
+  const submitData = async (e) => {
+    setLoading(true);
+    e.preventDefault();
+
+    if (
+      member.leaderId === "" ||
+      loan === null ||
+      loan.loan === 0 ||
+      loan.leaderId === ""
+    ) {
+      toast.error(
+        "Mohon masukkan id ketua kelompok dan masukkan jumlah pinjaman"
+      );
+      setProsesData(false);
+      setLoading(false);
+      return;
+    }
+
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}members/${member.id}/loan`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session.token}`,
+        },
+        body: JSON.stringify({
+          ...loan,
+        }),
+      }
+    );
+
+    const data = await res.json();
+    if (res.ok) {
+      setBerhasil(true);
+      localStorage.clear();
+    } else {
+      toast.error(data.message);
+    }
+    setLoading(false);
+    setProsesData(false);
+  };
 
   useEffect(() => {
+    if (status === "loading") return;
     const getMember = async () => {
-      if (status === "loading") return;
       setLoading(true);
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_BASE_URL}members/${id}`,
@@ -128,7 +167,6 @@ const Pinjaman = () => {
       });
       const data = await res.json();
       setBranches(data.data);
-      console.log(data.data);
     };
     getAllBranches();
     getMember();
@@ -151,7 +189,9 @@ const Pinjaman = () => {
               name="simpananPokok"
               id="simpananPokok"
               placeholder="Auto Generated"
-              value={simpanan.principalDeposit}
+              value={
+                member.deposit.principalDeposit + simpanan.principalDeposit
+              }
               disabled
               className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed"
             />
@@ -169,7 +209,9 @@ const Pinjaman = () => {
                   name="bulan1"
                   id="bulan1"
                   placeholder="Auto Generated"
-                  value={simpanan.mandatoryDeposit}
+                  value={
+                    member.deposit.mandatoryDeposit + simpanan.mandatoryDeposit
+                  }
                   disabled
                   className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed"
                 />
@@ -186,7 +228,9 @@ const Pinjaman = () => {
               name="simpananSukarela"
               id="simpananSukarela"
               placeholder="Auto Generated"
-              value={simpanan.voluntaryDeposit}
+              value={
+                member.deposit.voluntaryDeposit + simpanan.voluntaryDeposit
+              }
               disabled
               className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed"
             />
@@ -203,6 +247,7 @@ const Pinjaman = () => {
           setLoan({
             loan: 0,
             leaderId: "",
+            branchId: 0,
           });
           setOneClick(false);
         }}
@@ -222,13 +267,13 @@ const Pinjaman = () => {
         </svg>
         <p className="ml-5 text-base font-regular">Tambah Pinjaman</p>
       </button>
-      {member.deposit.loans.length > 0 &&
-        member.deposit.loans.map((loan, index) => (
-          <div key={index} className="bg-white p-[20px] rounded-xl">
-            <p className="text-black font-bold text-lg mb-[10px]">
-              Detail Pinjaman
-            </p>
-            <div className="flex gap-2">
+      {member.deposit.loans.length > 0 && (
+        <div className="bg-white p-[20px] rounded-xl">
+          <p className="text-black font-bold text-lg mb-[10px]">
+            Detail Pinjaman
+          </p>
+          {member.deposit.loans.map((loan, index) => (
+            <div key={index} className="flex gap-2">
               <div className="w-1/3">
                 <label htmlFor="cabang">ID Cabang</label>
                 <input
@@ -301,8 +346,9 @@ const Pinjaman = () => {
                 </div>
               </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
+      )}
       {loan && (
         <div className="bg-white p-[20px] rounded-xl">
           <p className="text-black font-bold text-lg mb-[10px]">
@@ -324,9 +370,9 @@ const Pinjaman = () => {
                       setCabangOpen(!cabangOpen);
                     }}
                   >
-                    {member.branchId === 0
+                    {loan.branchId === 0
                       ? `Pilih Cabang`
-                      : `Cabang ${member.branchId}`}
+                      : `Cabang ${loan.branchId}`}
                     <svg
                       width="24"
                       height="24"
@@ -344,8 +390,8 @@ const Pinjaman = () => {
                     <div className="w-full relative">
                       <DropdownSelector
                         selected={(option) =>
-                          setMember({
-                            ...member,
+                          setLoan({
+                            ...loan,
                             branchId: parseInt(option.split(" ")[1]),
                           })
                         }
@@ -472,8 +518,7 @@ const Pinjaman = () => {
           type="submit"
           className="w-[450px] px-[20px] py-[12px] text-white bg-primary rounded-lg mx-auto"
           onClick={(e) => {
-            setProsesData(false);
-            setBerhasil(true);
+            submitData(e);
           }}
         >
           Proses Data
@@ -514,6 +559,7 @@ const Pinjaman = () => {
           className="w-[450px] px-[20px] py-[12px] text-white bg-primary rounded-lg mx-auto"
           onClick={(e) => {
             setBerhasil(false);
+            router.push("/status-pengajuan/pinjaman-anggota-lama");
           }}
         >
           OK

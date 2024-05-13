@@ -15,12 +15,15 @@ const PengajuanHapusAnggota = () => {
   useEffect(() => {
     if (status === "loading") return;
     const getMembers = async () => {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}tellers`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${session.token}`,
-        },
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}members/inactive`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${session.token}`,
+          },
+        }
+      );
       const data = await res.json();
       if (res.ok) {
         setMembers(data.data);
@@ -148,32 +151,6 @@ const PengajuanHapusAnggota = () => {
             </tr>
           </thead>
           <tbody>
-            <tr className=" border-b border-[#DDE1E6]">
-              <td className="break-words px-[10px]">01.02.004</td>
-              <td className="px-[10px]">Nama Anggota</td>
-              <td className="px-[10px]">3522061124020111</td>
-              <td className="px-[10px]">P</td>
-              <td className="px-[10px]">Rp. 99,999,999</td>
-              <td className="px-[10px]">Rp. 99,999,999</td>
-              <td className="px-[10px]">M. Zidan</td>
-              <td className="px-[10px]">
-                <div className="flex justify-center items-center h-[64px]">
-                  <button className="bg-red-status-1 w-[86px] py-[1px] text-white rounded-lg mx-auto my-auto">
-                    Tidak Aktif
-                  </button>
-                </div>
-              </td>
-              <td className="px-[10px]">
-                <div className="flex justify-center items-center h-[64px]">
-                  <Link
-                    href={"/daftar-anggota/pengajuan-hapus-anggota/detail"}
-                    className="bg-primary w-[98px] py-[1px] text-white rounded-lg text-center"
-                  >
-                    Cek Detail
-                  </Link>
-                </div>
-              </td>
-            </tr>
             {filteredMember.length > 0 ? (
               filteredMember.map((item, index) => (
                 <tr key={item.id} className=" border-b border-[#DDE1E6]">
@@ -183,18 +160,26 @@ const PengajuanHapusAnggota = () => {
                   <td className="px-[10px]">
                     {item.gender === "laki-laki" ? "L" : "P"}
                   </td>
-                  <td className="px-[10px]">{item.age}</td>
-                  <td className="px-[10px]">{item.city}</td>
-                  <td className="px-[10px] break-words">{item.phoneNumber}</td>
+                  <td className="px-[10px]">{item.totalDeposit}</td>
+                  <td className="px-[10px]">{item.totalLoan}</td>
+                  <td className="px-[10px]">{item.leader.name}</td>
                   <td className="px-[10px]">
-                    <div className="flex justify-center items-center h-[64px]">
-                      <button className="bg-red-status-1 w-[86px] py-[1px] text-white rounded-lg mx-auto my-auto">
-                        Tidak Aktif
-                      </button>
-                    </div>
+                    {item.isActive ? (
+                      <div className="flex justify-center items-center h-[64px]">
+                        <button className="bg-green-status-1 w-[86px] py-[1px] text-white rounded-lg mx-auto my-auto">
+                          Aktif
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="flex justify-center items-center h-[64px]">
+                        <button className="bg-red-status-1 w-[86px] py-[1px] text-white rounded-lg mx-auto my-auto">
+                          Tidak Aktif
+                        </button>
+                      </div>
+                    )}
                   </td>
                   <td className="px-[10px]">
-                    <div className="flex justify-center items-center h-[48px]">
+                    <div className="flex justify-center items-center h-[64px]">
                       <Link
                         href={`/daftar-anggota/pengajuan-hapus-anggota/detail/${item.id}`}
                         className="bg-primary w-[98px] py-[1px] text-white rounded-lg text-center"
