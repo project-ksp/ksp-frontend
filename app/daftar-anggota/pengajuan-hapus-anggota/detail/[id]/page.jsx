@@ -177,6 +177,19 @@ const DetailPenghapusanAnggota = () => {
   return (
     <div className="flex flex-col gap-2">
       {loading && <div className="inset-0 fixed bg-black/20 z-50"></div>}
+      <div className="flex items-center justify-between mb-2">
+        <h2 className="text-2xl font-bold text-black">Daftar Anggota</h2>
+        <div className="flex gap-4">
+          <Link href={"/daftar-anggota/pengajuan-hapus-anggota"}>
+            <button
+              type="button"
+              className="bg-primary text-white w-[228px] h-[48px] rounded-md text-center"
+            >
+              Kembali
+            </button>
+          </Link>
+        </div>
+      </div>
       <div className="bg-white rounded-xl p-[20px]">
         <p className="text-black font-bold text-lg mb-[10px]">
           Biodata Lengkap Anggota
