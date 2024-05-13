@@ -13,9 +13,11 @@ const CetakBlankoSimpanan = () => {
           height={1578}
         />
       </div>
-      <button className="bg-primary text-white w-[228px] h-[48px] rounded-md text-center mt-2 ml-auto">
-        Print
-      </button>
+      <Link href={"/documents/blanko_simpanan.pdf"} className="ml-auto ">
+        <button className="bg-primary text-white w-[228px] h-[48px] rounded-md text-center mt-2">
+          Print
+        </button>
+      </Link>
     </div>
   );
 };

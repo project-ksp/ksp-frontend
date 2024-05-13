@@ -30,12 +30,12 @@ const DetailAnggotaBaru = () => {
     name: "",
     nik: "",
     gender: "",
-    isActive: false,
-    branchId: null,
+    isActive: "",
+    branchId: "",
     leaderId: "",
     createdAt: "",
     updatedAt: "",
-    isMarried: false,
+    isMarried: "",
     spouse: null,
     birthPlace: "",
     birthDate: "",
@@ -50,68 +50,23 @@ const DetailAnggotaBaru = () => {
     phoneNumber: "",
     profilePictureUrl: "",
     idPictureUrl: "",
-    userId: null,
+    userId: "",
     status: "",
-    verified: false,
+    verified: "",
     leader: {
       id: "",
       name: "",
     },
-    deposits: [
-      {
-        id: null,
-        principalDeposit: 0,
-        voluntaryDeposit: 0,
-        monthlyDeposits: [{ deposit: 0 }, { deposit: 0 }],
-        monthlyLoans: [
-          {
-            id: null,
-            loan: 0,
-            branchId: null,
-            leaderId: "",
-            depositId: null,
-            createdAt: "",
-            updatedAt: "",
-          },
-          {
-            id: null,
-            loan: 0,
-            branchId: null,
-            leaderId: "",
-            depositId: null,
-            createdAt: "",
-            updatedAt: "",
-          },
-          {
-            id: null,
-            loan: 0,
-            branchId: null,
-            leaderId: "",
-            depositId: null,
-            createdAt: "",
-            updatedAt: "",
-          },
-          {
-            id: null,
-            loan: 0,
-            branchId: null,
-            leaderId: "",
-            depositId: null,
-            createdAt: "",
-            updatedAt: "",
-          },
-          {
-            id: null,
-            loan: 0,
-            branchId: null,
-            leaderId: "",
-            depositId: null,
-            createdAt: "",
-            updatedAt: "",
-          },
-        ],
-      },
-    ],
+    deposit: {
+      id: "",
+      principalDeposit: "",
+      mandatoryDeposit: "",
+      voluntaryDeposit: "",
+      memberId: "",
+      createdAt: "",
+      updatedAt: "",
+      loans: [],
+    },
   });
   const [allowEdit, setAllowEdit] = useState(false);
 
@@ -787,18 +742,17 @@ const DetailAnggotaBaru = () => {
             <div className="flex-1">
               <label htmlFor="simpananPokok">Simpanan Pokok</label>
               <input
-                type="text"
+                type="number"
                 name="simpananPokok"
                 id="simpananPokok"
-                placeholder="Auto Generate"
-                value={Intl.NumberFormat("id-ID", {
-                  style: "currency",
-                  currency: "IDR",
-                  maximumFractionDigits: 0,
-                }).format(member.deposits[0].principalDeposit)}
-                className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none italic disabled:bg-black/5 disabled:cursor-not-allowed"
+                placeholder="Auto Generated"
+                value={member.deposit.principalDeposit}
                 disabled
+                className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed"
               />
+              <p className="text-filled-color text-sm mt-1">
+                *Minimal Rp.50.000,00/bulan
+              </p>
             </div>
             <div className="flex flex-col">
               <label htmlFor="simpananWajib">Simpanan Wajib</label>
@@ -806,105 +760,118 @@ const DetailAnggotaBaru = () => {
                 <div className="flex-grow">
                   <label htmlFor="bulan1">Total Simpanan</label>
                   <input
-                    type="text"
+                    type="number"
                     name="bulan1"
                     id="bulan1"
                     placeholder="Auto Generated"
-                    className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none italic"
+                    value={member.deposit.mandatoryDeposit}
                     disabled
-                  />
-                </div>
-                <div className="flex-grow">
-                  <label htmlFor="bulan1">Jadwal Simpanan Selanjutnya</label>
-                  <input
-                    type="text"
-                    name="bulan1"
-                    id="bulan1"
-                    placeholder="Auto Generated"
-                    className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none italic"
-                    disabled
+                    className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed"
                   />
                 </div>
               </div>
+              <p className="text-filled-color text-sm mt-1">
+                *Minimal Rp.50.000,00/bulan
+              </p>
             </div>
             <div className="flex-1">
               <label htmlFor="simpananSukarela">Simpanan Sukarela</label>
               <input
-                type="text"
+                type="number"
                 name="simpananSukarela"
                 id="simpananSukarela"
                 placeholder="Auto Generated"
-                value={Intl.NumberFormat("id-ID", {
-                  style: "currency",
-                  currency: "IDR",
-                  maximumFractionDigits: 0,
-                }).format(member.deposits[0].voluntaryDeposit)}
-                className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none italic"
                 disabled
+                value={member.deposit.voluntaryDeposit}
+                className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed"
               />
+              <p className="text-filled-color text-sm mt-1">
+                Diambil dari pinjaman
+              </p>
             </div>
           </div>
         </div>
-        <div className="bg-white p-[20px] rounded-xl">
-          <p className="text-black font-bold text-lg mb-[10px]">
-            Detail Pinjaman
-          </p>
-          <div className="flex flex-col gap-4">
-            <div className="flex gap-2">
-              <div className="min-w-[220px]">
-                <label htmlFor="idCabang">ID Cabang</label>
-                <input
-                  type="text"
-                  name="idCabang"
-                  id="idCabang"
-                  placeholder="Auto Generated"
-                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none italic"
-                  disabled
-                />
-              </div>
-              <div className="min-w-[350px]">
-                <label htmlFor="jumlahPinjaman">Jumlah Pinjaman</label>
-                <input
-                  type="text"
-                  name="jumlahPinjaman"
-                  id="jumlahPinjaman"
-                  placeholder="Auto Generated"
-                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none italic"
-                  disabled
-                />
-              </div>
-              <div className="w-1/3">
-                <label htmlFor="awalPinjaman">Awal Pinjaman</label>
-                <input
-                  type="text"
-                  name="awalPinjaman"
-                  id="awalPinjaman"
-                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
-                />
-              </div>
-              <div className="w-1/3">
-                <label htmlFor="akhirPinjaman">Akhir Pinjaman</label>
-                <input
-                  type="text"
-                  name="akhirPinjaman"
-                  id="akhirPinjaman"
-                  placeholder="Isi ID Ketua Kelompok"
-                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
-                />
-              </div>
-              <div className="w-1/3">
-                <label htmlFor="idKetuaKelompok">ID Ketua Kelompok</label>
-                <input
-                  type="text"
-                  name="idKetuaKelompok"
-                  id="idKetuaKelompok"
-                  placeholder="Isi ID Ketua Kelompok"
-                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
-                />
+        {member.deposit.loans.length > 0 &&
+          member.deposit.loans.map((loan, index) => (
+            <div key={index} className="bg-white p-[20px] rounded-xl">
+              <p className="text-black font-bold text-lg mb-[10px]">
+                Detail Pinjaman
+              </p>
+              <div className="flex gap-2">
+                <div className="w-1/3">
+                  <label htmlFor="cabang">ID Cabang</label>
+                  <input
+                    type="text"
+                    name="cabang"
+                    id="cabang"
+                    value={member.branchId}
+                    disabled
+                    className={`w-full flex justify-between py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] text-start text-black bg-transparent focus:outline-none disabled:cursor-not-allowed`}
+                  />
+                </div>
+                <div className="w-1/3">
+                  <label htmlFor="jumlahPinjaman">Jumlah Pinjaman</label>
+                  <input
+                    type="number"
+                    name="jumlahPinjaman"
+                    id="jumlahPinjaman"
+                    placeholder="Isikan Jumlah Pinjaman"
+                    value={member.deposit.loans[index].loan}
+                    disabled
+                    className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
+                  />
+                </div>
+                <div className="w-1/3">
+                  <div>
+                    <label htmlFor="awalPinjaman">Awal Pinjaman</label>
+                    <input
+                      type="date"
+                      name="awalPinjaman"
+                      id="awalPinjaman"
+                      placeholder="Isi ID Ketua Kelompok"
+                      disabled
+                      value={member.deposit.loans[index].createdAt.slice(0, 10)}
+                      className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
+                    />
+                  </div>
+                </div>
+                <div className="w-1/3">
+                  <div>
+                    <label htmlFor="akhirPinjaman">Akhir Pinjaman</label>
+                    <input
+                      type="date"
+                      name="akhirPinjaman"
+                      id="akhirPinjaman"
+                      placeholder="Isi ID Ketua Kelompok"
+                      disabled
+                      defaultValue={(() => {
+                        const date = new Date(
+                          member.deposit.loans[index].createdAt
+                        );
+                        date.setMonth(date.getMonth() + 6);
+                        return date.toJSON().slice(0, 10);
+                      })()}
+                      className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
+                    />
+                  </div>
+                </div>
+                <div className="w-1/3">
+                  <div>
+                    <label htmlFor="idKetuaKelompok">ID Ketua Kelompok</label>
+                    <input
+                      type="text"
+                      name="idKetuaKelompok"
+                      id="idKetuaKelompok"
+                      placeholder="Isi ID Ketua Kelompok"
+                      disabled
+                      value={member.leader.id}
+                      className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
+                    />
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
+          ))}
         <Modal isVisible={showProsesData} onClose={() => setProsesData(false)}>
           <h3 className="text-xl text-center font-bold text-black">
             Proses Data?

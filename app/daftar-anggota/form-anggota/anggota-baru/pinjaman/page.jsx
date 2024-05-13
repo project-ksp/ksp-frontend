@@ -6,21 +6,23 @@ import DropdownSelector from "@/components/DropdownSelector";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Loading from "@/components/Loading";
+import toast from "react-hot-toast";
 
 const Pinjaman = () => {
   const { data: session, status } = useSession();
+  const router = useRouter();
 
   const [showProsesData, setProsesData] = useState(false);
   const [showBerhasil, setBerhasil] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [itemId, setItemId] = useState(null);
-
-  const [cabangOpen, setCabangOpen] = useState(false);
-  const [branches, setBranches] = useState();
 
   const [oneClick, setOneClick] = useState(true);
 
-  const router = useRouter();
+  const [simpanan, setSimpanan] = useState({
+    principalDeposit: 0,
+    mandatoryDeposit: 0,
+    voluntaryDeposit: 0,
+  });
 
   const [member, setMember] = useState({
     name: "",
@@ -41,24 +43,11 @@ const Pinjaman = () => {
     profilePictureUrl: "",
     idPictureUrl: "",
     leaderId: "",
+    spouse: "",
+    branchId: 0,
   });
 
-  const [monthlyLoans, setMonthlyLoans] = useState(null);
-
-  useEffect(() => {
-    if (status === "loading") return;
-    const getAllBranches = async () => {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}branches`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${session.token}`,
-        },
-      });
-      const data = await res.json();
-      setBranches(data.data);
-    };
-    getAllBranches();
-  }, [session, status]);
+  const [loan, setLoan] = useState(null);
 
   useEffect(() => {
     if (status === "loading") return;
@@ -85,6 +74,7 @@ const Pinjaman = () => {
     const storedIdPictureUrl = localStorage.getItem("idPictureUrl") || "";
     const storedLeaderId = localStorage.getItem("leaderId") || "";
     const storedSpouse = localStorage.getItem("spouse") || "";
+    const storedBranchId = session.user.branchId;
 
     setMember({
       name: storedName,
@@ -106,8 +96,96 @@ const Pinjaman = () => {
       idPictureUrl: storedIdPictureUrl,
       leaderId: storedLeaderId,
       spouse: storedSpouse,
+      branchId: storedBranchId,
     });
-  }, [status]);
+  }, [status, session]);
+
+  const submitData = async (e) => {
+    setLoading(true);
+    e.preventDefault();
+    if (
+      member.isMarried === "Pilih Status" ||
+      member.gender === "Pilih Jenis Kelamin" ||
+      member.religion === "Pilih Agama" ||
+      member.education === "Pilih Pendidikan Terakhir" ||
+      member.name === "" ||
+      member.nik === "" ||
+      member.birthPlace === "" ||
+      member.birthDate === "" ||
+      member.occupation === "" ||
+      member.address === "" ||
+      member.kelurahan === "" ||
+      member.kecamatan === "" ||
+      member.city === "" ||
+      member.postalCode === "" ||
+      member.phoneNumber === "" ||
+      member.profilePictureUrl === "" ||
+      member.idPictureUrl === "" ||
+      member.branchId === 0
+    ) {
+      toast.error("Mohon lengkapi data anggota terlebih dahulu");
+      setProsesData(false);
+      setLoading(false);
+      return;
+    }
+
+    if (
+      member.leaderId === "" ||
+      loan === null ||
+      loan.loan === 0 ||
+      loan.leaderId === ""
+    ) {
+      toast.error(
+        "Mohon masukkan id ketua kelompok dan masukkan jumlah pinjaman"
+      );
+      setProsesData(false);
+      setLoading(false);
+      return;
+    }
+
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}members/loan`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${session.token}`,
+      },
+      body: JSON.stringify({
+        member,
+        loan,
+      }),
+    });
+
+    const data = await res.json();
+    if (res.ok) {
+      setBerhasil(true);
+      localStorage.clear();
+    } else {
+      toast.error(data.message);
+    }
+    setLoading(false);
+    setProsesData(false);
+  };
+
+  const calculate = async () => {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}members/calculate-deposit`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session.token}`,
+        },
+        body: JSON.stringify({ loan: loan.loan }),
+      }
+    );
+
+    const data = await res.json();
+    if (res.ok) {
+      setSimpanan(data.data);
+    } else {
+      toast.error(data.message);
+    }
+  };
 
   if (status === "loading") return <Loading />;
 
@@ -126,14 +204,9 @@ const Pinjaman = () => {
               name="simpananPokok"
               id="simpananPokok"
               placeholder="Auto Generated"
+              value={simpanan.principalDeposit}
               disabled
-              onChange={(e) =>
-                setDeposit({
-                  ...deposit,
-                  principalDeposit: parseInt(e.target.value),
-                })
-              }
-              className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
+              className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed"
             />
             <p className="text-filled-color text-sm mt-1">
               *Minimal Rp.50.000,00/bulan
@@ -149,14 +222,9 @@ const Pinjaman = () => {
                   name="bulan1"
                   id="bulan1"
                   placeholder="Auto Generated"
+                  value={simpanan.mandatoryDeposit}
                   disabled
-                  onChange={(e) =>
-                    setMonthlyDeposits({
-                      ...monthlyDeposits,
-                      deposit: parseInt(e.target.value),
-                    })
-                  }
-                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
+                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed"
                 />
               </div>
             </div>
@@ -171,13 +239,9 @@ const Pinjaman = () => {
               name="simpananSukarela"
               id="simpananSukarela"
               placeholder="Auto Generated"
-              onChange={(e) =>
-                setDeposit({
-                  ...deposit,
-                  voluntaryDeposit: parseInt(e.target.value),
-                })
-              }
-              className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
+              value={simpanan.voluntaryDeposit}
+              disabled
+              className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed"
             />
             <p className="text-filled-color text-sm mt-1">
               Diambil dari pinjaman
@@ -189,14 +253,9 @@ const Pinjaman = () => {
         type="button"
         disabled={!oneClick}
         onClick={() => {
-          setMonthlyLoans({
-            id: 0,
+          setLoan({
             loan: 0,
-            branchId: "Pilih Cabang",
             leaderId: "",
-            depositId: 0,
-            createdAt: "",
-            updatedAt: "",
           });
           setOneClick(false);
         }}
@@ -216,7 +275,7 @@ const Pinjaman = () => {
         </svg>
         <p className="ml-5 text-base font-regular">Tambah Pinjaman</p>
       </button>
-      {monthlyLoans && (
+      {loan && (
         <div className="bg-white p-[20px] rounded-xl">
           <p className="text-black font-bold text-lg mb-[10px]">
             Detail Pinjaman
@@ -225,54 +284,15 @@ const Pinjaman = () => {
             <div className="flex-flex-col">
               <div className="flex gap-2">
                 <div className="w-1/3">
-                  <label htmlFor="cabang">Pilih Cabang</label>
-                  <button
-                    type="button"
+                  <label htmlFor="cabang">ID Cabang</label>
+                  <input
+                    type="text"
                     name="cabang"
                     id="cabang"
-                    className={`w-full flex justify-between py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] text-start text-[#d9d9d9] bg-transparent focus:outline-none ${
-                      monthlyLoans.branchId === "Pilih Cabang"
-                        ? "text-[#d9d9d9]"
-                        : "text-primary"
-                    }`}
-                    onClick={() => {
-                      setCabangOpen(!cabangOpen);
-                    }}
-                  >
-                    {monthlyLoans.branchId === "Pilih Cabang"
-                      ? `Pilih Cabang`
-                      : `Cabang ${monthlyLoans.branchId === "Pilih Cabang"}`}
-                    <svg
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M17.2902 9.31002C17.1977 9.21732 17.0878 9.14377 16.9668 9.09359C16.8459 9.04341 16.7162 9.01758 16.5852 9.01758C16.4543 9.01758 16.3246 9.04341 16.2036 9.09359C16.0826 9.14377 15.9727 9.21732 15.8802 9.31002L12.0002 13.19L8.12022 9.31002C7.93324 9.12304 7.67965 9.018 7.41522 9.018C7.1508 9.018 6.8972 9.12304 6.71022 9.31002C6.52324 9.497 6.4182 9.7506 6.4182 10.015C6.4182 10.2794 6.52324 10.533 6.71022 10.72L11.3002 15.31C11.3927 15.4027 11.5026 15.4763 11.6236 15.5265C11.7446 15.5766 11.8743 15.6025 12.0052 15.6025C12.1362 15.6025 12.2659 15.5766 12.3868 15.5265C12.5078 15.4763 12.6177 15.4027 12.7102 15.31L17.3002 10.72C17.6802 10.34 17.6802 9.70002 17.2902 9.31002Z"
-                        fill="black"
-                      />
-                    </svg>
-                  </button>
-                  {cabangOpen && (
-                    <div className="w-full relative">
-                      <DropdownSelector
-                        selected={(option) =>
-                          setMember({
-                            ...member,
-                            monthlyLoans: monthlyLoans.map((loan, i) =>
-                              i === index ? { ...loan, branchId: option } : loan
-                            ),
-                          })
-                        }
-                        options={branches.map(
-                          (branch) => `Cabang ${branch.id}`
-                        )}
-                        onClose={() => setCabangOpen(false)}
-                      />
-                    </div>
-                  )}
+                    value={session.user.branchId}
+                    disabled
+                    className={`w-full flex justify-between py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] text-start text-black bg-transparent focus:outline-none disabled:cursor-not-allowed`}
+                  />
                 </div>
                 <div className="w-1/3">
                   <div>
@@ -284,6 +304,9 @@ const Pinjaman = () => {
                       name="jumlahPinjaman"
                       id="jumlahPinjaman"
                       placeholder="Isikan Jumlah Pinjaman"
+                      onChange={(e) =>
+                        setLoan({ ...loan, loan: parseInt(e.target.value) })
+                      }
                       className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
                     />
                   </div>
@@ -298,8 +321,9 @@ const Pinjaman = () => {
                       name="namaKetuaKelompok"
                       id="namaKetuaKelompok"
                       placeholder="Auto Generated"
+                      value={loan.loan * 0.95}
                       disabled
-                      className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
+                      className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed"
                     />
                   </div>
                 </div>
@@ -345,12 +369,16 @@ const Pinjaman = () => {
                       name="idKetuaKelompok"
                       id="idKetuaKelompok"
                       placeholder="Isi ID Ketua Kelompok"
+                      onChange={(e) =>
+                        setLoan({ ...loan, leaderId: e.target.value })
+                      }
                       className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
                     />
                   </div>
                 </div>
                 <button
                   type="button"
+                  onClick={calculate}
                   className="bg-primary text-white w-1/6 h-[48px] rounded-md text-center place-self-end"
                 >
                   Hitung
@@ -381,14 +409,19 @@ const Pinjaman = () => {
           type="submit"
           className="w-[450px] px-[20px] py-[12px] text-white bg-primary rounded-lg mx-auto"
           onClick={(e) => {
-            setProsesData(false);
-            setBerhasil(true);
+            submitData(e);
           }}
         >
           Proses Data
         </button>
       </Modal>
-      <Modal isVisible={showBerhasil} onClose={() => setBerhasil(false)}>
+      <Modal
+        isVisible={showBerhasil}
+        onClose={() => {
+          setBerhasil(false);
+          router.push("/status-pengajuan/anggota-baru");
+        }}
+      >
         <div className="w-[98px] h-[98px] rounded-full bg-primary place-self-center relative">
           <svg
             width="43"
@@ -423,6 +456,7 @@ const Pinjaman = () => {
           className="w-[450px] px-[20px] py-[12px] text-white bg-primary rounded-lg mx-auto"
           onClick={(e) => {
             setBerhasil(false);
+            router.push("/status-pengajuan/anggota-baru");
           }}
         >
           OK
