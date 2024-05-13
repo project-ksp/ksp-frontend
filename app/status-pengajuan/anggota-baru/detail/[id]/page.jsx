@@ -570,7 +570,9 @@ const DetailAnggotaBaru = () => {
           type="button"
           className="w-[200px] px-[20px] h-[48px] text-white bg-primary rounded-lg"
         >
-          <Link href={"/status-pengajuan/anggota-baru/cetak-formulir"}>
+          <Link
+            href={`/status-pengajuan/anggota-baru/detail/${id}/cetak-formulir`}
+          >
             Formulir
           </Link>
         </button>
@@ -578,7 +580,9 @@ const DetailAnggotaBaru = () => {
           type="button"
           className="w-[200px] px-[20px] h-[48px] text-white bg-primary rounded-lg"
         >
-          <Link href={"/status-pengajuan/anggota-baru/cetak-kartu-anggota"}>
+          <Link
+            href={`/status-pengajuan/anggota-baru/detail/${id}/cetak-kartu-anggota`}
+          >
             Kartu Anggota
           </Link>
         </button>
@@ -586,7 +590,9 @@ const DetailAnggotaBaru = () => {
           type="button"
           className="w-[200px] px-[20px] h-[48px] text-white bg-primary rounded-lg"
         >
-          <Link href={"/status-pengajuan/anggota-baru/cetak-buku-anggota"}>
+          <Link
+            href={`/status-pengajuan/anggota-baru/detail/${id}/cetak-buku-anggota`}
+          >
             Buku Anggota
           </Link>
         </button>
@@ -594,7 +600,9 @@ const DetailAnggotaBaru = () => {
           type="button"
           className="w-[200px] px-[20px] h-[48px] text-white bg-primary rounded-lg"
         >
-          <Link href={"/status-pengajuan/anggota-baru/cetak-blanko-simpanan"}>
+          <Link
+            href={`/status-pengajuan/anggota-baru/detail/${id}/cetak-blanko-simpanan`}
+          >
             Blanko Simpanan
           </Link>
         </button>
@@ -602,7 +610,9 @@ const DetailAnggotaBaru = () => {
           type="button"
           className="w-[200px] px-[20px] h-[48px] text-white bg-primary rounded-lg"
         >
-          <Link href={"/status-pengajuan/anggota-baru/cetak-blanko-pinjaman"}>
+          <Link
+            href={`/status-pengajuan/anggota-baru/detail/${id}/cetak-blanko-pinjaman`}
+          >
             Blanko Pinjaman
           </Link>
         </button>
