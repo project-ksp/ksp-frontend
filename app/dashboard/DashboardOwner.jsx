@@ -29,6 +29,12 @@ const DashboardOwner = () => {
     publishAmount: 0,
   });
 
+  const [branchData, setBranchData] = useState({
+    branchCount: 0,
+    activeMemberCount: 0,
+    inactiveMemberCount: 0,
+  });
+
   useEffect(() => {
     if (status === "loading") return;
 
@@ -48,7 +54,27 @@ const DashboardOwner = () => {
       }
     };
 
+    const getBranchData = async () => {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}auth/overview`,
+        {
+          method: "GET",
+          headers: {
+            "Content-type": "Application/json",
+            Authorization: `Bearer ${session.token}`,
+          },
+        }
+      );
+      const data = await res.json();
+      if (res.ok) {
+        setBranchData(data.data);
+      } else {
+        toast.error(data.message);
+      }
+    };
+
     getBranches();
+    getBranchData();
   }, [session, status, loading]);
 
   const updateAturPublish = async (e) => {
@@ -226,7 +252,9 @@ const DashboardOwner = () => {
           <div className="bg-gradient-to-r from-[#c0deff] to-white p-[16px] shadow-lg rounded-xl w-1/3 relative overflow-hidden">
             <h4 className="text-[#192839] text-lg font-bold">Jumlah Cabang</h4>
             <hr className="border border-[#192839] my-[12px] w-4/5" />
-            <p className="text-[#192839] text-xl font-bold">20</p>
+            <p className="text-[#192839] text-xl font-bold">
+              {branchData.branchCount}
+            </p>
             <svg
               width="71"
               height="61"
@@ -259,7 +287,9 @@ const DashboardOwner = () => {
               Total Anggota Aktif
             </h4>
             <hr className="border border-green-status-1 my-[12px] w-4/5" />
-            <p className="text-green-status-1 text-xl font-bold">20,0932</p>
+            <p className="text-green-status-1 text-xl font-bold">
+              {branchData.activeMemberCount}
+            </p>
             <svg
               width="76"
               height="76"
@@ -336,7 +366,9 @@ const DashboardOwner = () => {
               Total Anggota Tidak Aktif
             </h4>
             <hr className="border border-red-status-1 my-[12px] w-4/5" />
-            <p className="text-red-status-1  text-xl font-bold">10,2314</p>
+            <p className="text-red-status-1  text-xl font-bold">
+              {branchData.inactiveMemberCount}
+            </p>
             <svg
               width="76"
               height="76"
