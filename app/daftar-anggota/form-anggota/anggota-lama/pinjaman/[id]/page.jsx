@@ -1,18 +1,144 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Modal from "@/components/Modal";
 import DropdownSelector from "@/components/DropdownSelector";
+import { useSession } from "next-auth/react";
+import { useParams, useRouter } from "next/navigation";
+import Loading from "@/components/Loading";
+import toast from "react-hot-toast";
 
 const Pinjaman = () => {
+  const { data: session, status } = useSession();
+  const router = useRouter();
+  const { id } = useParams();
+
   const [showProsesData, setProsesData] = useState(false);
   const [showBerhasil, setBerhasil] = useState(false);
-  const [pinjamans, setPinjamans] = useState([]);
-  const [idCabang, setIdCabang] = useState("Pilih Cabang");
-  const [idCabangOpen, setIdCabangOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [cabangOpen, setCabangOpen] = useState(false);
+  const [branches, setBranches] = useState([]);
+
+  const [oneClick, setOneClick] = useState(true);
+
+  const [simpanan, setSimpanan] = useState({
+    principalDeposit: 0,
+    mandatoryDeposit: 0,
+    voluntaryDeposit: 0,
+  });
+
+  const [member, setMember] = useState({
+    id: "",
+    name: "",
+    nik: "",
+    gender: "",
+    isActive: "",
+    branchId: "",
+    leaderId: "",
+    createdAt: "",
+    updatedAt: "",
+    isMarried: "",
+    spouse: null,
+    birthPlace: "",
+    birthDate: "",
+    religion: "",
+    occupation: "",
+    address: "",
+    kelurahan: "",
+    kecamatan: "",
+    city: "",
+    postalCode: "",
+    education: "",
+    phoneNumber: "",
+    profilePictureUrl: "",
+    idPictureUrl: "",
+    userId: "",
+    status: "",
+    verified: "",
+    leader: {
+      id: "",
+      name: "",
+    },
+    deposit: {
+      id: "",
+      principalDeposit: "",
+      mandatoryDeposit: "",
+      voluntaryDeposit: "",
+      memberId: "",
+      createdAt: "",
+      updatedAt: "",
+      loans: [],
+    },
+  });
+
+  const [loan, setLoan] = useState(null);
+
+  const calculate = async () => {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}members/calculate-deposit`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session.token}`,
+        },
+        body: JSON.stringify({ loan: loan.loan }),
+      }
+    );
+
+    const data = await res.json();
+    if (res.ok) {
+      setSimpanan(data.data);
+    } else {
+      toast.error(data.message);
+    }
+  };
+
+  useEffect(() => {
+    if (status === "loading") return;
+  }, [session, status]);
+
+  useEffect(() => {
+    const getMember = async () => {
+      if (status === "loading") return;
+      setLoading(true);
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}members/${id}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${session.token}`,
+          },
+        }
+      );
+      const data = await res.json();
+      if (res.ok) {
+        setMember(data.data);
+      } else {
+        toast.error(data.message);
+      }
+      setLoading(false);
+    };
+    const getAllBranches = async () => {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}branches`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session.token}`,
+        },
+      });
+      const data = await res.json();
+      setBranches(data.data);
+      console.log(data.data);
+    };
+    getAllBranches();
+    getMember();
+  }, [status, session, id]);
+
+  if (status === "loading") return <Loading />;
 
   return (
     <>
+      {loading && <div className="inset-0 fixed bg-black/20 z-50"></div>}
       <div className="bg-white p-[20px] rounded-xl">
         <p className="text-black font-bold text-lg mb-[10px]">
           Detail Simpanan
@@ -24,86 +150,63 @@ const Pinjaman = () => {
               type="number"
               name="simpananPokok"
               id="simpananPokok"
-              placeholder="Isikan Jumlah"
-              onChange={(e) =>
-                setDeposit({
-                  ...deposit,
-                  principalDeposit: parseInt(e.target.value),
-                })
-              }
-              className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
+              placeholder="Auto Generated"
+              value={simpanan.principalDeposit}
+              disabled
+              className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed"
             />
+            <p className="text-filled-color text-sm mt-1">
+              *Minimal Rp.50.000,00/bulan
+            </p>
           </div>
           <div className="flex flex-col">
-            <p>Simpanan Wajib</p>
+            <label htmlFor="simpananWajib">Simpanan Wajib</label>
             <div className="flex mt-2 gap-3">
-              <div className="w-1/2">
-                <label htmlFor="totalSimpanan">Total Simpanan</label>
+              <div className="flex-grow">
+                <label htmlFor="bulan1">Total Simpanan</label>
                 <input
                   type="number"
-                  name="totalSimpanan"
-                  id="totalSimpanan"
-                  placeholder="Isikan Jumlah"
-                  onChange={(e) =>
-                    setMonthlyDeposits({
-                      ...monthlyDeposits,
-                      deposit: parseInt(e.target.value),
-                    })
-                  }
-                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
-                />
-              </div>
-              <div className="w-1/2">
-                <label htmlFor="tambahSimpanan">Tambah Simpanan</label>
-                <input
-                  type="number"
-                  name="tambahSimpanan"
-                  id="tambahSimpanan"
-                  placeholder="Isikan Jumlah"
-                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
+                  name="bulan1"
+                  id="bulan1"
+                  placeholder="Auto Generated"
+                  value={simpanan.mandatoryDeposit}
+                  disabled
+                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed"
                 />
               </div>
             </div>
+            <p className="text-filled-color text-sm mt-1">
+              *Minimal Rp.50.000,00/bulan
+            </p>
           </div>
-          <div className="flex flex-col">
-            <p>Simpanan Sukarela</p>
-            <div className="flex mt-2 gap-3">
-              <div className="w-1/2">
-                <label htmlFor="simpananSukarela">Total Simpanan</label>
-                <input
-                  type="number"
-                  name="simpananSukarela"
-                  id="simpananSukarela"
-                  placeholder="Isikan Jumlah"
-                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
-                />
-              </div>
-              <div className="w-1/2">
-                <label htmlFor="tambahSimpanan">Tambah Simpanan</label>
-                <input
-                  type="number"
-                  name="tambahSimpanan"
-                  id="tambahSimpanan"
-                  placeholder="Isikan Jumlah"
-                  onChange={(e) =>
-                    setMonthlyDeposits({
-                      ...monthlyDeposits,
-                      deposit: parseInt(e.target.value),
-                    })
-                  }
-                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
-                />
-              </div>
-            </div>
+          <div className="flex-1">
+            <label htmlFor="simpananSukarela">Simpanan Sukarela</label>
+            <input
+              type="number"
+              name="simpananSukarela"
+              id="simpananSukarela"
+              placeholder="Auto Generated"
+              value={simpanan.voluntaryDeposit}
+              disabled
+              className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed"
+            />
+            <p className="text-filled-color text-sm mt-1">
+              Diambil dari pinjaman
+            </p>
           </div>
         </div>
       </div>
       <button
         type="button"
+        disabled={!oneClick}
         onClick={() => {
-          setPinjamans([...pinjamans, {}]);
+          setLoan({
+            loan: 0,
+            leaderId: "",
+          });
+          setOneClick(false);
         }}
-        className="bg-primary text-white w-[224px] h-[48px] rounded-md text-center flex items-center justify-center"
+        className="bg-primary text-white w-[224px] h-[48px] rounded-md text-center flex items-center justify-center disabled:bg-black/20 disabled:cursor-not-allowed"
       >
         <svg
           width="16"
@@ -119,101 +222,232 @@ const Pinjaman = () => {
         </svg>
         <p className="ml-5 text-base font-regular">Tambah Pinjaman</p>
       </button>
-      {pinjamans.length > 0 && (
+      {member.deposit.loans.length > 0 &&
+        member.deposit.loans.map((loan, index) => (
+          <div key={index} className="bg-white p-[20px] rounded-xl">
+            <p className="text-black font-bold text-lg mb-[10px]">
+              Detail Pinjaman
+            </p>
+            <div className="flex gap-2">
+              <div className="w-1/3">
+                <label htmlFor="cabang">ID Cabang</label>
+                <input
+                  type="text"
+                  name="cabang"
+                  id="cabang"
+                  value={member.branchId}
+                  disabled
+                  className={`w-full flex justify-between py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] text-start text-black bg-transparent focus:outline-none disabled:cursor-not-allowed`}
+                />
+              </div>
+              <div className="w-1/3">
+                <label htmlFor="jumlahPinjaman">Jumlah Pinjaman</label>
+                <input
+                  type="number"
+                  name="jumlahPinjaman"
+                  id="jumlahPinjaman"
+                  placeholder="Isikan Jumlah Pinjaman"
+                  value={member.deposit.loans[index].loan}
+                  disabled
+                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
+                />
+              </div>
+              <div className="w-1/3">
+                <div>
+                  <label htmlFor="awalPinjaman">Awal Pinjaman</label>
+                  <input
+                    type="date"
+                    name="awalPinjaman"
+                    id="awalPinjaman"
+                    placeholder="Isi ID Ketua Kelompok"
+                    disabled
+                    value={member.deposit.loans[index].createdAt.slice(0, 10)}
+                    className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
+                  />
+                </div>
+              </div>
+              <div className="w-1/3">
+                <div>
+                  <label htmlFor="akhirPinjaman">Akhir Pinjaman</label>
+                  <input
+                    type="date"
+                    name="akhirPinjaman"
+                    id="akhirPinjaman"
+                    placeholder="Isi ID Ketua Kelompok"
+                    disabled
+                    defaultValue={(() => {
+                      const date = new Date(
+                        member.deposit.loans[index].createdAt
+                      );
+                      date.setMonth(date.getMonth() + 6);
+                      return date.toJSON().slice(0, 10);
+                    })()}
+                    className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
+                  />
+                </div>
+              </div>
+              <div className="w-1/3">
+                <div>
+                  <label htmlFor="idKetuaKelompok">ID Ketua Kelompok</label>
+                  <input
+                    type="text"
+                    name="idKetuaKelompok"
+                    id="idKetuaKelompok"
+                    placeholder="Isi ID Ketua Kelompok"
+                    disabled
+                    value={member.leader.id}
+                    className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+      {loan && (
         <div className="bg-white p-[20px] rounded-xl">
           <p className="text-black font-bold text-lg mb-[10px]">
-            Detail Pinjaman
+            Detail Pinjaman Baru
           </p>
           <div className="flex flex-col gap-4">
-            {pinjamans.map((pinjaman, index) => {
-              return (
-                <div key={index} className="flex gap-2">
-                  <div className="min-w-[175px]">
-                    <div>
-                      <label htmlFor="idCabang">Cabang</label>
-                      <button
-                        type="button"
-                        name="idCabang"
-                        id="idCabang"
-                        className={`w-full flex justify-between py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] text-start text-[#d9d9d9] bg-transparent focus:outline-none ${
-                          idCabang === "Pilih Cabang"
-                            ? "text-[#d9d9d9]"
-                            : "text-primary"
-                        }`}
-                        onClick={() => setIdCabangOpen(!idCabangOpen)}
-                      >
-                        {idCabang}
-                        <svg
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M17.2902 9.31002C17.1977 9.21732 17.0878 9.14377 16.9668 9.09359C16.8459 9.04341 16.7162 9.01758 16.5852 9.01758C16.4543 9.01758 16.3246 9.04341 16.2036 9.09359C16.0826 9.14377 15.9727 9.21732 15.8802 9.31002L12.0002 13.19L8.12022 9.31002C7.93324 9.12304 7.67965 9.018 7.41522 9.018C7.1508 9.018 6.8972 9.12304 6.71022 9.31002C6.52324 9.497 6.4182 9.7506 6.4182 10.015C6.4182 10.2794 6.52324 10.533 6.71022 10.72L11.3002 15.31C11.3927 15.4027 11.5026 15.4763 11.6236 15.5265C11.7446 15.5766 11.8743 15.6025 12.0052 15.6025C12.1362 15.6025 12.2659 15.5766 12.3868 15.5265C12.5078 15.4763 12.6177 15.4027 12.7102 15.31L17.3002 10.72C17.6802 10.34 17.6802 9.70002 17.2902 9.31002Z"
-                            fill="black"
-                          />
-                        </svg>
-                      </button>
-
-                      {idCabangOpen && (
-                        <div className="w-full relative">
-                          <DropdownSelector
-                            selected={(option) => setIdCabang(option)}
-                            options={["Cabang 01", "Cabang 02", "Cabang 03"]}
-                            onClose={() => setIdCabangOpen(false)}
-                          />
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                  <div className="min-w-[290px]">
-                    <div>
-                      <label htmlFor="jumlahPinjaman">Jumlah Pinjaman</label>
-                      <input
-                        type="text"
-                        name="jumlahPinjaman"
-                        id="jumlahPinjaman"
-                        placeholder="Isikan Jumlah Pinjaman"
-                        className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
+            <div className="flex-flex-col">
+              <div className="flex gap-2">
+                <div className="w-1/3">
+                  <label htmlFor="cabang">Pilih Cabang</label>
+                  <button
+                    type="button"
+                    name="cabang"
+                    id="cabang"
+                    className={`w-full flex justify-between py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] text-start text-[#d9d9d9] bg-transparent focus:outline-none ${
+                      member.branchId === 0 ? "text-[#d9d9d9]" : "text-primary"
+                    }`}
+                    onClick={() => {
+                      setCabangOpen(!cabangOpen);
+                    }}
+                  >
+                    {member.branchId === 0
+                      ? `Pilih Cabang`
+                      : `Cabang ${member.branchId}`}
+                    <svg
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M17.2902 9.31002C17.1977 9.21732 17.0878 9.14377 16.9668 9.09359C16.8459 9.04341 16.7162 9.01758 16.5852 9.01758C16.4543 9.01758 16.3246 9.04341 16.2036 9.09359C16.0826 9.14377 15.9727 9.21732 15.8802 9.31002L12.0002 13.19L8.12022 9.31002C7.93324 9.12304 7.67965 9.018 7.41522 9.018C7.1508 9.018 6.8972 9.12304 6.71022 9.31002C6.52324 9.497 6.4182 9.7506 6.4182 10.015C6.4182 10.2794 6.52324 10.533 6.71022 10.72L11.3002 15.31C11.3927 15.4027 11.5026 15.4763 11.6236 15.5265C11.7446 15.5766 11.8743 15.6025 12.0052 15.6025C12.1362 15.6025 12.2659 15.5766 12.3868 15.5265C12.5078 15.4763 12.6177 15.4027 12.7102 15.31L17.3002 10.72C17.6802 10.34 17.6802 9.70002 17.2902 9.31002Z"
+                        fill="black"
+                      />
+                    </svg>
+                  </button>
+                  {cabangOpen && (
+                    <div className="w-full relative">
+                      <DropdownSelector
+                        selected={(option) =>
+                          setMember({
+                            ...member,
+                            branchId: parseInt(option.split(" ")[1]),
+                          })
+                        }
+                        options={branches.map(
+                          (branch) => `Cabang ${branch.id}`
+                        )}
+                        onClose={() => setCabangOpen(false)}
                       />
                     </div>
-                  </div>
-                  <div className="w-1/2">
-                    <div>
-                      <label htmlFor="namaKetuaKelompok">
-                        Nama Ketua Kelompok
-                      </label>
-                      <input
-                        type="text"
-                        name="namaKetuaKelompok"
-                        id="namaKetuaKelompok"
-                        placeholder="Isi Nama Ketua Kelompok"
-                        className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
-                      />
-                    </div>
-                  </div>
-                  <div className="w-1/2">
-                    <div>
-                      <label htmlFor="idKetuaKelompok">ID Ketua Kelompok</label>
-                      <input
-                        type="text"
-                        name="idKetuaKelompok"
-                        id="idKetuaKelompok"
-                        placeholder="Isi ID Ketua Kelompok"
-                        className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
-                      />
-                    </div>
-                  </div>
-                  {index === pinjamans.length - 1 && (
-                    <button className="bg-primary text-white w-1/3 h-[48px] rounded-md text-center place-self-end">
-                      Hitung
-                    </button>
                   )}
                 </div>
-              );
-            })}
+                <div className="w-1/3">
+                  <div>
+                    <label htmlFor="jumlahPinjaman">
+                      Jumlah Pinjaman Yang Diajukan
+                    </label>
+                    <input
+                      type="number"
+                      name="jumlahPinjaman"
+                      id="jumlahPinjaman"
+                      placeholder="Isikan Jumlah Pinjaman"
+                      onChange={(e) =>
+                        setLoan({ ...loan, loan: parseInt(e.target.value) })
+                      }
+                      className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
+                    />
+                  </div>
+                </div>
+                <div className="w-1/3">
+                  <div>
+                    <label htmlFor="namaKetuaKelompok">
+                      Jumlah Pinjaman yang didapat
+                    </label>
+                    <input
+                      type="text"
+                      name="namaKetuaKelompok"
+                      id="namaKetuaKelompok"
+                      placeholder="Auto Generated"
+                      value={loan.loan * 0.95}
+                      disabled
+                      className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="flex gap-2 mt-3">
+                <div className="w-1/3">
+                  <div>
+                    <label htmlFor="awalPinjaman">Awal Pinjaman</label>
+                    <input
+                      type="date"
+                      name="awalPinjaman"
+                      id="awalPinjaman"
+                      placeholder="Isi ID Ketua Kelompok"
+                      disabled
+                      value={new Date().toJSON().slice(0, 10)}
+                      className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
+                    />
+                  </div>
+                </div>
+                <div className="w-1/3">
+                  <div>
+                    <label htmlFor="akhirPinjaman">Akhir Pinjaman</label>
+                    <input
+                      type="date"
+                      name="akhirPinjaman"
+                      id="akhirPinjaman"
+                      placeholder="Isi ID Ketua Kelompok"
+                      disabled
+                      defaultValue={(() => {
+                        const date = new Date();
+                        date.setMonth(date.getMonth() + 6);
+                        return date.toJSON().slice(0, 10);
+                      })()}
+                      className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
+                    />
+                  </div>
+                </div>
+                <div className="w-1/3">
+                  <div>
+                    <label htmlFor="idKetuaKelompok">ID Ketua Kelompok</label>
+                    <input
+                      type="text"
+                      name="idKetuaKelompok"
+                      id="idKetuaKelompok"
+                      placeholder="Isi ID Ketua Kelompok"
+                      onChange={(e) =>
+                        setLoan({ ...loan, leaderId: e.target.value })
+                      }
+                      className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
+                    />
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={calculate}
+                  className="bg-primary text-white w-1/6 h-[48px] rounded-md text-center place-self-end"
+                >
+                  Hitung
+                </button>
+              </div>
+            </div>
           </div>
           <p className="text-filled-color text-sm mt-2">Tempat Pinjam</p>
         </div>

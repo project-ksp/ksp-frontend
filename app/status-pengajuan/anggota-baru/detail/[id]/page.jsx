@@ -22,9 +22,49 @@ const DetailAnggotaBaru = () => {
 
   const [loading, setLoading] = useState(false);
 
-  const [member, setMember] = useState({});
-  const [deposit, setDeposit] = useState({});
-  const [monthlyDeposits, setMonthlyDeposits] = useState({});
+  const [member, setMember] = useState({
+    id: "",
+    name: "",
+    nik: "",
+    gender: "",
+    isActive: "",
+    branchId: "",
+    leaderId: "",
+    createdAt: "",
+    updatedAt: "",
+    isMarried: "",
+    spouse: null,
+    birthPlace: "",
+    birthDate: "",
+    religion: "",
+    occupation: "",
+    address: "",
+    kelurahan: "",
+    kecamatan: "",
+    city: "",
+    postalCode: "",
+    education: "",
+    phoneNumber: "",
+    profilePictureUrl: "",
+    idPictureUrl: "",
+    userId: "",
+    status: "",
+    verified: "",
+    leader: {
+      id: "",
+      name: "",
+    },
+    deposit: {
+      id: "",
+      principalDeposit: "",
+      mandatoryDeposit: "",
+      voluntaryDeposit: "",
+      memberId: "",
+      createdAt: "",
+      updatedAt: "",
+      loans: [],
+    },
+  });
 
   useEffect(() => {
     const getMember = async () => {
@@ -387,6 +427,144 @@ const DetailAnggotaBaru = () => {
           </div>
         </div>
       </div>
+      <div className="bg-white p-[20px] rounded-xl">
+        <p className="text-black font-bold text-lg mb-[10px]">
+          Detail Simpanan
+        </p>
+        <div className="flex flex-col gap-3">
+          <div className="flex-1">
+            <label htmlFor="simpananPokok">Simpanan Pokok</label>
+            <input
+              type="number"
+              name="simpananPokok"
+              id="simpananPokok"
+              placeholder="Auto Generated"
+              value={member.deposit.principalDeposit}
+              disabled
+              className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed"
+            />
+            <p className="text-filled-color text-sm mt-1">
+              *Minimal Rp.50.000,00/bulan
+            </p>
+          </div>
+          <div className="flex flex-col">
+            <label htmlFor="simpananWajib">Simpanan Wajib</label>
+            <div className="flex mt-2 gap-3">
+              <div className="flex-grow">
+                <label htmlFor="bulan1">Total Simpanan</label>
+                <input
+                  type="number"
+                  name="bulan1"
+                  id="bulan1"
+                  placeholder="Auto Generated"
+                  value={member.deposit.mandatoryDeposit}
+                  disabled
+                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed"
+                />
+              </div>
+            </div>
+            <p className="text-filled-color text-sm mt-1">
+              *Minimal Rp.50.000,00/bulan
+            </p>
+          </div>
+          <div className="flex-1">
+            <label htmlFor="simpananSukarela">Simpanan Sukarela</label>
+            <input
+              type="number"
+              name="simpananSukarela"
+              id="simpananSukarela"
+              placeholder="Auto Generated"
+              disabled
+              value={member.deposit.voluntaryDeposit}
+              className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed"
+            />
+            <p className="text-filled-color text-sm mt-1">
+              Diambil dari pinjaman
+            </p>
+          </div>
+        </div>
+      </div>
+      {member.deposit.loans.length > 0 &&
+        member.deposit.loans.map((loan, index) => (
+          <div key={index} className="bg-white p-[20px] rounded-xl">
+            <p className="text-black font-bold text-lg mb-[10px]">
+              Detail Pinjaman
+            </p>
+            <div className="flex gap-2">
+              <div className="w-1/3">
+                <label htmlFor="cabang">ID Cabang</label>
+                <input
+                  type="text"
+                  name="cabang"
+                  id="cabang"
+                  value={member.branchId}
+                  disabled
+                  className={`w-full flex justify-between py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] text-start text-black bg-transparent focus:outline-none disabled:cursor-not-allowed`}
+                />
+              </div>
+              <div className="w-1/3">
+                <label htmlFor="jumlahPinjaman">Jumlah Pinjaman</label>
+                <input
+                  type="number"
+                  name="jumlahPinjaman"
+                  id="jumlahPinjaman"
+                  placeholder="Isikan Jumlah Pinjaman"
+                  value={member.deposit.loans[index].loan}
+                  disabled
+                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
+                />
+              </div>
+              <div className="w-1/3">
+                <div>
+                  <label htmlFor="awalPinjaman">Awal Pinjaman</label>
+                  <input
+                    type="date"
+                    name="awalPinjaman"
+                    id="awalPinjaman"
+                    placeholder="Isi ID Ketua Kelompok"
+                    disabled
+                    value={member.deposit.loans[index].createdAt.slice(0, 10)}
+                    className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
+                  />
+                </div>
+              </div>
+              <div className="w-1/3">
+                <div>
+                  <label htmlFor="akhirPinjaman">Akhir Pinjaman</label>
+                  <input
+                    type="date"
+                    name="akhirPinjaman"
+                    id="akhirPinjaman"
+                    placeholder="Isi ID Ketua Kelompok"
+                    disabled
+                    defaultValue={(() => {
+                      const date = new Date(
+                        member.deposit.loans[index].createdAt
+                      );
+                      date.setMonth(date.getMonth() + 6);
+                      return date.toJSON().slice(0, 10);
+                    })()}
+                    className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
+                  />
+                </div>
+              </div>
+              <div className="w-1/3">
+                <div>
+                  <label htmlFor="idKetuaKelompok">ID Ketua Kelompok</label>
+                  <input
+                    type="text"
+                    name="idKetuaKelompok"
+                    id="idKetuaKelompok"
+                    placeholder="Isi ID Ketua Kelompok"
+                    disabled
+                    value={member.leader.id}
+                    className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
       <div className="flex gap-3 justify-end">
         <button
           type="button"

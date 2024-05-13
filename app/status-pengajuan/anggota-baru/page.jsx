@@ -164,7 +164,9 @@ const StatusPengajuanAnggotaBaru = () => {
                   <td className="break-words px-[10px]">{item.id}</td>
                   <td className="px-[10px]">{item.name}</td>
                   <td className="px-[10px]">{item.nik}</td>
-                  <td className="px-[10px]">Simpanan</td>
+                  <td className="px-[10px]">
+                    {item.totalLoan > 0 ? "Pinjaman" : "Simpanan"}
+                  </td>
                   <td className="px-[10px]">
                     {item.gender === "laki-laki" ? "L" : "P"}
                   </td>
