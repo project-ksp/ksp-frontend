@@ -153,6 +153,7 @@ const Pinjaman = () => {
       const data = await res.json();
       if (res.ok) {
         setMember(data.data);
+        setSimpanan(data.data.deposit);
       } else {
         toast.error(data.message);
       }
@@ -189,9 +190,7 @@ const Pinjaman = () => {
               name="simpananPokok"
               id="simpananPokok"
               placeholder="Auto Generated"
-              value={
-                member.deposit.principalDeposit + simpanan.principalDeposit
-              }
+              value={simpanan.principalDeposit}
               disabled
               className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed"
             />
@@ -209,9 +208,7 @@ const Pinjaman = () => {
                   name="bulan1"
                   id="bulan1"
                   placeholder="Auto Generated"
-                  value={
-                    member.deposit.mandatoryDeposit + simpanan.mandatoryDeposit
-                  }
+                  value={simpanan.mandatoryDeposit}
                   disabled
                   className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed"
                 />
@@ -228,9 +225,7 @@ const Pinjaman = () => {
               name="simpananSukarela"
               id="simpananSukarela"
               placeholder="Auto Generated"
-              value={
-                member.deposit.voluntaryDeposit + simpanan.voluntaryDeposit
-              }
+              value={simpanan.voluntaryDeposit}
               disabled
               className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed"
             />
