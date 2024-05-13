@@ -741,6 +741,53 @@ const TambahAnggota = () => {
           </div>
         </div>
       </div>
+      <div className="bg-white p-[20px] rounded-xl">
+        <p className="text-black text-2xl font-bold mb-[10px]">
+          Pengisian Antidatir
+        </p>
+        <div className="flex flex-col">
+          <div className="flex-grow">
+            <label htmlFor="tanggalLahir">Tanggal Form Pendaftaran</label>
+            <input
+              type="date"
+              id="tanggalLahir"
+              name="tanggalLahir"
+              required
+              className="w-full py-[10px] px-[20px] border border-[#d9d9d9] text-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
+            />
+          </div>
+          <div className="flex-grow mt-2">
+            <label htmlFor="tanggalLahir">Tanggal Form Pengesahan</label>
+            <input
+              type="date"
+              id="tanggalLahir"
+              name="tanggalLahir"
+              required
+              className="w-full py-[10px] px-[20px] border border-[#d9d9d9] text-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
+            />
+          </div>
+          <div className="flex-grow mt-2">
+            <label htmlFor="tanggalLahir">Tanggal Surat Kuasa</label>
+            <input
+              type="date"
+              id="tanggalLahir"
+              name="tanggalLahir"
+              required
+              className="w-full py-[10px] px-[20px] border border-[#d9d9d9] text-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
+            />
+          </div>
+          <div className="flex-grow mt-2">
+            <label htmlFor="tanggalLahir">Tanggal Form Isian Rapat</label>
+            <input
+              type="date"
+              id="tanggalLahir"
+              name="tanggalLahir"
+              required
+              className="w-full py-[10px] px-[20px] border border-[#d9d9d9] text-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
+            />
+          </div>
+        </div>
+      </div>
       <div className="flex gap-5 place-self-end">
         <Link href={"/daftar-anggota/form-anggota/anggota-baru/simpanan"}>
           <button className="bg-primary text-white w-[228px] h-[48px] rounded-md text-center">
