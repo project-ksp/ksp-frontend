@@ -584,7 +584,6 @@ const TambahAnggota = () => {
                   />
                 </svg>
               </button>
-
               {pendidikanOpen && (
                 <div className="w-full relative">
                   <DropdownSelector
