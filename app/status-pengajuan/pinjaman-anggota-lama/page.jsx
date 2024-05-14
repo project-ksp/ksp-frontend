@@ -208,7 +208,7 @@ const StatusPengajuanAnggotaBaru = () => {
                   </td>
                   <td className="px-[10px]">
                     <div className="flex justify-center items-center h-[48px]">
-                      {item.isActive ? (
+                      {item.deposit.member.isActive ? (
                         <button className="bg-green-status-1 w-[86px] h-[24px] text-white rounded-lg mx-auto my-auto">
                           Aktif
                         </button>
