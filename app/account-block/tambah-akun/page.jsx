@@ -20,8 +20,6 @@ const TambahAkun = () => {
   const [cabang, setCabang] = useState("Pilih Cabang");
   const [jabatan, setJabatan] = useState("Pilih Jabatan");
   const [userData, setUserData] = useState({
-    username: "",
-    password: "",
     name: "",
     role: "Pilih Jabatan",
     branchId: 0,
