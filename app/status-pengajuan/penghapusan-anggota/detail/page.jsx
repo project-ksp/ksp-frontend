@@ -271,59 +271,45 @@ const DetailPenghapusanAnggota = () => {
             </div>
           </div>
           <div className="flex w-full gap-2">
-            <div className="w-2/5">
-              <div>
-                <label htmlFor="alamat">Alamat Lengkap</label>
-                <input
-                  type="text"
-                  id="alamatCabang"
-                  name="alamatCabang"
-                  placeholder="Isi Alamat Lengkap Sesuai KTP"
-                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
-                />
-              </div>
+            <div className="w-1/4">
+              <label htmlFor="alamat">Alamat Lengkap</label>
+              <input
+                type="text"
+                id="alamatCabang"
+                name="alamatCabang"
+                placeholder="Isi Alamat Lengkap Sesuai KTP"
+                className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
+              />
             </div>
-            <div className="flex w-3/5 gap-3">
-              <div>
-                <label htmlFor="kelurahan">Kelurahan/Desa</label>
-                <input
-                  type="text"
-                  id="kelurahan"
-                  name="kelurahan"
-                  placeholder="Isi Sesuai KTP"
-                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
-                />
-              </div>
-              <div>
-                <label htmlFor="kecamatan">Kecamatan</label>
-                <input
-                  type="text"
-                  id="kecamatan"
-                  name="kecamatan"
-                  placeholder="Isi Sesuai KTP"
-                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
-                />
-              </div>
-              <div>
-                <label htmlFor="kota">Kabupaten/Kota</label>
-                <input
-                  type="text"
-                  id="kota"
-                  name="kota"
-                  placeholder="Isi Sesuai KTP"
-                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
-                />
-              </div>
-              <div>
-                <label htmlFor="kodePos">Kode Pos</label>
-                <input
-                  type="text"
-                  id="kodePos"
-                  name="kodePos"
-                  placeholder="Isi Sesuai KTP"
-                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
-                />
-              </div>
+            <div className="w-1/4">
+              <label htmlFor="kelurahan">Kelurahan/Desa</label>
+              <input
+                type="text"
+                id="kelurahan"
+                name="kelurahan"
+                placeholder="Isi Sesuai KTP"
+                className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
+              />
+            </div>
+            <div className="w-1/4">
+              <label htmlFor="kecamatan">Kecamatan</label>
+              <input
+                type="text"
+                id="kecamatan"
+                name="kecamatan"
+                placeholder="Isi Sesuai KTP"
+                className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
+              />
+            </div>
+            <div className="w-1/4">
+              <label htmlFor="kota">Kabupaten/Kota</label>
+              <input
+                type="text"
+                id="kota"
+                name="kota"
+                placeholder="Isi Sesuai KTP"
+                className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
+              />
             </div>
           </div>
           <div className="flex w-full gap-2">

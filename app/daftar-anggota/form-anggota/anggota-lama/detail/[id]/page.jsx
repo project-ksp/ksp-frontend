@@ -145,28 +145,19 @@ const DetailAnggotaLama = () => {
         <p className="text-black font-bold text-lg mb-[10px]">
           Biodata Lengkap Anggota
         </p>
-        <div className="flex flex-col gap-2">
-          <div className="flex">
-            <Image
-              src={`${process.env.NEXT_PUBLIC_BASE_URL}public/${member.profilePictureUrl}`}
-              width={90}
-              height={120}
-              alt="Foto Diri"
-              className="mr-[25px] rounded-md object-cover"
-            />
-            <div className="flex flex-col gap-2">
-              <p className="text-xl text-black">{member.name}</p>
-              <p className="text-lg text-black">{member.id}</p>
-              {member.isActive ? (
-                <div className="bg-green-status-1 text-white text-center my-[8px] rounded-lg  w-[86px]">
-                  Aktif
-                </div>
-              ) : (
-                <div className="bg-red-status-1 text-white text-center my-[8px] rounded-lg  w-[86px]">
-                  Tidak Aktif
-                </div>
-              )}
-            </div>
+        <div className="flex flex-col gap-2 mt-3">
+          <div className="flex flex-col gap-2">
+            <p className="text-xl text-black">{member.name}</p>
+            <p className="text-lg text-black">{member.id}</p>
+            {member.isActive ? (
+              <div className="bg-green-status-1 text-white text-center my-[8px] rounded-lg  w-[86px]">
+                Aktif
+              </div>
+            ) : (
+              <div className="bg-red-status-1 text-white text-center my-[8px] rounded-lg  w-[86px]">
+                Tidak Aktif
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -511,96 +502,81 @@ const DetailAnggotaLama = () => {
             </div>
           </div>
           <div className="flex w-full gap-2">
-            <div className="w-2/5">
-              <div>
-                <label htmlFor="alamat">Alamat Lengkap</label>
-                <input
-                  type="text"
-                  id="alamatCabang"
-                  name="alamatCabang"
-                  placeholder="Isi Alamat Lengkap Sesuai KTP"
-                  disabled={!allowEdit}
-                  onChange={(e) => {
-                    setMember({
-                      ...member,
-                      address: e.target.value,
-                    });
-                  }}
-                  defaultValue={member.address}
-                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed disabled:bg-black/5"
-                />
-              </div>
+            <div className="w-1/4">
+              <label htmlFor="alamat">Alamat Lengkap</label>
+              <input
+                type="text"
+                id="alamatCabang"
+                name="alamatCabang"
+                placeholder="Isi Alamat Lengkap Sesuai KTP"
+                disabled={!allowEdit}
+                onChange={(e) => {
+                  setMember({
+                    ...member,
+                    address: e.target.value,
+                  });
+                }}
+                defaultValue={member.address}
+                className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed disabled:bg-black/5"
+              />
             </div>
-            <div className="flex w-3/5 gap-3">
-              <div>
-                <label htmlFor="kelurahan">Kelurahan/Desa</label>
-                <input
-                  type="text"
-                  id="kelurahan"
-                  name="kelurahan"
-                  placeholder="Isi Sesuai KTP"
-                  defaultValue={member.kelurahan}
-                  disabled={!allowEdit}
-                  onChange={(e) => {
-                    setMember({
-                      ...member,
-                      kelurahan: e.target.value,
-                    });
-                  }}
-                  required
-                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed disabled:bg-black/5"
-                />
-              </div>
-              <div>
-                <label htmlFor="kecamatan">Kecamatan</label>
-                <input
-                  type="text"
-                  id="kecamatan"
-                  name="kecamatan"
-                  placeholder="Isi Sesuai KTP"
-                  defaultValue={member.kecamatan}
-                  disabled={!allowEdit}
-                  onChange={(e) => {
-                    setMember({
-                      ...member,
-                      kecamatan: e.target.value,
-                    });
-                  }}
-                  required
-                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed disabled:bg-black/5"
-                />
-              </div>
-              <div>
-                <label htmlFor="kota">Kabupaten/Kota</label>
-                <input
-                  type="text"
-                  id="kota"
-                  name="kota"
-                  placeholder="Isi Sesuai KTP"
-                  defaultValue={member.city}
-                  disabled={!allowEdit}
-                  onChange={(e) => {
-                    setMember({
-                      ...member,
-                      city: e.target.value,
-                    });
-                  }}
-                  required
-                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed disabled:bg-black/5"
-                />
-              </div>
-              <div>
-                <label htmlFor="kodePos">Kode Pos</label>
-                <input
-                  type="text"
-                  id="kodePos"
-                  name="kodePos"
-                  placeholder="Isi Sesuai KTP"
-                  disabled
-                  defaultValue={member.postalCode}
-                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed disabled:bg-black/5"
-                />
-              </div>
+
+            <div className="w-1/4">
+              <label htmlFor="kelurahan">Kelurahan/Desa</label>
+              <input
+                type="text"
+                id="kelurahan"
+                name="kelurahan"
+                placeholder="Isi Sesuai KTP"
+                defaultValue={member.kelurahan}
+                disabled={!allowEdit}
+                onChange={(e) => {
+                  setMember({
+                    ...member,
+                    kelurahan: e.target.value,
+                  });
+                }}
+                required
+                className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed disabled:bg-black/5"
+              />
+            </div>
+            <div className="w-1/4">
+              <label htmlFor="kecamatan">Kecamatan</label>
+              <input
+                type="text"
+                id="kecamatan"
+                name="kecamatan"
+                placeholder="Isi Sesuai KTP"
+                defaultValue={member.kecamatan}
+                disabled={!allowEdit}
+                onChange={(e) => {
+                  setMember({
+                    ...member,
+                    kecamatan: e.target.value,
+                  });
+                }}
+                required
+                className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed disabled:bg-black/5"
+              />
+            </div>
+            <div className="w-1/4">
+              <label htmlFor="kota">Kabupaten/Kota</label>
+              <input
+                type="text"
+                id="kota"
+                name="kota"
+                placeholder="Isi Sesuai KTP"
+                defaultValue={member.city}
+                disabled={!allowEdit}
+                onChange={(e) => {
+                  setMember({
+                    ...member,
+                    city: e.target.value,
+                  });
+                }}
+                required
+                className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed disabled:bg-black/5"
+              />
             </div>
           </div>
           <div className="flex w-full gap-2">
@@ -733,14 +709,14 @@ const DetailAnggotaLama = () => {
                   className={`w-full flex justify-between py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] text-start text-black bg-transparent focus:outline-none disabled:cursor-not-allowed`}
                 />
               </div>
-              <div className="w-1/3">
+              <div className="w-1/2">
                 <label htmlFor="jumlahPinjaman">Jumlah Pinjaman</label>
                 <input
                   type="number"
                   name="jumlahPinjaman"
                   id="jumlahPinjaman"
                   placeholder="Isikan Jumlah Pinjaman"
-                  value={member.deposit.loans[index].loan}
+                  value={loan.loan}
                   disabled
                   className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
                 />
@@ -754,7 +730,7 @@ const DetailAnggotaLama = () => {
                     id="awalPinjaman"
                     placeholder="Isi ID Ketua Kelompok"
                     disabled
-                    value={member.deposit.loans[index].createdAt.slice(0, 10)}
+                    value={loan.createdAt.slice(0, 10)}
                     className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
                   />
                 </div>
@@ -769,9 +745,7 @@ const DetailAnggotaLama = () => {
                     placeholder="Isi ID Ketua Kelompok"
                     disabled
                     defaultValue={(() => {
-                      const date = new Date(
-                        member.deposit.loans[index].createdAt
-                      );
+                      const date = new Date(loan.createdAt);
                       date.setMonth(date.getMonth() + 6);
                       return date.toJSON().slice(0, 10);
                     })()}

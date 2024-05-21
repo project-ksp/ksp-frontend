@@ -80,8 +80,8 @@ export default function LoginPage() {
   return (
     <div className="flex h-screen">
       <div className="w-1/2 bg-mainBg">
-        <div className="mx-[129px] flex flex-col justify-center items-center min-h-screen">
-          <div className="w-full h-[468px] relative">
+        <div className="flex flex-col justify-center items-center min-h-screen">
+          <div className="w-[515px] h-[468px] relative">
             <Image
               fill
               src="/images/logo_dekopin.png"
@@ -91,7 +91,7 @@ export default function LoginPage() {
               priority
             />
           </div>
-          <h4 className="text-xl font-bold text-black">
+          <h4 className="text-xl font-bold text-black mt-3">
             KOPERASI SIMPAN PINJAM
           </h4>
           <h2 className="text-black text-title-large font-bold">
