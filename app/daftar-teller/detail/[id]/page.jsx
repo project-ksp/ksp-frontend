@@ -149,16 +149,6 @@ const DetailTeller = () => {
           Biodata Lengkap Teller
         </p>
         <div className="flex gap-5 w-full">
-          <div className="w-[300px]">
-            <Image
-              src={`${process.env.NEXT_PUBLIC_BASE_URL}public/${teller.profilePictureUrl}`}
-              alt="Foto Teller"
-              width={300}
-              height={400}
-              quality={100}
-              className="rounded-2xl"
-            />
-          </div>
           <div className="flex flex-col w-full gap-2">
             <div className="flex-1">
               <label htmlFor="idTeller">ID Teller</label>
@@ -467,7 +457,7 @@ const DetailTeller = () => {
               </div>
             </div>
             <div className="flex gap-3">
-              <div className="w-1/4">
+              <div className="w-1/3">
                 <label htmlFor="kelurahanTeller">Kelurahan/Desa</label>
                 <input
                   type="text"
@@ -483,7 +473,7 @@ const DetailTeller = () => {
                   className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:bg-black/5 disabled:cursor-not-allowed"
                 />
               </div>
-              <div className="w-1/4">
+              <div className="w-1/3">
                 <label htmlFor="kecamatanTeller">Kecamatan</label>
                 <input
                   type="text"
@@ -499,7 +489,7 @@ const DetailTeller = () => {
                   className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:bg-black/5 disabled:cursor-not-allowed"
                 />
               </div>
-              <div className="w-1/4">
+              <div className="w-1/3">
                 <label htmlFor="kabupatenTeller">Kabupaten/Kota</label>
                 <input
                   type="text"
@@ -510,22 +500,6 @@ const DetailTeller = () => {
                   disabled={!allowEdit}
                   onChange={(e) =>
                     setTeller({ ...teller, city: e.target.value })
-                  }
-                  required
-                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:bg-black/5 disabled:cursor-not-allowed"
-                />
-              </div>
-              <div className="w-1/4">
-                <label htmlFor="kodePosTeller">Kode Pos</label>
-                <input
-                  type="text"
-                  id="kodePosTeller"
-                  name="kodePosTeller"
-                  placeholder="Isi Jenis Kelamin Teller"
-                  defaultValue={teller.postalCode}
-                  disabled={!allowEdit}
-                  onChange={(e) =>
-                    setTeller({ ...teller, postalCode: e.target.value })
                   }
                   required
                   className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:bg-black/5 disabled:cursor-not-allowed"

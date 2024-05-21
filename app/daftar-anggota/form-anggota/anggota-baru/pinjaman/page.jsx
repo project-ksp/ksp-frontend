@@ -216,14 +216,17 @@ const Pinjaman = () => {
             <label htmlFor="simpananWajib">Simpanan Wajib</label>
             <div className="flex mt-2 gap-3">
               <div className="flex-grow">
-                <label htmlFor="bulan1">Total Simpanan</label>
                 <input
                   type="number"
                   name="bulan1"
                   id="bulan1"
-                  placeholder="Auto Generated"
-                  value={simpanan.mandatoryDeposit}
-                  disabled
+                  placeholder="Isikan simpanan wajib"
+                  onChange={(e) =>
+                    setSimpanan({
+                      ...simpanan,
+                      mandatoryDeposit: e.target.value,
+                    })
+                  }
                   className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed"
                 />
               </div>
@@ -280,109 +283,79 @@ const Pinjaman = () => {
           <p className="text-black font-bold text-lg mb-[10px]">
             Detail Pinjaman
           </p>
-          <div className="flex flex-col gap-4">
-            <div className="flex-flex-col">
-              <div className="flex gap-2">
-                <div className="w-1/3">
-                  <label htmlFor="cabang">ID Cabang</label>
-                  <input
-                    type="text"
-                    name="cabang"
-                    id="cabang"
-                    value={session.user.branchId}
-                    disabled
-                    className={`w-full flex justify-between py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] text-start text-black bg-transparent focus:outline-none disabled:cursor-not-allowed`}
-                  />
-                </div>
-                <div className="w-1/3">
-                  <div>
-                    <label htmlFor="jumlahPinjaman">
-                      Jumlah Pinjaman Yang Diajukan
-                    </label>
-                    <input
-                      type="number"
-                      name="jumlahPinjaman"
-                      id="jumlahPinjaman"
-                      placeholder="Isikan Jumlah Pinjaman"
-                      onChange={(e) =>
-                        setLoan({ ...loan, loan: parseInt(e.target.value) })
-                      }
-                      className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
-                    />
-                  </div>
-                </div>
-                <div className="w-1/3">
-                  <div>
-                    <label htmlFor="namaKetuaKelompok">
-                      Jumlah Pinjaman yang didapat
-                    </label>
-                    <input
-                      type="text"
-                      name="namaKetuaKelompok"
-                      id="namaKetuaKelompok"
-                      placeholder="Auto Generated"
-                      value={loan.loan * 0.95}
-                      disabled
-                      className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed"
-                    />
-                  </div>
-                </div>
+          <div className="flex gap-3">
+            <div className="w-1/5">
+              <label htmlFor="cabang">ID Cabang</label>
+              <input
+                type="text"
+                name="cabang"
+                id="cabang"
+                value={session.user.branchId}
+                disabled
+                className={`w-full flex justify-between py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] text-start text-black bg-transparent focus:outline-none disabled:cursor-not-allowed`}
+              />
+            </div>
+            <div className="w-1/5">
+              <div>
+                <label htmlFor="jumlahPinjaman">Pinjaman Yang Diajukan</label>
+                <input
+                  type="number"
+                  name="jumlahPinjaman"
+                  id="jumlahPinjaman"
+                  placeholder="Isikan Jumlah Pinjaman"
+                  onChange={(e) =>
+                    setLoan({ ...loan, loan: parseInt(e.target.value) })
+                  }
+                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
+                />
               </div>
-              <div className="flex gap-2 mt-3">
-                <div className="w-1/3">
-                  <div>
-                    <label htmlFor="awalPinjaman">Awal Pinjaman</label>
-                    <input
-                      type="date"
-                      name="awalPinjaman"
-                      id="awalPinjaman"
-                      placeholder="Isi ID Ketua Kelompok"
-                      disabled
-                      value={new Date().toJSON().slice(0, 10)}
-                      className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
-                    />
-                  </div>
-                </div>
-                <div className="w-1/3">
-                  <div>
-                    <label htmlFor="akhirPinjaman">Akhir Pinjaman</label>
-                    <input
-                      type="date"
-                      name="akhirPinjaman"
-                      id="akhirPinjaman"
-                      placeholder="Isi ID Ketua Kelompok"
-                      disabled
-                      defaultValue={(() => {
-                        const date = new Date();
-                        date.setMonth(date.getMonth() + 6);
-                        return date.toJSON().slice(0, 10);
-                      })()}
-                      className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
-                    />
-                  </div>
-                </div>
-                <div className="w-1/3">
-                  <div>
-                    <label htmlFor="idKetuaKelompok">ID Ketua Kelompok</label>
-                    <input
-                      type="text"
-                      name="idKetuaKelompok"
-                      id="idKetuaKelompok"
-                      placeholder="Isi ID Ketua Kelompok"
-                      onChange={(e) =>
-                        setLoan({ ...loan, leaderId: e.target.value })
-                      }
-                      className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
-                    />
-                  </div>
-                </div>
-                <button
-                  type="button"
-                  onClick={calculate}
-                  className="bg-primary text-white w-1/6 h-[48px] rounded-md text-center place-self-end"
-                >
-                  Hitung
-                </button>
+            </div>
+
+            <div className="w-1/5">
+              <div>
+                <label htmlFor="awalPinjaman">Awal Pinjaman</label>
+                <input
+                  type="date"
+                  name="awalPinjaman"
+                  id="awalPinjaman"
+                  placeholder="Isi ID Ketua Kelompok"
+                  disabled
+                  value={new Date().toJSON().slice(0, 10)}
+                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
+                />
+              </div>
+            </div>
+            <div className="w-1/5">
+              <div>
+                <label htmlFor="akhirPinjaman">Akhir Pinjaman</label>
+                <input
+                  type="date"
+                  name="akhirPinjaman"
+                  id="akhirPinjaman"
+                  placeholder="Isi ID Ketua Kelompok"
+                  disabled
+                  defaultValue={(() => {
+                    const date = new Date();
+                    date.setMonth(date.getMonth() + 6);
+                    return date.toJSON().slice(0, 10);
+                  })()}
+                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
+                />
+              </div>
+            </div>
+            <div className="w-1/5">
+              <div>
+                <label htmlFor="idKetuaKelompok">ID Ketua Kelompok</label>
+                <input
+                  type="text"
+                  name="idKetuaKelompok"
+                  id="idKetuaKelompok"
+                  placeholder="Isi ID Ketua Kelompok"
+                  onChange={(e) =>
+                    setLoan({ ...loan, leaderId: e.target.value })
+                  }
+                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
+                />
               </div>
             </div>
           </div>

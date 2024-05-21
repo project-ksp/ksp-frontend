@@ -217,7 +217,6 @@ const ButtonKeluar = ({ click }) => {
         </svg>
         <p className="text-mainBg text-base font-bold">Keluar</p>
       </button>
-      ;
     </>
   );
 };

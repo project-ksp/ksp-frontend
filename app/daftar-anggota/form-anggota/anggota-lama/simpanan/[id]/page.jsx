@@ -162,7 +162,9 @@ const Simpanan = () => {
             <p>Simpanan Wajib</p>
             <div className="flex mt-2 gap-3">
               <div className="w-1/2">
-                <label htmlFor="totalSimpanan">Total Simpanan</label>
+                <label htmlFor="totalSimpanan">
+                  Total Simpanan Wajib Sebelumnya
+                </label>
                 <input
                   type="number"
                   name="totalSimpanan"
@@ -195,7 +197,9 @@ const Simpanan = () => {
             <p>Simpanan Sukarela</p>
             <div className="flex mt-2 gap-3">
               <div className="w-1/2">
-                <label htmlFor="simpananSukarela">Total Simpanan</label>
+                <label htmlFor="simpananSukarela">
+                  Total Simpanan Sukarela sebelumnya
+                </label>
                 <input
                   type="number"
                   name="simpananSukarela"
