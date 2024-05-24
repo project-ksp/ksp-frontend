@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import DropdownSelector from "@/components/DropdownSelector";
 import Modal from "@/components/Modal";
 import Loading from "@/components/Loading";
 import { useSession } from "next-auth/react";

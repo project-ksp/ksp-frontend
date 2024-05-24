@@ -59,14 +59,6 @@ export const SIDENAV_ITEMS = [
     submenu: true,
     subMenuItems: [
       {
-        title: "Anggota Baru",
-        path: "/status-pengajuan/anggota-baru",
-      },
-      {
-        title: "Pinjaman Anggota Lama",
-        path: "/status-pengajuan/pinjaman-anggota-lama",
-      },
-      {
         title: "Penghapusan Anggota",
         path: "/status-pengajuan/penghapusan-anggota",
       },
