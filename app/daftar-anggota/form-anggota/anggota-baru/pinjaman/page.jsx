@@ -166,27 +166,6 @@ const Pinjaman = () => {
     setProsesData(false);
   };
 
-  const calculate = async () => {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}members/calculate-deposit`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${session.token}`,
-        },
-        body: JSON.stringify({ loan: loan.loan }),
-      }
-    );
-
-    const data = await res.json();
-    if (res.ok) {
-      setSimpanan(data.data);
-    } else {
-      toast.error(data.message);
-    }
-  };
-
   if (status === "loading") return <Loading />;
 
   return (
@@ -208,9 +187,6 @@ const Pinjaman = () => {
               disabled
               className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed"
             />
-            <p className="text-filled-color text-sm mt-1">
-              *Minimal Rp.50.000,00/bulan
-            </p>
           </div>
           <div className="flex flex-col">
             <label htmlFor="simpananWajib">Simpanan Wajib</label>
@@ -231,9 +207,6 @@ const Pinjaman = () => {
                 />
               </div>
             </div>
-            <p className="text-filled-color text-sm mt-1">
-              *Minimal Rp.50.000,00/bulan
-            </p>
           </div>
           <div className="flex-1">
             <label htmlFor="simpananSukarela">Simpanan Sukarela</label>
@@ -279,88 +252,126 @@ const Pinjaman = () => {
         <p className="ml-5 text-base font-regular">Tambah Pinjaman</p>
       </button>
       {loan && (
-        <div className="bg-white p-[20px] rounded-xl">
-          <p className="text-black font-bold text-lg mb-[10px]">
-            Detail Pinjaman
-          </p>
-          <div className="flex gap-3">
-            <div className="w-1/5">
-              <label htmlFor="cabang">ID Cabang</label>
-              <input
-                type="text"
-                name="cabang"
-                id="cabang"
-                value={session.user.branchId}
-                disabled
-                className={`w-full flex justify-between py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] text-start text-black bg-transparent focus:outline-none disabled:cursor-not-allowed`}
-              />
-            </div>
-            <div className="w-1/5">
-              <div>
-                <label htmlFor="jumlahPinjaman">Pinjaman Yang Diajukan</label>
-                <input
-                  type="number"
-                  name="jumlahPinjaman"
-                  id="jumlahPinjaman"
-                  placeholder="Isikan Jumlah Pinjaman"
-                  onChange={(e) =>
-                    setLoan({ ...loan, loan: parseInt(e.target.value) })
-                  }
-                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
-                />
-              </div>
-            </div>
-
-            <div className="w-1/5">
-              <div>
-                <label htmlFor="awalPinjaman">Awal Pinjaman</label>
-                <input
-                  type="date"
-                  name="awalPinjaman"
-                  id="awalPinjaman"
-                  placeholder="Isi ID Ketua Kelompok"
-                  disabled
-                  value={new Date().toJSON().slice(0, 10)}
-                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
-                />
-              </div>
-            </div>
-            <div className="w-1/5">
-              <div>
-                <label htmlFor="akhirPinjaman">Akhir Pinjaman</label>
-                <input
-                  type="date"
-                  name="akhirPinjaman"
-                  id="akhirPinjaman"
-                  placeholder="Isi ID Ketua Kelompok"
-                  disabled
-                  defaultValue={(() => {
-                    const date = new Date();
-                    date.setMonth(date.getMonth() + 6);
-                    return date.toJSON().slice(0, 10);
-                  })()}
-                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
-                />
-              </div>
-            </div>
-            <div className="w-1/5">
-              <div>
-                <label htmlFor="idKetuaKelompok">ID Ketua Kelompok</label>
+        <>
+          <div className="bg-white p-[20px] rounded-xl">
+            <p className="text-black font-bold text-lg mb-[10px]">
+              Detail Pinjaman
+            </p>
+            <div className="flex gap-3">
+              <div className="w-1/5">
+                <label htmlFor="cabang">ID Cabang</label>
                 <input
                   type="text"
-                  name="idKetuaKelompok"
-                  id="idKetuaKelompok"
-                  placeholder="Isi ID Ketua Kelompok"
-                  onChange={(e) =>
-                    setLoan({ ...loan, leaderId: e.target.value })
-                  }
-                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
+                  name="cabang"
+                  id="cabang"
+                  value={session.user.branchId}
+                  disabled
+                  className={`w-full flex justify-between py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] text-start text-black bg-transparent focus:outline-none disabled:cursor-not-allowed`}
+                />
+              </div>
+              <div className="w-1/5">
+                <div>
+                  <label htmlFor="jumlahPinjaman">Pinjaman Yang Diajukan</label>
+                  <input
+                    type="number"
+                    name="jumlahPinjaman"
+                    id="jumlahPinjaman"
+                    placeholder="Isikan Jumlah Pinjaman"
+                    onChange={(e) =>
+                      setLoan({ ...loan, loan: parseInt(e.target.value) })
+                    }
+                    className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
+                  />
+                </div>
+              </div>
+
+              <div className="w-1/5">
+                <div>
+                  <label htmlFor="awalPinjaman">Awal Pinjaman</label>
+                  <input
+                    type="date"
+                    name="awalPinjaman"
+                    id="awalPinjaman"
+                    placeholder="Isi ID Ketua Kelompok"
+                    disabled
+                    value={new Date().toJSON().slice(0, 10)}
+                    className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
+                  />
+                </div>
+              </div>
+              <div className="w-1/5">
+                <div>
+                  <label htmlFor="akhirPinjaman">Akhir Pinjaman</label>
+                  <input
+                    type="date"
+                    name="akhirPinjaman"
+                    id="akhirPinjaman"
+                    placeholder="Isi ID Ketua Kelompok"
+                    disabled
+                    defaultValue={(() => {
+                      const date = new Date();
+                      date.setMonth(date.getMonth() + 6);
+                      return date.toJSON().slice(0, 10);
+                    })()}
+                    className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
+                  />
+                </div>
+              </div>
+              <div className="w-1/5">
+                <div>
+                  <label htmlFor="idKetuaKelompok">ID Ketua Kelompok</label>
+                  <input
+                    type="text"
+                    name="idKetuaKelompok"
+                    id="idKetuaKelompok"
+                    placeholder="Isi ID Ketua Kelompok"
+                    onChange={(e) =>
+                      setLoan({ ...loan, leaderId: e.target.value })
+                    }
+                    className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
+                  />
+                </div>
+              </div>
+            </div>
+            <p className="text-filled-color text-sm mt-2">Tempat Pinjam</p>
+          </div>
+          <div className="bg-white p-[20px] rounded-xl">
+            <div className="flex flex-col gap-3">
+              <div className="flex-1">
+                <label htmlFor="tanggalMasuk">Tanggal Masuk Anggota</label>
+                <input
+                  type="text"
+                  disabled
+                  placeholder="Auto Generated"
+                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed"
+                  name="tanggalMasuk"
+                  id="tanggalMasuk"
+                />
+              </div>
+              <div className="flex-1">
+                <label htmlFor="tanggalPermohonan">Tanggal Permohonan</label>
+                <input
+                  type="text"
+                  disabled
+                  placeholder="Auto Generated"
+                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed"
+                  name="tanggalPermohonan"
+                  id="tanggalPermohonan"
+                />
+              </div>
+              <div className="flex-1">
+                <label htmlFor="tanggalMasuk">Tanggal Dropping Pinjaman</label>
+                <input
+                  type="date"
+                  placeholder="Auto Generated"
+                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed"
+                  name="tanggalMasuk"
+                  id="tanggalMasuk"
                 />
               </div>
             </div>
           </div>
-          <p className="text-filled-color text-sm mt-2">Tempat Pinjam</p>
-        </div>
+        </>
       )}
       <div className="flex gap-5 place-self-end">
         <button
