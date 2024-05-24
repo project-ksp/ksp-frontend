@@ -860,6 +860,82 @@ const DetailAnggotaBaru = () => {
             ))}
           </div>
         )}
+        <div className="bg-white p-[20px] rounded-xl">
+          <p className="text-black font-bold text-lg mb-[10px]">
+            Detail Antidatir
+          </p>
+          <div className="flex flex-col gap-3">
+            <div className="flex-1">
+              <label htmlFor="tanggalMasuk">Tanggal Masuk Anggota</label>
+              <input
+                type="text"
+                disabled
+                placeholder="Auto Generated"
+                className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed"
+                name="tanggalMasuk"
+                id="tanggalMasuk"
+              />
+            </div>
+            <div className="flex-1">
+              <label htmlFor="tanggalPermohonan">Tanggal Permohonan</label>
+              <input
+                type="text"
+                disabled
+                placeholder="Auto Generated"
+                className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed"
+                name="tanggalPermohonan"
+                id="tanggalPermohonan"
+              />
+            </div>
+            <div className="flex-1">
+              <label htmlFor="tanggalMasuk">Tanggal Dropping Pinjaman</label>
+              <input
+                type="date"
+                placeholder="Auto Generated"
+                className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed"
+                name="tanggalMasuk"
+                id="tanggalMasuk"
+              />
+            </div>
+          </div>
+        </div>
+        <div className="flex gap-3 justify-end">
+          <Link href={`/daftar-anggota/detail/${id}/cetak-formulir`}>
+            <button
+              type="button"
+              className="w-[200px] px-[20px] h-[48px] text-white bg-primary rounded-lg"
+            >
+              Formulir
+            </button>
+          </Link>
+
+          <Link href={`/daftar-anggota/detail/${id}/cetak-kartu-anggota`}>
+            <button
+              type="button"
+              className="w-[200px] px-[20px] h-[48px] text-white bg-primary rounded-lg"
+            >
+              Kartu Anggota
+            </button>
+          </Link>
+
+          <Link href={`/daftar-anggota/detail/${id}/cetak-blanko-simpanan`}>
+            <button
+              type="button"
+              className="w-[200px] px-[20px] h-[48px] text-white bg-primary rounded-lg"
+            >
+              Blanko Simpanan
+            </button>
+          </Link>
+
+          <Link href={`/daftar-anggota/detail/${id}/cetak-blanko-pinjaman`}>
+            <button
+              type="button"
+              className="w-[200px] px-[20px] h-[48px] text-white bg-primary rounded-lg"
+            >
+              Blanko Pinjaman
+            </button>
+          </Link>
+        </div>
         <Modal isVisible={showProsesData} onClose={() => setProsesData(false)}>
           <h3 className="text-xl text-center font-bold text-black">
             Proses Data?
