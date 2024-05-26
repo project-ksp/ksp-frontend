@@ -27,6 +27,7 @@ WORKDIR /usr/src/app
 COPY --from=builder /usr/src/app/.next ./.next
 COPY --from=builder /usr/src/app/public ./public
 COPY --from=builder /usr/src/app/package.json ./package.json
+COPY --from=builder /usr/src/app/.env ./.env
 
 # Install serve package globally to serve the app
 RUN npm install next
