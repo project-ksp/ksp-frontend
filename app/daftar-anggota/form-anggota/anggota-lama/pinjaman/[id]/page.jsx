@@ -199,39 +199,69 @@ const Pinjaman = () => {
             </p>
           </div>
           <div className="flex flex-col">
-            <label htmlFor="simpananWajib">Simpanan Wajib</label>
+            <p>Simpanan Wajib</p>
             <div className="flex mt-2 gap-3">
-              <div className="flex-grow">
-                <label htmlFor="bulan1">Total Simpanan</label>
+              <div className="w-1/2">
+                <label htmlFor="totalSimpanan">
+                  Total Simpanan Wajib Sebelumnya
+                </label>
                 <input
                   type="number"
-                  name="bulan1"
-                  id="bulan1"
+                  name="totalSimpanan"
+                  id="totalSimpanan"
+                  placeholder="Isikan Jumlah"
+                  disabled
+                  value={member.deposit.mandatoryDeposit}
+                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:bg-black/5 disabled:cursor-not-allowed"
+                />
+              </div>
+              <div className="w-1/2">
+                <label htmlFor="tambahSimpanan">Tambah Simpanan Wajib</label>
+                <input
+                  type="number"
+                  name="tambahSimpanan"
+                  id="tambahSimpanan"
+                  placeholder="Isikan Jumlah"
+                  onChange={(e) =>
+                    setDeposit({
+                      ...deposit,
+                      mandatoryDeposit: parseInt(e.target.value),
+                    })
+                  }
+                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
+                />
+              </div>
+            </div>
+          </div>
+          <div className="flex flex-col">
+            <p>Simpanan Sukarela</p>
+            <div className="flex mt-2 gap-3">
+              <div className="w-1/2">
+                <label htmlFor="simpananSukarela">
+                  Total Simpanan Sukarela sebelumnya
+                </label>
+                <input
+                  type="number"
+                  name="simpananSukarela"
+                  id="simpananSukarela"
+                  placeholder="Isikan Jumlah"
+                  disabled
+                  value={simpanan.voluntaryDeposit}
+                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:bg-black/5 disabled:cursor-not-allowed"
+                />
+              </div>
+              <div className="w-1/2">
+                <label htmlFor="tambahSimpanan">Tambah Simpanan Sukarela</label>
+                <input
+                  type="number"
+                  name="tambahSimpanan"
+                  id="tambahSimpanan"
                   placeholder="Auto Generated"
-                  value={simpanan.mandatoryDeposit}
                   disabled
                   className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed"
                 />
               </div>
             </div>
-            <p className="text-filled-color text-sm mt-1">
-              *Minimal Rp.50.000,00/bulan
-            </p>
-          </div>
-          <div className="flex-1">
-            <label htmlFor="simpananSukarela">Simpanan Sukarela</label>
-            <input
-              type="number"
-              name="simpananSukarela"
-              id="simpananSukarela"
-              placeholder="Auto Generated"
-              value={simpanan.voluntaryDeposit}
-              disabled
-              className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed"
-            />
-            <p className="text-filled-color text-sm mt-1">
-              Diambil dari pinjaman
-            </p>
           </div>
         </div>
       </div>

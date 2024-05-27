@@ -1,32 +1,55 @@
-import React from "react";
+"use client";
+
+import React, { useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import Loading from "@/components/Loading";
+import { useSession } from "next-auth/react";
+import { useParams } from "next/navigation";
 
 const CetakBukuAnggota = () => {
+  const { data: session, status } = useSession();
+  const iframeRef = useRef(null);
+
+  useEffect(() => {
+    if (status === "loading") return;
+    const handlePrint = () => {
+      const url = `${process.env.NEXT_PUBLIC_BASE_URL}members/list-book`;
+
+      fetch(url, {
+        headers: {
+          Authorization: `Bearer ${session.token}`,
+        },
+      })
+        .then((response) => response.blob())
+        .then((blob) => {
+          // Create a URL for the blob
+          const pdfUrl = window.URL.createObjectURL(blob);
+          iframeRef.current.src = pdfUrl;
+
+          // Wait for the iframe to load the PDF document
+          iframeRef.current.onload = () => {
+            setTimeout(() => {
+              // Execute print
+              iframeRef.current.contentWindow.print();
+            }, 100);
+          };
+        })
+        .catch((error) => {
+          console.error("Failed to load PDF:", error);
+        });
+    };
+    handlePrint();
+  }, [session, status, iframeRef]);
+
+  if (status === "loading") return <Loading />;
+
   return (
-    <div className="flex flex-col gap-2">
-      <div className="flex justify-center">
-        <Image
-          src={"/images/cover_buku.jpg"}
-          alt="Blanko Pinjaman"
-          width={1116}
-          height={1578}
-        />
-      </div>
-      <div className="flex justify-center">
-        <Image
-          src={"/images/table_buku.jpg"}
-          alt="Blanko Pinjaman"
-          width={1116}
-          height={1578}
-        />
-      </div>
-      <Link href={"/documents/buku_daftar_anggota.pdf"} className="ml-auto ">
-        <button className="bg-primary text-white w-[228px] h-[48px] rounded-md text-center mt-2">
-          Print
-        </button>
-      </Link>
-    </div>
+    <iframe
+      ref={iframeRef}
+      className="w-full h-[50rem]"
+      title="PDF frame"
+    ></iframe>
   );
 };
 

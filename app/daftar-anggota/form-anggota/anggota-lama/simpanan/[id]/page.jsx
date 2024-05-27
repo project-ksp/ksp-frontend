@@ -176,7 +176,7 @@ const Simpanan = () => {
                 />
               </div>
               <div className="w-1/2">
-                <label htmlFor="tambahSimpanan">Tambah Simpanan</label>
+                <label htmlFor="tambahSimpanan">Tambah Simpanan Wajib</label>
                 <input
                   type="number"
                   name="tambahSimpanan"
@@ -211,7 +211,7 @@ const Simpanan = () => {
                 />
               </div>
               <div className="w-1/2">
-                <label htmlFor="tambahSimpanan">Tambah Simpanan</label>
+                <label htmlFor="tambahSimpanan">Tambah Simpanan Sukarela</label>
                 <input
                   type="number"
                   name="tambahSimpanan"
