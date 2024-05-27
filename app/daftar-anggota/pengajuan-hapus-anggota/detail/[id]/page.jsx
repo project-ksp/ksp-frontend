@@ -24,7 +24,7 @@ const DetailPenghapusanAnggota = () => {
   const [jenisKelaminOpen, setJenisKelaminOpen] = useState();
   const [showProsesData, setProsesData] = useState();
   const [showBerhasil, setBerhasil] = useState();
-  const [buktiPendukung, setBuktiPendukung] = useState(null);
+  const [buktiPendukung, setBuktiPendukung] = useState(undefined);
 
   const [loading, setLoading] = useState(false);
 
@@ -106,6 +106,11 @@ const DetailPenghapusanAnggota = () => {
   }, [status, session]);
 
   const uploadBuktiPendukung = async (e) => {
+    if (!e.target.files[0]) {
+      setDeleteReq({ ...deleteReq, proofUrl: "" });
+      setBuktiPendukung(undefined);
+      return;
+    }
     setBuktiPendukung(e.target.files[0]);
     const formData = new FormData();
     formData.append("file", e.target.files[0]);
@@ -123,7 +128,7 @@ const DetailPenghapusanAnggota = () => {
     if (res.ok) {
       setDeleteReq({ ...deleteReq, proofUrl: data.data });
     } else {
-      setBuktiPendukung(null);
+      setBuktiPendukung(undefined);
       toast.error(data.message);
     }
   };
@@ -840,7 +845,7 @@ const DetailPenghapusanAnggota = () => {
             />
           </div>
           <label htmlFor="buktiPendukung" className="flex w-1/2">
-            {buktiPendukung === null ? (
+            {buktiPendukung === undefined ? (
               <div className="relative h-[80px] w-[80px]">
                 <Image
                   src={"/images/image_none.jpg"}
@@ -883,7 +888,7 @@ const DetailPenghapusanAnggota = () => {
                   </svg>
                 </div>
                 <p className="text-[#3c3c3c] ml-[30px]">
-                  {buktiPendukung === null
+                  {buktiPendukung === undefined
                     ? "Tidak ada file terpilih"
                     : buktiPendukung.name}
                 </p>

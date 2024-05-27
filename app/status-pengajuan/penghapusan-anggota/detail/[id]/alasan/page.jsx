@@ -175,28 +175,17 @@ const DetailPenghapusanAnggota = () => {
           Biodata Lengkap Anggota
         </p>
         <div className="flex flex-col gap-2">
-          <div className="flex">
-            <Image
-              src={`${process.env.NEXT_PUBLIC_BASE_URL}public/${member.profilePictureUrl}`}
-              width={90}
-              height={120}
-              alt="Foto Diri"
-              className="mr-[25px] rounded-md object-cover"
-            />
-            <div className="flex flex-col gap-2">
-              <p className="text-xl text-black">{member.name}</p>
-              <p className="text-lg text-black">{member.id}</p>
-              {member.isActive ? (
-                <div className="bg-green-status-1 text-white text-center my-[8px] rounded-lg  w-[86px]">
-                  Aktif
-                </div>
-              ) : (
-                <div className="bg-red-status-1 text-white text-center my-[8px] rounded-lg  w-[86px]">
-                  Tidak Aktif
-                </div>
-              )}
+          <p className="text-xl text-black">{member.name}</p>
+          <p className="text-lg text-black">{member.id}</p>
+          {member.isActive ? (
+            <div className="bg-green-status-1 text-white text-center my-[8px] rounded-lg  w-[86px]">
+              Aktif
             </div>
-          </div>
+          ) : (
+            <div className="bg-red-status-1 text-white text-center my-[8px] rounded-lg  w-[86px]">
+              Tidak Aktif
+            </div>
+          )}
         </div>
       </div>
 

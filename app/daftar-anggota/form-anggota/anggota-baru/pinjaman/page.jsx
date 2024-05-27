@@ -95,6 +95,7 @@ const Pinjaman = () => {
 
   const submitData = async (e) => {
     setLoading(true);
+    console.log(member);
     e.preventDefault();
     if (
       member.isMarried === "Pilih Status" ||

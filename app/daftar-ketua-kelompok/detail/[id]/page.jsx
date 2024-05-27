@@ -36,7 +36,6 @@ const DetailKetuaKelompok = () => {
     kelurahan: "",
     kecamatan: "",
     city: "",
-    postalCode: "",
     phoneNumber: "",
     education: "",
   });
