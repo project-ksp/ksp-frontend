@@ -180,21 +180,21 @@ const DataMaster = () => {
                       style: "currency",
                       currency: "IDR",
                       maximumFractionDigits: 0,
-                    }).format(data.totalDeposit)}
+                    }).format(data.deposit.principalDeposit)}
                   </td>
                   <td className="px-[10px]">
                     {Intl.NumberFormat("id-ID", {
                       style: "currency",
                       currency: "IDR",
                       maximumFractionDigits: 0,
-                    }).format(data.totalDeposit)}
+                    }).format(data.deposit.mandatoryDeposit)}
                   </td>
                   <td className="px-[10px]">
                     {Intl.NumberFormat("id-ID", {
                       style: "currency",
                       currency: "IDR",
                       maximumFractionDigits: 0,
-                    }).format(data.totalDeposit)}
+                    }).format(data.deposit.voluntaryDeposit)}
                   </td>
                   <td className="px-[10px]">
                     {Intl.NumberFormat("id-ID", {

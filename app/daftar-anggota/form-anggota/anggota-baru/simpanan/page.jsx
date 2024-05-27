@@ -31,10 +31,8 @@ const Simpanan = () => {
     kelurahan: "",
     kecamatan: "",
     city: "",
-    postalCode: "",
     education: "Pilih Pendidikan Terakhir",
     phoneNumber: "",
-    profilePictureUrl: "",
     idPictureUrl: "",
     leaderId: "",
   });
@@ -60,12 +58,9 @@ const Simpanan = () => {
     const storedKelurahan = localStorage.getItem("kelurahan") || "";
     const storedKecamatan = localStorage.getItem("kecamatan") || "";
     const storedCity = localStorage.getItem("city") || "";
-    const storedPostalCode = localStorage.getItem("postalCode") || "";
     const storedEducation =
       localStorage.getItem("education") || "Pilih Pendidikan Terakhir";
     const storedPhoneNumber = localStorage.getItem("phoneNumber") || "";
-    const storedProfilePictureUrl =
-      localStorage.getItem("profilePictureUrl") || "";
     const storedIdPictureUrl = localStorage.getItem("idPictureUrl") || "";
     const storedLeaderId = localStorage.getItem("leaderId") || "";
     const storedSpouse = localStorage.getItem("spouse") || "";
@@ -83,10 +78,8 @@ const Simpanan = () => {
       kelurahan: storedKelurahan,
       kecamatan: storedKecamatan,
       city: storedCity,
-      postalCode: storedPostalCode,
       education: storedEducation,
       phoneNumber: storedPhoneNumber,
-      profilePictureUrl: storedProfilePictureUrl,
       idPictureUrl: storedIdPictureUrl,
       leaderId: storedLeaderId,
       spouse: storedSpouse,
@@ -110,9 +103,7 @@ const Simpanan = () => {
       member.kelurahan === "" ||
       member.kecamatan === "" ||
       member.city === "" ||
-      member.postalCode === "" ||
       member.phoneNumber === "" ||
-      member.profilePictureUrl === "" ||
       member.idPictureUrl === "" ||
       member.leaderId === ""
     ) {

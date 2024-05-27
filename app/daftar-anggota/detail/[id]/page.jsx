@@ -44,10 +44,8 @@ const DetailAnggotaBaru = () => {
     kelurahan: "",
     kecamatan: "",
     city: "",
-    postalCode: "",
     education: "",
     phoneNumber: "",
-    profilePictureUrl: "",
     idPictureUrl: "",
     userId: "",
     status: "",
@@ -313,7 +311,7 @@ const DetailAnggotaBaru = () => {
                       spouse: e.target.value,
                     });
                   }}
-                  value={member.spouse}
+                  value={member.spouse ? member.spouse : ""}
                   className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:bg-black/5 disabled:cursor-not-allowed"
                   disabled={!allowEdit || !member.isMarried}
                 />
@@ -981,7 +979,7 @@ const DetailAnggotaBaru = () => {
             </svg>
           </div>
           <p className="text-black font-regular text-lg text-center mb-3 w-[420px]">
-            Data Anggota Baru telah diproses dan telah tersimpan di data master
+            Data Anggota Baru telah diperbaharui
           </p>
           <button
             type="button"

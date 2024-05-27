@@ -136,28 +136,28 @@ const PengajuanHapusAnggota = () => {
                       style: "currency",
                       currency: "IDR",
                       maximumFractionDigits: 0,
-                    }).format(item.totalDeposit)}
+                    }).format(item.deposit.principalDeposit)}
                   </td>
                   <td className="px-[10px]">
                     {Intl.NumberFormat("id-ID", {
                       style: "currency",
                       currency: "IDR",
                       maximumFractionDigits: 0,
-                    }).format(item.totalDeposit)}
+                    }).format(item.deposit.mandatoryDeposit)}
                   </td>
                   <td className="px-[10px]">
                     {Intl.NumberFormat("id-ID", {
                       style: "currency",
                       currency: "IDR",
                       maximumFractionDigits: 0,
-                    }).format(item.totalDeposit)}
+                    }).format(item.deposit.voluntaryDeposit)}
                   </td>
                   <td className="px-[10px]">
                     {Intl.NumberFormat("id-ID", {
                       style: "currency",
                       currency: "IDR",
                       maximumFractionDigits: 0,
-                    }).format(item.totalDeposit)}
+                    }).format(item.totalLoan)}
                   </td>
                   <td className="px-[10px]">{item.leader.name}</td>
                   <td className="px-[10px]">

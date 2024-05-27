@@ -22,7 +22,6 @@ const BuatAkunCabang = () => {
   const [agamaOpen, setAgamaOpen] = useState(false);
   const [pendidikanOpen, setPendidikanOpen] = useState(false);
   const [jenisKelaminOpen, setJenisKelaminOpen] = useState(false);
-  const [fotoDiri, setFotoDiri] = useState(null);
   const [fotoKtp, setFotoKtp] = useState(null);
 
   const [branchData, setBranchData] = useState({
@@ -30,7 +29,6 @@ const BuatAkunCabang = () => {
     kelurahan: "",
     kecamatan: "",
     city: "",
-    postalCode: "",
   });
 
   const [branchHeadData, setBranchHeadData] = useState({
@@ -47,10 +45,8 @@ const BuatAkunCabang = () => {
     kelurahan: "",
     kecamatan: "",
     city: "",
-    postalCode: "",
     phoneNumber: "",
     education: "Pilih Pendidikan Terakhir",
-    profilePictureUrl: "",
     idPictureUrl: "",
   });
 
@@ -63,29 +59,6 @@ const BuatAkunCabang = () => {
       age--;
     }
     return age;
-  };
-
-  const uploadFotoDiri = async (e) => {
-    setFotoDiri(e.target.files[0]);
-    const formData = new FormData();
-    formData.append("file", e.target.files[0]);
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}uploads/temp/image`,
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${session.token}`,
-        },
-        body: formData,
-      }
-    );
-    const data = await res.json();
-    if (res.ok) {
-      setBranchHeadData({ ...branchHeadData, profilePictureUrl: data.data });
-    } else {
-      setFotoDiri(null);
-      toast.error(data.message);
-    }
   };
 
   const uploadFotoKtp = async (e) => {
@@ -126,11 +99,8 @@ const BuatAkunCabang = () => {
       return;
     }
 
-    if (
-      branchHeadData.profilePictureUrl === "" ||
-      branchHeadData.idPictureUrl === ""
-    ) {
-      toast.error("Mohon lengkapi foto diri dan foto KTP");
+    if (branchHeadData.idPictureUrl === "") {
+      toast.error("Mohon tambahkan foto KTP");
       setProsesData(false);
       setLoading(false);
       return;

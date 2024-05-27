@@ -17,7 +17,7 @@ const Sidebar = () => {
 
   return (
     <>
-      <div className="w-[280px] flex flex-col justify-between p-[28px] bg-primary fixed h-screen overflow-scroll overflow-x-hidden">
+      <div className="w-[280px] flex flex-col justify-between p-[28px] bg-primary fixed h-screen overflow-y-hidden overflow-x-hidden">
         <div className="flex flex-col">
           <div className="flex items-center mb-[60px] mt-[20px] gap-[10px]">
             <Image

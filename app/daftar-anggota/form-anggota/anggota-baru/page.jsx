@@ -34,10 +34,8 @@ const TambahAnggota = () => {
     kelurahan: "",
     kecamatan: "",
     city: "",
-    postalCode: "",
     education: "Pilih Pendidikan Terakhir",
     phoneNumber: "",
-    profilePictureUrl: "",
     idPictureUrl: "",
     leaderId: "",
   });
@@ -51,30 +49,6 @@ const TambahAnggota = () => {
       age--;
     }
     return age;
-  };
-
-  const uploadFotoDiri = async (e) => {
-    setFotoDiri(e.target.files[0]);
-    const formData = new FormData();
-    formData.append("file", e.target.files[0]);
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}uploads/temp/image`,
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${session.token}`,
-        },
-        body: formData,
-      }
-    );
-    const data = await res.json();
-    if (res.ok) {
-      setMember({ ...member, profilePictureUrl: data.data });
-      localStorage.setItem("profilePictureUrl", data.data);
-    } else {
-      setFotoDiri(null);
-      toast.error(data.message);
-    }
   };
 
   const uploadFotoKtp = async (e) => {
@@ -117,12 +91,9 @@ const TambahAnggota = () => {
     const storedKelurahan = localStorage.getItem("kelurahan") || "";
     const storedKecamatan = localStorage.getItem("kecamatan") || "";
     const storedCity = localStorage.getItem("city") || "";
-    const storedPostalCode = localStorage.getItem("postalCode") || "";
     const storedEducation =
       localStorage.getItem("education") || "Pilih Pendidikan Terakhir";
     const storedPhoneNumber = localStorage.getItem("phoneNumber") || "";
-    const storedProfilePictureUrl =
-      localStorage.getItem("profilePictureUrl") || "";
     const storedIdPictureUrl = localStorage.getItem("idPictureUrl") || "";
     const storedLeaderId = localStorage.getItem("leaderId") || "";
     const storedSpouse = localStorage.getItem("spouse") || "";
@@ -145,10 +116,8 @@ const TambahAnggota = () => {
       kelurahan: storedKelurahan,
       kecamatan: storedKecamatan,
       city: storedCity,
-      postalCode: storedPostalCode,
       education: storedEducation,
       phoneNumber: storedPhoneNumber,
-      profilePictureUrl: storedProfilePictureUrl,
       idPictureUrl: storedIdPictureUrl,
       leaderId: storedLeaderId,
       spouse: storedSpouse,
