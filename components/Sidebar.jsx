@@ -44,14 +44,7 @@ const Sidebar = () => {
           )}
         </div>
         <div className="flex flex-col">
-          <ButtonKeluar
-            click={() =>
-              signOut({
-                callbackUrl: `/login`,
-                redirect: true,
-              })
-            }
-          />
+          <ButtonKeluar click={() => setProsesData(true)} />
           <ButtonAccount
             jabatan={`${
               session.user.role === "branch_head"
@@ -242,7 +235,10 @@ const LogoutModal = ({ isVisible, onClose }) => {
           type="submit"
           className="w-[224px] px-[20px] py-[12px] text-white bg-green-status-1 rounded-lg mx-auto"
           onClick={(e) => {
-            onClose();
+            signOut({
+              callbackUrl: `/login`,
+              redirect: true,
+            });
           }}
         >
           Ya
