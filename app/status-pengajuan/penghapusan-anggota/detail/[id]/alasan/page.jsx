@@ -15,9 +15,7 @@ const DetailPenghapusanAnggota = () => {
   const { data: session, status } = useSession();
   const { id } = useParams();
   const formRef = useRef();
-
   const router = useRouter();
-
   const [agamaOpen, setAgamaOpen] = useState();
   const [pendidikanOpen, setPendidikanOpen] = useState();
   const [statusPernikahanOpen, setStatusPernikahanOpen] = useState();
@@ -25,9 +23,7 @@ const DetailPenghapusanAnggota = () => {
   const [showProsesData, setProsesData] = useState();
   const [showBerhasil, setBerhasil] = useState();
   const [buktiPendukung, setBuktiPendukung] = useState(null);
-
   const [loading, setLoading] = useState(false);
-
   const [member, setMember] = useState({
     id: "",
     name: "",
@@ -83,7 +79,6 @@ const DetailPenghapusanAnggota = () => {
       ],
     },
   });
-
   const [deleteReq, setDeleteReq] = useState({
     id: "",
     memberId: "",
@@ -93,7 +88,6 @@ const DetailPenghapusanAnggota = () => {
     createdAt: "",
     updatedAt: "",
   });
-
   const deleteMember = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -107,7 +101,6 @@ const DetailPenghapusanAnggota = () => {
         },
       }
     );
-
     const data = await res.json();
     if (res.ok) {
       setBerhasil(true);
@@ -117,7 +110,6 @@ const DetailPenghapusanAnggota = () => {
     setLoading(false);
     setProsesData(false);
   };
-
   useEffect(() => {
     const getMember = async () => {
       if (status === "loading") return;
@@ -140,10 +132,8 @@ const DetailPenghapusanAnggota = () => {
       }
       setLoading(false);
     };
-
     getMember();
   }, [status, session, id]);
-
   if (status === "loading") return <Loading />;
   return (
     <div className="flex flex-col gap-2">
@@ -188,7 +178,6 @@ const DetailPenghapusanAnggota = () => {
           )}
         </div>
       </div>
-
       <div className="bg-white p-[20px] rounded-xl">
         <p className="text-black font-bold text-lg mb-[10px]">
           Alasan Penghapusan Anggota
