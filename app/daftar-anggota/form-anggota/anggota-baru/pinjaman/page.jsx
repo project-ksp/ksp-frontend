@@ -18,6 +18,8 @@ const Pinjaman = () => {
 
   const [oneClick, setOneClick] = useState(true);
 
+  const [potongan, setPotongan] = useState(0);
+
   const [simpanan, setSimpanan] = useState({
     principalDeposit: 0,
     mandatoryDeposit: 0,
@@ -43,6 +45,12 @@ const Pinjaman = () => {
     leaderId: "",
     spouse: "",
     branchId: 0,
+  });
+
+  const [antidatir, setAntidatir] = useState({
+    masukAnggota: "",
+    permohonan: "",
+    droppingPinjaman: "",
   });
 
   const [loan, setLoan] = useState(null);
@@ -158,6 +166,25 @@ const Pinjaman = () => {
     setProsesData(false);
   };
 
+  const handlePinjaman = (e) => {
+    setLoan({ ...loan, loan: e.target.value });
+    setPotongan(e.target.value * 0.05);
+
+    if (e.target.value * 0.05 < 50000) {
+      setSimpanan({ ...simpanan, principalDeposit: e.target.value * 0.05 });
+    } else {
+      setSimpanan({ ...simpanan, principalDeposit: 50000 });
+    }
+  };
+
+  const handleSimpananWajib = (e) => {
+    setSimpanan({ ...simpanan, mandatoryDeposit: e.target.value });
+    setSimpanan({
+      ...simpanan,
+      voluntaryDeposit: potongan - simpanan.principalDeposit - e.target.value,
+    });
+  };
+
   if (status === "loading") return <Loading />;
 
   return (
@@ -189,12 +216,7 @@ const Pinjaman = () => {
                   name="bulan1"
                   id="bulan1"
                   placeholder="Isikan simpanan wajib"
-                  onChange={(e) =>
-                    setSimpanan({
-                      ...simpanan,
-                      mandatoryDeposit: e.target.value,
-                    })
-                  }
+                  onChange={(e) => handleSimpananWajib(e)}
                   className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed"
                 />
               </div>
@@ -269,9 +291,7 @@ const Pinjaman = () => {
                     name="jumlahPinjaman"
                     id="jumlahPinjaman"
                     placeholder="Isikan Jumlah Pinjaman"
-                    onChange={(e) =>
-                      setLoan({ ...loan, loan: parseInt(e.target.value) })
-                    }
+                    onChange={(e) => handlePinjaman(e)}
                     className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
                   />
                 </div>
@@ -284,7 +304,7 @@ const Pinjaman = () => {
                     type="date"
                     name="awalPinjaman"
                     id="awalPinjaman"
-                    placeholder="Isi ID Ketua Kelompok"
+                    placeholder="Awal Pinjaman"
                     disabled
                     value={new Date().toJSON().slice(0, 10)}
                     className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
@@ -298,7 +318,7 @@ const Pinjaman = () => {
                     type="date"
                     name="akhirPinjaman"
                     id="akhirPinjaman"
-                    placeholder="Isi ID Ketua Kelompok"
+                    placeholder="Akhir Pinjaman"
                     disabled
                     defaultValue={(() => {
                       const date = new Date();
@@ -338,6 +358,19 @@ const Pinjaman = () => {
                   className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed"
                   name="tanggalMasuk"
                   id="tanggalMasuk"
+                  value={
+                    antidatir.droppingPinjaman !== ""
+                      ? new Date(
+                          new Date(antidatir.droppingPinjaman).setDate(
+                            new Date(antidatir.droppingPinjaman).getDate() - 7
+                          )
+                        ).toLocaleDateString("en-US", {
+                          month: "2-digit",
+                          day: "2-digit",
+                          year: "numeric",
+                        })
+                      : ""
+                  }
                 />
               </div>
               <div className="flex-1">
@@ -349,6 +382,19 @@ const Pinjaman = () => {
                   className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed"
                   name="tanggalPermohonan"
                   id="tanggalPermohonan"
+                  value={
+                    antidatir.droppingPinjaman !== ""
+                      ? new Date(
+                          new Date(antidatir.droppingPinjaman).setDate(
+                            new Date(antidatir.droppingPinjaman).getDate() - 7
+                          )
+                        ).toLocaleDateString("en-US", {
+                          month: "2-digit",
+                          day: "2-digit",
+                          year: "numeric",
+                        })
+                      : ""
+                  }
                 />
               </div>
               <div className="flex-1">
@@ -359,6 +405,12 @@ const Pinjaman = () => {
                   className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed"
                   name="tanggalMasuk"
                   id="tanggalMasuk"
+                  onChange={(e) => {
+                    setAntidatir({
+                      ...antidatir,
+                      droppingPinjaman: e.target.value,
+                    });
+                  }}
                 />
               </div>
             </div>

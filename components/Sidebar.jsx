@@ -118,16 +118,15 @@ const MenuItem = ({ item }) => {
             <div className="bg-[#fff] -my-3 mb-1 rounded-lg transition-all duration-300 z-20 ">
               {item.subMenuItems.map((subItem, index) => {
                 return (
-                  <div
-                    key={index}
-                    className={`${
-                      pathname.includes(subItem.path) ? "bg-secondary" : ""
-                    } border-b border-black/20 pl-[48px] pr-[22px] rounded-md h-[48px] flex items-center hover:bg-secondary`}
-                  >
-                    <Link href={subItem.path}>
+                  <Link key={index} href={subItem.path}>
+                    <div
+                      className={`${
+                        pathname.includes(subItem.path) ? "bg-secondary" : ""
+                      } border-b border-black/20 pl-[48px] pr-[22px] rounded-md h-[48px] flex items-center hover:bg-secondary`}
+                    >
                       <p>{subItem.title}</p>
-                    </Link>
-                  </div>
+                    </div>
+                  </Link>
                 );
               })}
             </div>
