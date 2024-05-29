@@ -21,6 +21,8 @@ const Pinjaman = () => {
 
   const [oneClick, setOneClick] = useState(true);
 
+  const [potongan, setPotongan] = useState(0);
+
   const [simpanan, setSimpanan] = useState({
     principalDeposit: 0,
     mandatoryDeposit: 0,
@@ -92,6 +94,36 @@ const Pinjaman = () => {
     }
   };
 
+  const handlePinjaman = (e) => {
+    setLoan({ ...loan, loan: parseInt(e.target.value) });
+    setPotongan(e.target.value * 0.05);
+
+    if (member.deposit.principalDeposit < 50000) {
+      const max = 50000;
+      const sisaSimpananPokok = max - member.deposit.principalDeposit;
+
+      if (e.target.value * 0.05 < sisaSimpananPokok) {
+        setSimpanan({
+          ...simpanan,
+          principalDeposit:
+            member.deposit.principalDeposit + e.target.value * 0.05,
+        });
+        setPotongan(0);
+      } else {
+        setSimpanan({ ...simpanan, principalDeposit: max });
+        setPotongan(e.target.value * 0.05 - sisaSimpananPokok);
+      }
+    }
+  };
+
+  const handleSimpananWajib = (e) => {
+    setSimpanan({
+      ...simpanan,
+      mandatoryDeposit: parseInt(e.target.value),
+      voluntaryDeposit: potongan - e.target.value,
+    });
+  };
+
   const submitData = async (e) => {
     setLoading(true);
     e.preventDefault();
@@ -100,7 +132,8 @@ const Pinjaman = () => {
       member.leaderId === "" ||
       loan === null ||
       loan.loan === 0 ||
-      loan.leaderId === ""
+      loan.leaderId === "" ||
+      loan.branchId === 0
     ) {
       toast.error(
         "Mohon masukkan id ketua kelompok dan masukkan jumlah pinjaman"
@@ -119,7 +152,8 @@ const Pinjaman = () => {
           Authorization: `Bearer ${session.token}`,
         },
         body: JSON.stringify({
-          ...loan,
+          loan,
+          mandatoryDeposit: simpanan.mandatoryDeposit,
         }),
       }
     );
@@ -151,7 +185,6 @@ const Pinjaman = () => {
       const data = await res.json();
       if (res.ok) {
         setMember(data.data);
-        setSimpanan(data.data.deposit);
       } else {
         toast.error(data.message);
       }
@@ -188,7 +221,7 @@ const Pinjaman = () => {
               name="simpananPokok"
               id="simpananPokok"
               placeholder="Auto Generated"
-              value={simpanan.principalDeposit}
+              value={member.deposit.principalDeposit}
               disabled
               className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed"
             />
@@ -220,12 +253,7 @@ const Pinjaman = () => {
                   name="tambahSimpanan"
                   id="tambahSimpanan"
                   placeholder="Isikan Jumlah"
-                  onChange={(e) =>
-                    setDeposit({
-                      ...deposit,
-                      mandatoryDeposit: parseInt(e.target.value),
-                    })
-                  }
+                  onChange={(e) => handleSimpananWajib(e)}
                   className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
                 />
               </div>
@@ -244,7 +272,7 @@ const Pinjaman = () => {
                   id="simpananSukarela"
                   placeholder="Isikan Jumlah"
                   disabled
-                  value={simpanan.voluntaryDeposit}
+                  value={member.deposit.voluntaryDeposit}
                   className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:bg-black/5 disabled:cursor-not-allowed"
                 />
               </div>
@@ -256,6 +284,7 @@ const Pinjaman = () => {
                   id="tambahSimpanan"
                   placeholder="Auto Generated"
                   disabled
+                  value={simpanan.voluntaryDeposit}
                   className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed"
                 />
               </div>
@@ -432,9 +461,7 @@ const Pinjaman = () => {
                 name="jumlahPinjaman"
                 id="jumlahPinjaman"
                 placeholder="Isikan Jumlah Pinjaman"
-                onChange={(e) =>
-                  setLoan({ ...loan, loan: parseInt(e.target.value) })
-                }
+                onChange={(e) => handlePinjaman(e)}
                 className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
               />
             </div>
@@ -508,7 +535,13 @@ const Pinjaman = () => {
           Proses Data
         </button>
       </Modal>
-      <Modal isVisible={showBerhasil} onClose={() => setBerhasil(false)}>
+      <Modal
+        isVisible={showBerhasil}
+        onClose={() => {
+          setBerhasil(false);
+          router.push("/daftar-anggota/form-anggota/anggota-lama");
+        }}
+      >
         <div className="w-[98px] h-[98px] rounded-full bg-primary place-self-center relative">
           <svg
             width="43"
@@ -543,7 +576,7 @@ const Pinjaman = () => {
           className="w-[450px] px-[20px] py-[12px] text-white bg-primary rounded-lg mx-auto"
           onClick={(e) => {
             setBerhasil(false);
-            router.push("/status-pengajuan/pinjaman-anggota-lama");
+            router.push("/daftar-anggota/form-anggota/anggota-lama");
           }}
         >
           OK

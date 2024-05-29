@@ -265,9 +265,7 @@ const DetailAnggotaLama = () => {
                   id="jenisKelamin"
                   name="jenisKelamin"
                   placeholder="Isi Jenis Kelamin "
-                  defaultValue={
-                    member.isMarried ? "Sudah Menikah" : "Belum Menikah"
-                  }
+                  value={member.isMarried ? "Sudah Menikah" : "Belum Menikah"}
                   disabled={!allowEdit}
                   className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:bg-black/5 disabled:cursor-not-allowed"
                 />
@@ -280,12 +278,7 @@ const DetailAnggotaLama = () => {
                 id="namaSuamiIstri"
                 name="namaSuamiIstri"
                 placeholder="*Jika Sudah Menikah"
-                onChange={(e) => {
-                  setMember({
-                    ...member,
-                    spouse: e.target.value,
-                  });
-                }}
+                value={member.spouse}
                 className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:bg-black/5 disabled:cursor-not-allowed"
                 disabled={!allowEdit || !member.isMarried}
               />
