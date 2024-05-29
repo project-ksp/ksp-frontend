@@ -19,14 +19,6 @@ const Simpanan = () => {
   const [cabangOpen, setCabangOpen] = useState(false);
   const [branches, setBranches] = useState([]);
 
-  const [oneClick, setOneClick] = useState(true);
-
-  const [simpanan, setSimpanan] = useState({
-    principalDeposit: 0,
-    mandatoryDeposit: 0,
-    voluntaryDeposit: 0,
-  });
-
   const [member, setMember] = useState({
     id: "",
     name: "",
@@ -79,13 +71,6 @@ const Simpanan = () => {
   const submitData = async (e) => {
     setLoading(true);
     e.preventDefault();
-
-    if (deposit.mandatoryDeposit === 0 || deposit.voluntaryDeposit === 0) {
-      toast.error("Mohon masukkan simpanan wajib dan simpanan sukarela");
-      setProsesData(false);
-      setLoading(false);
-      return;
-    }
 
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}members/${member.id}/deposit`,
@@ -154,7 +139,7 @@ const Simpanan = () => {
               id="simpananPokok"
               placeholder="Isikan Jumlah"
               disabled
-              value="50000"
+              value={member.deposit.principalDeposit}
               className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed disabled:bg-black/5"
             />
           </div>
@@ -176,7 +161,7 @@ const Simpanan = () => {
                 />
               </div>
               <div className="w-1/2">
-                <label htmlFor="tambahSimpanan">Tambah Simpanan</label>
+                <label htmlFor="tambahSimpanan">Tambah Simpanan Wajib</label>
                 <input
                   type="number"
                   name="tambahSimpanan"
@@ -211,7 +196,7 @@ const Simpanan = () => {
                 />
               </div>
               <div className="w-1/2">
-                <label htmlFor="tambahSimpanan">Tambah Simpanan</label>
+                <label htmlFor="tambahSimpanan">Tambah Simpanan Sukarela</label>
                 <input
                   type="number"
                   name="tambahSimpanan"

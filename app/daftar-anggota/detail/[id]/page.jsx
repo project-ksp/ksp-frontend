@@ -44,14 +44,15 @@ const DetailAnggotaBaru = () => {
     kelurahan: "",
     kecamatan: "",
     city: "",
-    postalCode: "",
     education: "",
     phoneNumber: "",
-    profilePictureUrl: "",
     idPictureUrl: "",
     userId: "",
     status: "",
     verified: "",
+    joinDate: "",
+    requestDate: "",
+    droppingDate: "",
     leader: {
       id: "",
       name: "",
@@ -140,6 +141,12 @@ const DetailAnggotaBaru = () => {
     }
     setLoading(false);
     setProsesData(false);
+  };
+
+  const getNextMonth = (now) => {
+    const date = new Date(now);
+    date.setMonth(date.getMonth() + 1);
+    return date.toJSON().slice(0, 10);
   };
 
   if (status === "loading") return <Loading />;
@@ -313,7 +320,7 @@ const DetailAnggotaBaru = () => {
                       spouse: e.target.value,
                     });
                   }}
-                  value={member.spouse}
+                  value={member.spouse ? member.spouse : ""}
                   className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:bg-black/5 disabled:cursor-not-allowed"
                   disabled={!allowEdit || !member.isMarried}
                 />
@@ -723,9 +730,6 @@ const DetailAnggotaBaru = () => {
                 disabled
                 className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed"
               />
-              <p className="text-filled-color text-sm mt-1">
-                *Minimal Rp.50.000,00/bulan
-              </p>
             </div>
             <div className="flex flex-col">
               <label htmlFor="simpananWajib">Simpanan Wajib</label>
@@ -751,15 +755,16 @@ const DetailAnggotaBaru = () => {
                     name="simpananSelanjutnya"
                     id="simpananSelanjutnya"
                     placeholder="Auto Generated"
-                    defaultValue={member.deposit.createdAt.slice(0, 10)}
+                    value={
+                      member.deposit.updatedAt
+                        ? getNextMonth(member.deposit.updatedAt.slice(0, 10))
+                        : ""
+                    }
                     disabled
                     className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed"
                   />
                 </div>
               </div>
-              <p className="text-filled-color text-sm mt-1">
-                *Minimal Rp.50.000,00/bulan
-              </p>
             </div>
             <div className="flex-1">
               <label htmlFor="simpananSukarela">Simpanan Sukarela</label>
@@ -860,45 +865,50 @@ const DetailAnggotaBaru = () => {
             ))}
           </div>
         )}
-        <div className="bg-white p-[20px] rounded-xl">
-          <p className="text-black font-bold text-lg mb-[10px]">
-            Detail Antidatir
-          </p>
-          <div className="flex flex-col gap-3">
-            <div className="flex-1">
-              <label htmlFor="tanggalMasuk">Tanggal Masuk Anggota</label>
-              <input
-                type="text"
-                disabled
-                placeholder="Auto Generated"
-                className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed"
-                name="tanggalMasuk"
-                id="tanggalMasuk"
-              />
-            </div>
-            <div className="flex-1">
-              <label htmlFor="tanggalPermohonan">Tanggal Permohonan</label>
-              <input
-                type="text"
-                disabled
-                placeholder="Auto Generated"
-                className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed"
-                name="tanggalPermohonan"
-                id="tanggalPermohonan"
-              />
-            </div>
-            <div className="flex-1">
-              <label htmlFor="tanggalMasuk">Tanggal Dropping Pinjaman</label>
-              <input
-                type="date"
-                placeholder="Auto Generated"
-                className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed"
-                name="tanggalMasuk"
-                id="tanggalMasuk"
-              />
+        {member.droppingDate && (
+          <div className="bg-white p-[20px] rounded-xl">
+            <p className="text-black font-bold text-lg mb-[10px]">
+              Detail Antidatir
+            </p>
+            <div className="flex flex-col gap-3">
+              <div className="flex-1">
+                <label htmlFor="tanggalMasuk">Tanggal Masuk Anggota</label>
+                <input
+                  type="date"
+                  disabled
+                  placeholder="Auto Generated"
+                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed"
+                  name="tanggalMasuk"
+                  id="tanggalMasuk"
+                  value={member.joinDate}
+                />
+              </div>
+              <div className="flex-1">
+                <label htmlFor="tanggalPermohonan">Tanggal Permohonan</label>
+                <input
+                  type="date"
+                  disabled
+                  placeholder="Auto Generated"
+                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed"
+                  name="tanggalPermohonan"
+                  id="tanggalPermohonan"
+                  value={member.requestDate}
+                />
+              </div>
+              <div className="flex-1">
+                <label htmlFor="tanggalMasuk">Tanggal Dropping Pinjaman</label>
+                <input
+                  type="date"
+                  placeholder="Auto Generated"
+                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed"
+                  name="tanggalMasuk"
+                  id="tanggalMasuk"
+                  value={member.droppingDate}
+                />
+              </div>
             </div>
           </div>
-        </div>
+        )}
         <div className="flex gap-3 justify-end">
           <Link href={`/daftar-anggota/detail/${id}/cetak-formulir`}>
             <button
@@ -981,7 +991,7 @@ const DetailAnggotaBaru = () => {
             </svg>
           </div>
           <p className="text-black font-regular text-lg text-center mb-3 w-[420px]">
-            Data Anggota Baru telah diproses dan telah tersimpan di data master
+            Data Anggota Baru telah diperbaharui
           </p>
           <button
             type="button"

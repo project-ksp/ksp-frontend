@@ -17,7 +17,7 @@ const Sidebar = () => {
 
   return (
     <>
-      <div className="w-[280px] flex flex-col justify-between p-[28px] bg-primary fixed h-screen overflow-scroll overflow-x-hidden">
+      <div className="w-[280px] flex flex-col justify-between p-[28px] bg-primary fixed h-screen overflow-y-hidden overflow-x-hidden">
         <div className="flex flex-col">
           <div className="flex items-center mb-[60px] mt-[20px] gap-[10px]">
             <Image
@@ -44,14 +44,7 @@ const Sidebar = () => {
           )}
         </div>
         <div className="flex flex-col">
-          <ButtonKeluar
-            click={() =>
-              signOut({
-                callbackUrl: `/login`,
-                redirect: true,
-              })
-            }
-          />
+          <ButtonKeluar click={() => setProsesData(true)} />
           <ButtonAccount
             jabatan={`${
               session.user.role === "branch_head"
@@ -125,16 +118,15 @@ const MenuItem = ({ item }) => {
             <div className="bg-[#fff] -my-3 mb-1 rounded-lg transition-all duration-300 z-20 ">
               {item.subMenuItems.map((subItem, index) => {
                 return (
-                  <div
-                    key={index}
-                    className={`${
-                      pathname.includes(subItem.path) ? "bg-secondary" : ""
-                    } border-b border-black/20 pl-[48px] pr-[22px] rounded-md h-[48px] flex items-center hover:bg-secondary`}
-                  >
-                    <Link href={subItem.path}>
+                  <Link key={index} href={subItem.path}>
+                    <div
+                      className={`${
+                        pathname.includes(subItem.path) ? "bg-secondary" : ""
+                      } border-b border-black/20 pl-[48px] pr-[22px] rounded-md h-[48px] flex items-center hover:bg-secondary`}
+                    >
                       <p>{subItem.title}</p>
-                    </Link>
-                  </div>
+                    </div>
+                  </Link>
                 );
               })}
             </div>
@@ -242,7 +234,10 @@ const LogoutModal = ({ isVisible, onClose }) => {
           type="submit"
           className="w-[224px] px-[20px] py-[12px] text-white bg-green-status-1 rounded-lg mx-auto"
           onClick={(e) => {
-            onClose();
+            signOut({
+              callbackUrl: `/login`,
+              redirect: true,
+            });
           }}
         >
           Ya

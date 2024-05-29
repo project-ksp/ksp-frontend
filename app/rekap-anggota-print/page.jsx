@@ -58,7 +58,17 @@ const PrintRekapAnggota = () => {
             </th>
             <th className="w-[12%] font-semibold px-[10px]">
               <div className="flex justify-between items-center">
-                <p>Total Simpanan</p>
+                <p>Simpanan Pokok</p>
+              </div>
+            </th>
+            <th className="w-[12%] font-semibold px-[10px]">
+              <div className="flex justify-between items-center">
+                <p>Simpanan Wajib</p>
+              </div>
+            </th>
+            <th className="w-[12%] font-semibold px-[10px]">
+              <div className="flex justify-between items-center">
+                <p>Simpanan Sukarela</p>
               </div>
             </th>
             <th className="w-[12%] font-semibold px-[10px]">
@@ -76,7 +86,7 @@ const PrintRekapAnggota = () => {
               <tr key={item.id} className=" border-b border-[#DDE1E6]">
                 <td className="break-words px-[10px]">{item.id}</td>
                 <td className="px-[10px]">{item.name}</td>
-                <td className="px-[10px]">{item.nik}</td>
+                <td className="px-[10px] break-words">{item.nik}</td>
                 <td className="px-[10px]">
                   {item.gender === "laki-laki" ? "L" : "P"}
                 </td>
@@ -85,7 +95,21 @@ const PrintRekapAnggota = () => {
                     style: "currency",
                     currency: "IDR",
                     maximumFractionDigits: 0,
-                  }).format(item.totalDeposit)}
+                  }).format(item.deposit.principalDeposit)}
+                </td>
+                <td className="px-[10px]">
+                  {Intl.NumberFormat("id-ID", {
+                    style: "currency",
+                    currency: "IDR",
+                    maximumFractionDigits: 0,
+                  }).format(item.deposit.mandatoryDeposit)}
+                </td>
+                <td className="px-[10px]">
+                  {Intl.NumberFormat("id-ID", {
+                    style: "currency",
+                    currency: "IDR",
+                    maximumFractionDigits: 0,
+                  }).format(item.deposit.voluntaryDeposit)}
                 </td>
                 <td className="px-[10px]">
                   {Intl.NumberFormat("id-ID", {

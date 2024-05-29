@@ -14,7 +14,7 @@ const TambahAnggota = () => {
   const formRef = useRef();
 
   const [fotoDiri, setFotoDiri] = useState(null);
-  const [fotoKtp, setFotoKtp] = useState(null);
+  const [fotoKtp, setFotoKtp] = useState(undefined);
   const [pendidikanOpen, setPendidikanOpen] = useState(false);
   const [agamaOpen, setAgamaOpen] = useState(false);
   const [jenisKelaminOpen, setJenisKelaminOpen] = useState(false);
@@ -34,10 +34,8 @@ const TambahAnggota = () => {
     kelurahan: "",
     kecamatan: "",
     city: "",
-    postalCode: "",
     education: "Pilih Pendidikan Terakhir",
     phoneNumber: "",
-    profilePictureUrl: "",
     idPictureUrl: "",
     leaderId: "",
   });
@@ -53,31 +51,12 @@ const TambahAnggota = () => {
     return age;
   };
 
-  const uploadFotoDiri = async (e) => {
-    setFotoDiri(e.target.files[0]);
-    const formData = new FormData();
-    formData.append("file", e.target.files[0]);
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}uploads/temp/image`,
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${session.token}`,
-        },
-        body: formData,
-      }
-    );
-    const data = await res.json();
-    if (res.ok) {
-      setMember({ ...member, profilePictureUrl: data.data });
-      localStorage.setItem("profilePictureUrl", data.data);
-    } else {
-      setFotoDiri(null);
-      toast.error(data.message);
-    }
-  };
-
   const uploadFotoKtp = async (e) => {
+    if (!e.target.files[0]) {
+      setMember({ ...member, idPictureUrl: "" });
+      setFotoKtp(undefined);
+      return;
+    }
     setFotoKtp(e.target.files[0]);
     const formData = new FormData();
     formData.append("file", e.target.files[0]);
@@ -96,7 +75,7 @@ const TambahAnggota = () => {
       setMember({ ...member, idPictureUrl: data.data });
       localStorage.setItem("idPictureUrl", data.data);
     } else {
-      setFotoKtp(null);
+      setFotoKtp(undefined);
       toast.error(data.message);
     }
   };
@@ -117,12 +96,9 @@ const TambahAnggota = () => {
     const storedKelurahan = localStorage.getItem("kelurahan") || "";
     const storedKecamatan = localStorage.getItem("kecamatan") || "";
     const storedCity = localStorage.getItem("city") || "";
-    const storedPostalCode = localStorage.getItem("postalCode") || "";
     const storedEducation =
       localStorage.getItem("education") || "Pilih Pendidikan Terakhir";
     const storedPhoneNumber = localStorage.getItem("phoneNumber") || "";
-    const storedProfilePictureUrl =
-      localStorage.getItem("profilePictureUrl") || "";
     const storedIdPictureUrl = localStorage.getItem("idPictureUrl") || "";
     const storedLeaderId = localStorage.getItem("leaderId") || "";
     const storedSpouse = localStorage.getItem("spouse") || "";
@@ -145,10 +121,8 @@ const TambahAnggota = () => {
       kelurahan: storedKelurahan,
       kecamatan: storedKecamatan,
       city: storedCity,
-      postalCode: storedPostalCode,
       education: storedEducation,
       phoneNumber: storedPhoneNumber,
-      profilePictureUrl: storedProfilePictureUrl,
       idPictureUrl: storedIdPictureUrl,
       leaderId: storedLeaderId,
       spouse: storedSpouse,
@@ -601,7 +575,7 @@ const TambahAnggota = () => {
           </div>
           <div className="flex w-full gap-2">
             <label htmlFor="fotoKtp" className="flex w-3/4">
-              {fotoKtp === null ? (
+              {fotoKtp === undefined ? (
                 <div className="relative h-[80px] w-[80px]">
                   <Image
                     src={"/images/image_none.jpg"}
@@ -644,7 +618,7 @@ const TambahAnggota = () => {
                     </svg>
                   </div>
                   <p className="text-[#3c3c3c] ml-[30px]">
-                    {fotoKtp === null
+                    {fotoKtp === undefined
                       ? "Tidak ada file terpilih"
                       : fotoKtp.name}
                   </p>

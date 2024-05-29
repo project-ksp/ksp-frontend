@@ -23,7 +23,7 @@ const TambahTeller = () => {
   const [jenisKelaminOpen, setJenisKelaminOpen] = useState(false);
 
   const [fotoDiri, setFotoDiri] = useState(null);
-  const [fotoKtp, setFotoKtp] = useState(null);
+  const [fotoKtp, setFotoKtp] = useState(undefined);
 
   const [tellerData, setTellerData] = useState({
     name: "",
@@ -37,10 +37,8 @@ const TambahTeller = () => {
     kelurahan: "",
     kecamatan: "",
     city: "",
-    postalCode: "",
     phoneNumber: "",
     education: "Pilih Pendidikan Terakhir",
-    profilePictureUrl: "",
     idPictureUrl: "",
   });
 
@@ -56,6 +54,11 @@ const TambahTeller = () => {
   };
 
   const uploadFotoKtp = async (e) => {
+    if (!e.target.files[0]) {
+      setTellerData({ ...tellerData, idPictureUrl: "" });
+      setFotoKtp(undefined);
+      return;
+    }
     setFotoKtp(e.target.files[0]);
     const formData = new FormData();
     formData.append("file", e.target.files[0]);
@@ -73,30 +76,7 @@ const TambahTeller = () => {
     if (res.ok) {
       setTellerData({ ...tellerData, idPictureUrl: data.data });
     } else {
-      setFotoKtp(null);
-      toast.error(data.message);
-    }
-  };
-
-  const uploadFotoDiri = async (e) => {
-    setFotoDiri(e.target.files[0]);
-    const formData = new FormData();
-    formData.append("file", e.target.files[0]);
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}uploads/temp/image`,
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${session.token}`,
-        },
-        body: formData,
-      }
-    );
-    const data = await res.json();
-    if (res.ok) {
-      setTellerData({ ...tellerData, profilePictureUrl: data.data });
-    } else {
-      setFotoDiri(null);
+      setFotoKtp(undefined);
       toast.error(data.message);
     }
   };
@@ -115,8 +95,8 @@ const TambahTeller = () => {
       return;
     }
 
-    if (tellerData.profilePictureUrl === "" || tellerData.idPictureUrl === "") {
-      toast.error("Mohon lengkapi foto diri dan foto KTP");
+    if (tellerData.idPictureUrl === "") {
+      toast.error("Mohon tambahkan foto KTP");
       setProsesData(false);
       setLoading(false);
       return;
@@ -477,7 +457,7 @@ const TambahTeller = () => {
             </div>
             <div className="flex gap-3">
               <label htmlFor="fotoKtp" className="flex flex-1">
-                {fotoKtp === null ? (
+                {fotoKtp === undefined ? (
                   <div className="relative h-[80px] w-[80px]">
                     <Image
                       src={"/images/image_none.jpg"}
@@ -520,7 +500,7 @@ const TambahTeller = () => {
                       </svg>
                     </div>
                     <p className="text-[#3c3c3c] ml-[30px]">
-                      {fotoKtp === null
+                      {fotoKtp === undefined
                         ? "Tidak ada file terpilih"
                         : fotoKtp.name}
                     </p>

@@ -47,10 +47,8 @@ const DetailAnggotaLama = () => {
     kelurahan: "",
     kecamatan: "",
     city: "",
-    postalCode: "",
     education: "",
     phoneNumber: "",
-    profilePictureUrl: "",
     idPictureUrl: "",
     userId: "",
     status: "",
@@ -99,6 +97,12 @@ const DetailAnggotaLama = () => {
 
     getMember();
   }, [status, session, id]);
+
+  const getNextMonth = (now) => {
+    const date = new Date(now);
+    date.setMonth(date.getMonth() + 1);
+    return date.toJSON().slice(0, 10);
+  };
 
   const countAge = (date) => {
     const today = new Date();
@@ -261,9 +265,7 @@ const DetailAnggotaLama = () => {
                   id="jenisKelamin"
                   name="jenisKelamin"
                   placeholder="Isi Jenis Kelamin "
-                  defaultValue={
-                    member.isMarried ? "Sudah Menikah" : "Belum Menikah"
-                  }
+                  value={member.isMarried ? "Sudah Menikah" : "Belum Menikah"}
                   disabled={!allowEdit}
                   className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:bg-black/5 disabled:cursor-not-allowed"
                 />
@@ -276,12 +278,7 @@ const DetailAnggotaLama = () => {
                 id="namaSuamiIstri"
                 name="namaSuamiIstri"
                 placeholder="*Jika Sudah Menikah"
-                onChange={(e) => {
-                  setMember({
-                    ...member,
-                    spouse: e.target.value,
-                  });
-                }}
+                value={member.spouse}
                 className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:bg-black/5 disabled:cursor-not-allowed"
                 disabled={!allowEdit || !member.isMarried}
               />
@@ -660,11 +657,15 @@ const DetailAnggotaLama = () => {
                   Jadwal Simpanan Selanjutnya
                 </label>
                 <input
-                  type="date"
+                  type="text"
                   name="simpananSelanjutnya"
                   id="simpananSelanjutnya"
                   placeholder="Auto Generated"
-                  defaultValue={member.deposit.createdAt.slice(0, 10)}
+                  value={
+                    member.deposit.updatedAt
+                      ? getNextMonth(member.deposit.updatedAt.slice(0, 10))
+                      : ""
+                  }
                   disabled
                   className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed"
                 />

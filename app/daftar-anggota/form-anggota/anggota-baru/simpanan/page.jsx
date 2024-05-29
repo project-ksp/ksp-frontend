@@ -15,6 +15,7 @@ const Simpanan = () => {
   const [showProsesData, setProsesData] = useState(false);
   const [showBerhasil, setBerhasil] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [idMember, setIdMember] = useState({});
 
   const router = useRouter();
 
@@ -31,10 +32,8 @@ const Simpanan = () => {
     kelurahan: "",
     kecamatan: "",
     city: "",
-    postalCode: "",
     education: "Pilih Pendidikan Terakhir",
     phoneNumber: "",
-    profilePictureUrl: "",
     idPictureUrl: "",
     leaderId: "",
   });
@@ -60,12 +59,9 @@ const Simpanan = () => {
     const storedKelurahan = localStorage.getItem("kelurahan") || "";
     const storedKecamatan = localStorage.getItem("kecamatan") || "";
     const storedCity = localStorage.getItem("city") || "";
-    const storedPostalCode = localStorage.getItem("postalCode") || "";
     const storedEducation =
       localStorage.getItem("education") || "Pilih Pendidikan Terakhir";
     const storedPhoneNumber = localStorage.getItem("phoneNumber") || "";
-    const storedProfilePictureUrl =
-      localStorage.getItem("profilePictureUrl") || "";
     const storedIdPictureUrl = localStorage.getItem("idPictureUrl") || "";
     const storedLeaderId = localStorage.getItem("leaderId") || "";
     const storedSpouse = localStorage.getItem("spouse") || "";
@@ -83,10 +79,8 @@ const Simpanan = () => {
       kelurahan: storedKelurahan,
       kecamatan: storedKecamatan,
       city: storedCity,
-      postalCode: storedPostalCode,
       education: storedEducation,
       phoneNumber: storedPhoneNumber,
-      profilePictureUrl: storedProfilePictureUrl,
       idPictureUrl: storedIdPictureUrl,
       leaderId: storedLeaderId,
       spouse: storedSpouse,
@@ -110,9 +104,7 @@ const Simpanan = () => {
       member.kelurahan === "" ||
       member.kecamatan === "" ||
       member.city === "" ||
-      member.postalCode === "" ||
       member.phoneNumber === "" ||
-      member.profilePictureUrl === "" ||
       member.idPictureUrl === "" ||
       member.leaderId === ""
     ) {
@@ -149,6 +141,7 @@ const Simpanan = () => {
     const data = await res.json();
     if (res.ok) {
       setBerhasil(true);
+      setIdMember(data.data.id);
       localStorage.clear();
     } else {
       toast.error(data.message);
@@ -177,14 +170,13 @@ const Simpanan = () => {
               className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed disabled:bg-black/5"
             />
             <p className="text-filled-color text-sm mt-1">
-              *Minimal Rp.50.000,00/bulan
+              *Minimal Rp.5.000,00/bulan
             </p>
           </div>
           <div className="flex flex-col">
             <label htmlFor="simpananWajib">Simpanan Wajib</label>
             <div className="flex mt-2 gap-3">
               <div className="flex-grow">
-                <label htmlFor="bulan1">Total Simpanan</label>
                 <input
                   type="number"
                   name="bulan1"
@@ -255,7 +247,7 @@ const Simpanan = () => {
         isVisible={showBerhasil}
         onClose={() => {
           setBerhasil(false);
-          router.push("/status-pengajuan/anggota-baru");
+          router.push(`/daftar-anggota/detail/${idMember}`);
         }}
       >
         <div className="w-[98px] h-[98px] rounded-full bg-primary place-self-center relative">
@@ -292,7 +284,7 @@ const Simpanan = () => {
           className="w-[450px] px-[20px] py-[12px] text-white bg-primary rounded-lg mx-auto"
           onClick={(e) => {
             setBerhasil(false);
-            router.push("/status-pengajuan/anggota-baru");
+            router.push(`/daftar-anggota/detail/${idMember}`);
           }}
         >
           OK
