@@ -17,18 +17,15 @@ const RekapAnggota = () => {
     direction: "ascending",
   });
 
-  // Toggle function to update the sorting state
   const toggleSort = (column) => {
     setSortConfig((prevState) => {
       if (prevState.key === column) {
-        // Toggle direction if the same column is clicked again
         return {
           key: column,
           direction:
             prevState.direction === "ascending" ? "descending" : "ascending",
         };
       } else {
-        // Set new column and default to ascending
         return {
           key: column,
           direction: "ascending",
@@ -37,7 +34,6 @@ const RekapAnggota = () => {
     });
   };
 
-  // Sorting logic
   const sortedMembers = [...anggota].sort((a, b) => {
     if (sortConfig.key) {
       if (sortConfig.key === "totalLoan") {

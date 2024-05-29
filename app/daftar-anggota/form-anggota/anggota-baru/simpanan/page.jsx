@@ -15,6 +15,7 @@ const Simpanan = () => {
   const [showProsesData, setProsesData] = useState(false);
   const [showBerhasil, setBerhasil] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [idMember, setIdMember] = useState({});
 
   const router = useRouter();
 
@@ -140,6 +141,7 @@ const Simpanan = () => {
     const data = await res.json();
     if (res.ok) {
       setBerhasil(true);
+      setIdMember(data.data.id);
       localStorage.clear();
     } else {
       toast.error(data.message);
@@ -245,7 +247,7 @@ const Simpanan = () => {
         isVisible={showBerhasil}
         onClose={() => {
           setBerhasil(false);
-          router.push("/status-pengajuan/anggota-baru");
+          router.push(`/daftar-anggota/detail/${idMember}`);
         }}
       >
         <div className="w-[98px] h-[98px] rounded-full bg-primary place-self-center relative">
@@ -282,7 +284,7 @@ const Simpanan = () => {
           className="w-[450px] px-[20px] py-[12px] text-white bg-primary rounded-lg mx-auto"
           onClick={(e) => {
             setBerhasil(false);
-            router.push("/status-pengajuan/anggota-baru");
+            router.push(`/daftar-anggota/detail/${idMember}`);
           }}
         >
           OK

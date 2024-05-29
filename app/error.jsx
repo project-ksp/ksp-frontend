@@ -9,9 +9,7 @@ const Error = ({ error, reset }) => {
       <p className="text-red-status-1 font-medium text-xl">
         Terdapat Kesalahan
       </p>
-      <h3 className="font-bold text-title-xlarge text-black">
-        {error.message}
-      </h3>
+      <h3 className="font-bold text-title-large text-black">{error.message}</h3>
       <p className="text-filled-color font-medium text-lg">
         Coba lagi nanti atau kontak support jika kesalahan masih terjadi
       </p>
