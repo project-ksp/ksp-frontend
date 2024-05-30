@@ -651,9 +651,6 @@ const DetailPenghapusanAnggota = () => {
               disabled
               className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed"
             />
-            <p className="text-filled-color text-sm mt-1">
-              *Minimal Rp.5.000,00
-            </p>
           </div>
           <div className="flex flex-col">
             <label htmlFor="simpananWajib">Simpanan Wajib</label>
@@ -689,9 +686,6 @@ const DetailPenghapusanAnggota = () => {
                 />
               </div>
             </div>
-            <p className="text-filled-color text-sm mt-1">
-              *Minimal Rp.5.000,00
-            </p>
           </div>
           <div className="flex-1">
             <label htmlFor="simpananSukarela">Simpanan Sukarela</label>
@@ -704,9 +698,6 @@ const DetailPenghapusanAnggota = () => {
               value={member.deposit.voluntaryDeposit}
               className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed"
             />
-            <p className="text-filled-color text-sm mt-1">
-              Diambil dari pinjaman
-            </p>
           </div>
         </div>
       </div>
