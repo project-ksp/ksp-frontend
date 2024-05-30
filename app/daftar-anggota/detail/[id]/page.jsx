@@ -796,7 +796,7 @@ const DetailAnggotaBaru = () => {
                     type="text"
                     name="cabang"
                     id="cabang"
-                    value={member.branchId}
+                    value={loan.branchId}
                     disabled
                     className={`w-full flex justify-between py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] text-start text-black bg-transparent focus:outline-none disabled:cursor-not-allowed`}
                   />
@@ -822,7 +822,7 @@ const DetailAnggotaBaru = () => {
                       id="awalPinjaman"
                       placeholder="Isi ID Ketua Kelompok"
                       disabled
-                      value={member.deposit.loans[index].createdAt.slice(0, 10)}
+                      value={loan.startDate}
                       className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
                     />
                   </div>
@@ -836,13 +836,7 @@ const DetailAnggotaBaru = () => {
                       id="akhirPinjaman"
                       placeholder="Isi ID Ketua Kelompok"
                       disabled
-                      defaultValue={(() => {
-                        const date = new Date(
-                          member.deposit.loans[index].createdAt
-                        );
-                        date.setMonth(date.getMonth() + 6);
-                        return date.toJSON().slice(0, 10);
-                      })()}
+                      value={loan.endDate}
                       className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
                     />
                   </div>
@@ -856,7 +850,7 @@ const DetailAnggotaBaru = () => {
                       id="idKetuaKelompok"
                       placeholder="Isi ID Ketua Kelompok"
                       disabled
-                      value={member.leader.id}
+                      value={loan.leaderId}
                       className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
                     />
                   </div>

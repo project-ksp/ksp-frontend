@@ -227,9 +227,7 @@ const Pinjaman = () => {
                 />
               </div>
             </div>
-            <p className="text-sm text-filled-color mt-1">
-              Minimal Rp5.000,00/bulan
-            </p>
+            <p className="text-sm text-filled-color mt-1">Minimal Rp5.000,00</p>
           </div>
           <div className="flex-1">
             <label htmlFor="simpananSukarela">Simpanan Sukarela</label>
