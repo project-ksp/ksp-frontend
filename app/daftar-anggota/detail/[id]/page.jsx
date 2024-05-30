@@ -777,9 +777,6 @@ const DetailAnggotaBaru = () => {
                 value={member.deposit.voluntaryDeposit}
                 className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed"
               />
-              <p className="text-filled-color text-sm mt-1">
-                Diambil dari pinjaman
-              </p>
             </div>
           </div>
         </div>

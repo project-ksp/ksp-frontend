@@ -8,9 +8,7 @@ const Layout = ({ children }) => {
       <Sidebar />
       <div className="m-[30px] w-full ml-[310px]">
         <div className="flex flex-col gap-2">
-          <h2 className="text-2xl font-bold text-black">
-            Form Simpanan/Pinjaman
-          </h2>
+          <h2 className="text-2xl font-bold text-black">Cetak Berkas</h2>
           <div className="flex gap-5">
             <CetakBerkasButtonNav />
           </div>
