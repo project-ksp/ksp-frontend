@@ -34,7 +34,6 @@ const DetailTeller = () => {
     kelurahan: "",
     kecamatan: "",
     city: "",
-    postalCode: "",
     phoneNumber: "",
     education: "",
   });

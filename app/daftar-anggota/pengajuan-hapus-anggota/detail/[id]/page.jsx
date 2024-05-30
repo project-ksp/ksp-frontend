@@ -24,7 +24,7 @@ const DetailPenghapusanAnggota = () => {
   const [jenisKelaminOpen, setJenisKelaminOpen] = useState();
   const [showProsesData, setProsesData] = useState();
   const [showBerhasil, setBerhasil] = useState();
-  const [buktiPendukung, setBuktiPendukung] = useState(null);
+  const [buktiPendukung, setBuktiPendukung] = useState(undefined);
 
   const [loading, setLoading] = useState(false);
 
@@ -54,10 +54,8 @@ const DetailPenghapusanAnggota = () => {
     kelurahan: "",
     kecamatan: "",
     city: "",
-    postalCode: "",
     education: "",
     phoneNumber: "",
-    profilePictureUrl: "",
     idPictureUrl: "",
     userId: "",
     status: "",
@@ -108,6 +106,11 @@ const DetailPenghapusanAnggota = () => {
   }, [status, session]);
 
   const uploadBuktiPendukung = async (e) => {
+    if (!e.target.files[0]) {
+      setDeleteReq({ ...deleteReq, proofUrl: "" });
+      setBuktiPendukung(undefined);
+      return;
+    }
     setBuktiPendukung(e.target.files[0]);
     const formData = new FormData();
     formData.append("file", e.target.files[0]);
@@ -125,7 +128,7 @@ const DetailPenghapusanAnggota = () => {
     if (res.ok) {
       setDeleteReq({ ...deleteReq, proofUrl: data.data });
     } else {
-      setBuktiPendukung(null);
+      setBuktiPendukung(undefined);
       toast.error(data.message);
     }
   };
@@ -686,7 +689,7 @@ const DetailPenghapusanAnggota = () => {
               className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed"
             />
             <p className="text-filled-color text-sm mt-1">
-              *Minimal Rp.50.000,00/bulan
+              *Minimal Rp.5.000,00
             </p>
           </div>
           <div className="flex flex-col">
@@ -720,7 +723,7 @@ const DetailPenghapusanAnggota = () => {
               </div>
             </div>
             <p className="text-filled-color text-sm mt-1">
-              *Minimal Rp.50.000,00/bulan
+              *Minimal Rp.5.000,00
             </p>
           </div>
           <div className="flex-1">
@@ -753,7 +756,7 @@ const DetailPenghapusanAnggota = () => {
                   type="text"
                   name="cabang"
                   id="cabang"
-                  value={member.branchId}
+                  value={loan.branchId}
                   disabled
                   className={`w-full flex justify-between py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] text-start text-black bg-transparent focus:outline-none disabled:cursor-not-allowed`}
                 />
@@ -765,7 +768,7 @@ const DetailPenghapusanAnggota = () => {
                   name="jumlahPinjaman"
                   id="jumlahPinjaman"
                   placeholder="Isikan Jumlah Pinjaman"
-                  value={member.deposit.loans[index].loan}
+                  value={loan.loan}
                   disabled
                   className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
                 />
@@ -779,7 +782,7 @@ const DetailPenghapusanAnggota = () => {
                     id="awalPinjaman"
                     placeholder="Isi ID Ketua Kelompok"
                     disabled
-                    value={member.deposit.loans[index].createdAt.slice(0, 10)}
+                    value={loan.startDate}
                     className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
                   />
                 </div>
@@ -793,13 +796,7 @@ const DetailPenghapusanAnggota = () => {
                     id="akhirPinjaman"
                     placeholder="Isi ID Ketua Kelompok"
                     disabled
-                    defaultValue={(() => {
-                      const date = new Date(
-                        member.deposit.loans[index].createdAt
-                      );
-                      date.setMonth(date.getMonth() + 6);
-                      return date.toJSON().slice(0, 10);
-                    })()}
+                    value={loan.endDate}
                     className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
                   />
                 </div>
@@ -812,7 +809,7 @@ const DetailPenghapusanAnggota = () => {
                   id="idKetuaKelompok"
                   placeholder="Isi ID Ketua Kelompok"
                   disabled
-                  value={member.leader.id}
+                  value={loan.leaderId}
                   className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
                 />
               </div>
@@ -842,7 +839,7 @@ const DetailPenghapusanAnggota = () => {
             />
           </div>
           <label htmlFor="buktiPendukung" className="flex w-1/2">
-            {buktiPendukung === null ? (
+            {buktiPendukung === undefined ? (
               <div className="relative h-[80px] w-[80px]">
                 <Image
                   src={"/images/image_none.jpg"}
@@ -885,7 +882,7 @@ const DetailPenghapusanAnggota = () => {
                   </svg>
                 </div>
                 <p className="text-[#3c3c3c] ml-[30px]">
-                  {buktiPendukung === null
+                  {buktiPendukung === undefined
                     ? "Tidak ada file terpilih"
                     : buktiPendukung.name}
                 </p>

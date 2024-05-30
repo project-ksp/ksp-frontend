@@ -15,9 +15,7 @@ const DetailPenghapusanAnggota = () => {
   const { data: session, status } = useSession();
   const { id } = useParams();
   const formRef = useRef();
-
   const router = useRouter();
-
   const [agamaOpen, setAgamaOpen] = useState();
   const [pendidikanOpen, setPendidikanOpen] = useState();
   const [statusPernikahanOpen, setStatusPernikahanOpen] = useState();
@@ -25,9 +23,7 @@ const DetailPenghapusanAnggota = () => {
   const [showProsesData, setProsesData] = useState();
   const [showBerhasil, setBerhasil] = useState();
   const [buktiPendukung, setBuktiPendukung] = useState(null);
-
   const [loading, setLoading] = useState(false);
-
   const [member, setMember] = useState({
     id: "",
     name: "",
@@ -83,7 +79,6 @@ const DetailPenghapusanAnggota = () => {
       ],
     },
   });
-
   const [deleteReq, setDeleteReq] = useState({
     id: "",
     memberId: "",
@@ -93,7 +88,6 @@ const DetailPenghapusanAnggota = () => {
     createdAt: "",
     updatedAt: "",
   });
-
   const deleteMember = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -107,7 +101,6 @@ const DetailPenghapusanAnggota = () => {
         },
       }
     );
-
     const data = await res.json();
     if (res.ok) {
       setBerhasil(true);
@@ -117,7 +110,6 @@ const DetailPenghapusanAnggota = () => {
     setLoading(false);
     setProsesData(false);
   };
-
   useEffect(() => {
     const getMember = async () => {
       if (status === "loading") return;
@@ -140,10 +132,8 @@ const DetailPenghapusanAnggota = () => {
       }
       setLoading(false);
     };
-
     getMember();
   }, [status, session, id]);
-
   if (status === "loading") return <Loading />;
   return (
     <div className="flex flex-col gap-2">
@@ -175,31 +165,19 @@ const DetailPenghapusanAnggota = () => {
           Biodata Lengkap Anggota
         </p>
         <div className="flex flex-col gap-2">
-          <div className="flex">
-            <Image
-              src={`${process.env.NEXT_PUBLIC_BASE_URL}public/${member.profilePictureUrl}`}
-              width={90}
-              height={120}
-              alt="Foto Diri"
-              className="mr-[25px] rounded-md object-cover"
-            />
-            <div className="flex flex-col gap-2">
-              <p className="text-xl text-black">{member.name}</p>
-              <p className="text-lg text-black">{member.id}</p>
-              {member.isActive ? (
-                <div className="bg-green-status-1 text-white text-center my-[8px] rounded-lg  w-[86px]">
-                  Aktif
-                </div>
-              ) : (
-                <div className="bg-red-status-1 text-white text-center my-[8px] rounded-lg  w-[86px]">
-                  Tidak Aktif
-                </div>
-              )}
+          <p className="text-xl text-black">{member.name}</p>
+          <p className="text-lg text-black">{member.id}</p>
+          {member.isActive ? (
+            <div className="bg-green-status-1 text-white text-center my-[8px] rounded-lg  w-[86px]">
+              Aktif
             </div>
-          </div>
+          ) : (
+            <div className="bg-red-status-1 text-white text-center my-[8px] rounded-lg  w-[86px]">
+              Tidak Aktif
+            </div>
+          )}
         </div>
       </div>
-
       <div className="bg-white p-[20px] rounded-xl">
         <p className="text-black font-bold text-lg mb-[10px]">
           Alasan Penghapusan Anggota

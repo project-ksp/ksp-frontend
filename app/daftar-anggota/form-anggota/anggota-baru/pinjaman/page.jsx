@@ -15,8 +15,11 @@ const Pinjaman = () => {
   const [showProsesData, setProsesData] = useState(false);
   const [showBerhasil, setBerhasil] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [idMember, setIdMember] = useState({});
 
   const [oneClick, setOneClick] = useState(true);
+
+  const [potongan, setPotongan] = useState(0);
 
   const [simpanan, setSimpanan] = useState({
     principalDeposit: 0,
@@ -37,14 +40,13 @@ const Pinjaman = () => {
     kelurahan: "",
     kecamatan: "",
     city: "",
-    postalCode: "",
     education: "Pilih Pendidikan Terakhir",
     phoneNumber: "",
-    profilePictureUrl: "",
     idPictureUrl: "",
     leaderId: "",
     spouse: "",
     branchId: 0,
+    droppingDate: "",
   });
 
   const [loan, setLoan] = useState(null);
@@ -65,12 +67,9 @@ const Pinjaman = () => {
     const storedKelurahan = localStorage.getItem("kelurahan") || "";
     const storedKecamatan = localStorage.getItem("kecamatan") || "";
     const storedCity = localStorage.getItem("city") || "";
-    const storedPostalCode = localStorage.getItem("postalCode") || "";
     const storedEducation =
       localStorage.getItem("education") || "Pilih Pendidikan Terakhir";
     const storedPhoneNumber = localStorage.getItem("phoneNumber") || "";
-    const storedProfilePictureUrl =
-      localStorage.getItem("profilePictureUrl") || "";
     const storedIdPictureUrl = localStorage.getItem("idPictureUrl") || "";
     const storedLeaderId = localStorage.getItem("leaderId") || "";
     const storedSpouse = localStorage.getItem("spouse") || "";
@@ -89,19 +88,19 @@ const Pinjaman = () => {
       kelurahan: storedKelurahan,
       kecamatan: storedKecamatan,
       city: storedCity,
-      postalCode: storedPostalCode,
       education: storedEducation,
       phoneNumber: storedPhoneNumber,
-      profilePictureUrl: storedProfilePictureUrl,
       idPictureUrl: storedIdPictureUrl,
       leaderId: storedLeaderId,
       spouse: storedSpouse,
       branchId: storedBranchId,
+      droppingDate: "",
     });
   }, [status, session]);
 
   const submitData = async (e) => {
     setLoading(true);
+    console.log(simpanan);
     e.preventDefault();
     if (
       member.isMarried === "Pilih Status" ||
@@ -117,9 +116,7 @@ const Pinjaman = () => {
       member.kelurahan === "" ||
       member.kecamatan === "" ||
       member.city === "" ||
-      member.postalCode === "" ||
       member.phoneNumber === "" ||
-      member.profilePictureUrl === "" ||
       member.idPictureUrl === "" ||
       member.branchId === 0
     ) {
@@ -143,6 +140,13 @@ const Pinjaman = () => {
       return;
     }
 
+    if (member.droppingDate === "") {
+      toast.error("Mohon masukkan tanggal dropping pinjaman");
+      setProsesData(false);
+      setLoading(false);
+      return;
+    }
+
     const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}members/loan`, {
       method: "POST",
       headers: {
@@ -152,18 +156,39 @@ const Pinjaman = () => {
       body: JSON.stringify({
         member,
         loan,
+        mandatoryDeposit: simpanan.mandatoryDeposit,
       }),
     });
 
     const data = await res.json();
     if (res.ok) {
       setBerhasil(true);
+      setIdMember(data.data.id);
       localStorage.clear();
     } else {
       toast.error(data.message);
     }
     setLoading(false);
     setProsesData(false);
+  };
+
+  const handlePinjaman = (e) => {
+    setLoan({ ...loan, loan: parseInt(e.target.value) });
+    setPotongan(e.target.value * 0.05);
+
+    if (e.target.value * 0.05 < 50000) {
+      setSimpanan({ ...simpanan, principalDeposit: e.target.value * 0.05 });
+    } else {
+      setSimpanan({ ...simpanan, principalDeposit: 50000 });
+    }
+  };
+
+  const handleSimpananWajib = (e) => {
+    setSimpanan({
+      ...simpanan,
+      mandatoryDeposit: parseInt(e.target.value),
+      voluntaryDeposit: potongan - simpanan.principalDeposit - e.target.value,
+    });
   };
 
   if (status === "loading") return <Loading />;
@@ -197,16 +222,12 @@ const Pinjaman = () => {
                   name="bulan1"
                   id="bulan1"
                   placeholder="Isikan simpanan wajib"
-                  onChange={(e) =>
-                    setSimpanan({
-                      ...simpanan,
-                      mandatoryDeposit: e.target.value,
-                    })
-                  }
+                  onChange={(e) => handleSimpananWajib(e)}
                   className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed"
                 />
               </div>
             </div>
+            <p className="text-sm text-filled-color mt-1">Minimal Rp5.000,00</p>
           </div>
           <div className="flex-1">
             <label htmlFor="simpananSukarela">Simpanan Sukarela</label>
@@ -277,9 +298,7 @@ const Pinjaman = () => {
                     name="jumlahPinjaman"
                     id="jumlahPinjaman"
                     placeholder="Isikan Jumlah Pinjaman"
-                    onChange={(e) =>
-                      setLoan({ ...loan, loan: parseInt(e.target.value) })
-                    }
+                    onChange={(e) => handlePinjaman(e)}
                     className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
                   />
                 </div>
@@ -292,7 +311,7 @@ const Pinjaman = () => {
                     type="date"
                     name="awalPinjaman"
                     id="awalPinjaman"
-                    placeholder="Isi ID Ketua Kelompok"
+                    placeholder="Awal Pinjaman"
                     disabled
                     value={new Date().toJSON().slice(0, 10)}
                     className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
@@ -306,7 +325,7 @@ const Pinjaman = () => {
                     type="date"
                     name="akhirPinjaman"
                     id="akhirPinjaman"
-                    placeholder="Isi ID Ketua Kelompok"
+                    placeholder="Akhir Pinjaman"
                     disabled
                     defaultValue={(() => {
                       const date = new Date();
@@ -346,6 +365,19 @@ const Pinjaman = () => {
                   className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed"
                   name="tanggalMasuk"
                   id="tanggalMasuk"
+                  value={
+                    member.droppingDate
+                      ? new Date(
+                          new Date(member.droppingDate).setDate(
+                            new Date(member.droppingDate).getDate() - 7
+                          )
+                        ).toLocaleDateString("en-US", {
+                          month: "2-digit",
+                          day: "2-digit",
+                          year: "numeric",
+                        })
+                      : ""
+                  }
                 />
               </div>
               <div className="flex-1">
@@ -357,6 +389,19 @@ const Pinjaman = () => {
                   className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed"
                   name="tanggalPermohonan"
                   id="tanggalPermohonan"
+                  value={
+                    member.droppingDate
+                      ? new Date(
+                          new Date(member.droppingDate).setDate(
+                            new Date(member.droppingDate).getDate() - 7
+                          )
+                        ).toLocaleDateString("en-US", {
+                          month: "2-digit",
+                          day: "2-digit",
+                          year: "numeric",
+                        })
+                      : ""
+                  }
                 />
               </div>
               <div className="flex-1">
@@ -367,6 +412,12 @@ const Pinjaman = () => {
                   className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed"
                   name="tanggalMasuk"
                   id="tanggalMasuk"
+                  onChange={(e) => {
+                    setMember({
+                      ...member,
+                      droppingDate: e.target.value,
+                    });
+                  }}
                 />
               </div>
             </div>
@@ -403,7 +454,7 @@ const Pinjaman = () => {
         isVisible={showBerhasil}
         onClose={() => {
           setBerhasil(false);
-          router.push("/status-pengajuan/anggota-baru");
+          router.push(`/daftar-anggota/detail/${idMember}`);
         }}
       >
         <div className="w-[98px] h-[98px] rounded-full bg-primary place-self-center relative">
@@ -440,7 +491,7 @@ const Pinjaman = () => {
           className="w-[450px] px-[20px] py-[12px] text-white bg-primary rounded-lg mx-auto"
           onClick={(e) => {
             setBerhasil(false);
-            router.push("/status-pengajuan/anggota-baru");
+            router.push(`/daftar-anggota/detail/${idMember}`);
           }}
         >
           OK

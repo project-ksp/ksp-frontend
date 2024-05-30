@@ -21,6 +21,8 @@ const Pinjaman = () => {
 
   const [oneClick, setOneClick] = useState(true);
 
+  const [potongan, setPotongan] = useState(0);
+
   const [simpanan, setSimpanan] = useState({
     principalDeposit: 0,
     mandatoryDeposit: 0,
@@ -47,10 +49,8 @@ const Pinjaman = () => {
     kelurahan: "",
     kecamatan: "",
     city: "",
-    postalCode: "",
     education: "",
     phoneNumber: "",
-    profilePictureUrl: "",
     idPictureUrl: "",
     userId: "",
     status: "",
@@ -94,15 +94,47 @@ const Pinjaman = () => {
     }
   };
 
+  const handlePinjaman = (e) => {
+    setLoan({ ...loan, loan: parseInt(e.target.value) });
+    setPotongan(e.target.value * 0.05);
+
+    if (member.deposit.principalDeposit < 50000) {
+      const max = 50000;
+      const sisaSimpananPokok = max - member.deposit.principalDeposit;
+
+      if (e.target.value * 0.05 < sisaSimpananPokok) {
+        setSimpanan({
+          ...simpanan,
+          principalDeposit:
+            member.deposit.principalDeposit + e.target.value * 0.05,
+        });
+        setPotongan(0);
+      } else {
+        setSimpanan({ ...simpanan, principalDeposit: max });
+        setPotongan(e.target.value * 0.05 - sisaSimpananPokok);
+      }
+    }
+  };
+
+  const handleSimpananWajib = (e) => {
+    setSimpanan({
+      ...simpanan,
+      mandatoryDeposit: parseInt(e.target.value),
+      voluntaryDeposit: potongan - e.target.value,
+    });
+  };
+
   const submitData = async (e) => {
     setLoading(true);
     e.preventDefault();
+    console.log(loan);
 
     if (
       member.leaderId === "" ||
       loan === null ||
       loan.loan === 0 ||
-      loan.leaderId === ""
+      loan.leaderId === "" ||
+      loan.branchId === 0
     ) {
       toast.error(
         "Mohon masukkan id ketua kelompok dan masukkan jumlah pinjaman"
@@ -121,7 +153,8 @@ const Pinjaman = () => {
           Authorization: `Bearer ${session.token}`,
         },
         body: JSON.stringify({
-          ...loan,
+          loan,
+          mandatoryDeposit: simpanan.mandatoryDeposit,
         }),
       }
     );
@@ -153,7 +186,6 @@ const Pinjaman = () => {
       const data = await res.json();
       if (res.ok) {
         setMember(data.data);
-        setSimpanan(data.data.deposit);
       } else {
         toast.error(data.message);
       }
@@ -190,48 +222,74 @@ const Pinjaman = () => {
               name="simpananPokok"
               id="simpananPokok"
               placeholder="Auto Generated"
-              value={simpanan.principalDeposit}
+              value={member.deposit.principalDeposit}
               disabled
               className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed"
             />
             <p className="text-filled-color text-sm mt-1">
-              *Minimal Rp.50.000,00/bulan
+              *Minimal Rp.5.000,00
             </p>
           </div>
           <div className="flex flex-col">
-            <label htmlFor="simpananWajib">Simpanan Wajib</label>
+            <p>Simpanan Wajib</p>
             <div className="flex mt-2 gap-3">
-              <div className="flex-grow">
-                <label htmlFor="bulan1">Total Simpanan</label>
+              <div className="w-1/2">
+                <label htmlFor="totalSimpanan">
+                  Total Simpanan Wajib Sebelumnya
+                </label>
                 <input
                   type="number"
-                  name="bulan1"
-                  id="bulan1"
-                  placeholder="Auto Generated"
-                  value={simpanan.mandatoryDeposit}
+                  name="totalSimpanan"
+                  id="totalSimpanan"
+                  placeholder="Isikan Jumlah"
                   disabled
+                  value={member.deposit.mandatoryDeposit}
+                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:bg-black/5 disabled:cursor-not-allowed"
+                />
+              </div>
+              <div className="w-1/2">
+                <label htmlFor="tambahSimpanan">Tambah Simpanan Wajib</label>
+                <input
+                  type="number"
+                  name="tambahSimpanan"
+                  id="tambahSimpanan"
+                  placeholder="Isikan Jumlah"
+                  onChange={(e) => handleSimpananWajib(e)}
+                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
+                />
+              </div>
+            </div>
+          </div>
+          <div className="flex flex-col">
+            <p>Simpanan Sukarela</p>
+            <div className="flex mt-2 gap-3">
+              <div className="w-1/2">
+                <label htmlFor="simpananSukarela">
+                  Total Simpanan Sukarela sebelumnya
+                </label>
+                <input
+                  type="number"
+                  name="simpananSukarela"
+                  id="simpananSukarela"
+                  placeholder="Isikan Jumlah"
+                  disabled
+                  value={member.deposit.voluntaryDeposit}
+                  className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:bg-black/5 disabled:cursor-not-allowed"
+                />
+              </div>
+              <div className="w-1/2">
+                <label htmlFor="tambahSimpanan">Tambah Simpanan Sukarela</label>
+                <input
+                  type="number"
+                  name="tambahSimpanan"
+                  id="tambahSimpanan"
+                  placeholder="Auto Generated"
+                  disabled
+                  value={simpanan.voluntaryDeposit}
                   className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed"
                 />
               </div>
             </div>
-            <p className="text-filled-color text-sm mt-1">
-              *Minimal Rp.50.000,00/bulan
-            </p>
-          </div>
-          <div className="flex-1">
-            <label htmlFor="simpananSukarela">Simpanan Sukarela</label>
-            <input
-              type="number"
-              name="simpananSukarela"
-              id="simpananSukarela"
-              placeholder="Auto Generated"
-              value={simpanan.voluntaryDeposit}
-              disabled
-              className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed"
-            />
-            <p className="text-filled-color text-sm mt-1">
-              Diambil dari pinjaman
-            </p>
           </div>
         </div>
       </div>
@@ -243,6 +301,12 @@ const Pinjaman = () => {
             loan: 0,
             leaderId: "",
             branchId: 0,
+            startDate: new Date().toJSON().slice(0, 10),
+            endDate: (() => {
+              const date = new Date();
+              date.setMonth(date.getMonth() + 6);
+              return date.toJSON().slice(0, 10);
+            })(),
           });
           setOneClick(false);
         }}
@@ -275,7 +339,7 @@ const Pinjaman = () => {
                   type="text"
                   name="cabang"
                   id="cabang"
-                  value={member.branchId}
+                  value={loan.branchId}
                   disabled
                   className={`w-full flex justify-between py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] text-start text-black bg-transparent focus:outline-none disabled:cursor-not-allowed`}
                 />
@@ -301,7 +365,7 @@ const Pinjaman = () => {
                     id="awalPinjaman"
                     placeholder="Isi ID Ketua Kelompok"
                     disabled
-                    value={member.deposit.loans[index].createdAt.slice(0, 10)}
+                    value={loan.startDate}
                     className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
                   />
                 </div>
@@ -315,13 +379,7 @@ const Pinjaman = () => {
                     id="akhirPinjaman"
                     placeholder="Isi ID Ketua Kelompok"
                     disabled
-                    defaultValue={(() => {
-                      const date = new Date(
-                        member.deposit.loans[index].createdAt
-                      );
-                      date.setMonth(date.getMonth() + 6);
-                      return date.toJSON().slice(0, 10);
-                    })()}
+                    defaultValue={loan.endDate}
                     className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
                   />
                 </div>
@@ -335,7 +393,7 @@ const Pinjaman = () => {
                     id="idKetuaKelompok"
                     placeholder="Isi ID Ketua Kelompok"
                     disabled
-                    value={member.leader.id}
+                    value={loan.leaderId}
                     className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
                   />
                 </div>
@@ -404,9 +462,7 @@ const Pinjaman = () => {
                 name="jumlahPinjaman"
                 id="jumlahPinjaman"
                 placeholder="Isikan Jumlah Pinjaman"
-                onChange={(e) =>
-                  setLoan({ ...loan, loan: parseInt(e.target.value) })
-                }
+                onChange={(e) => handlePinjaman(e)}
                 className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
               />
             </div>
@@ -480,7 +536,13 @@ const Pinjaman = () => {
           Proses Data
         </button>
       </Modal>
-      <Modal isVisible={showBerhasil} onClose={() => setBerhasil(false)}>
+      <Modal
+        isVisible={showBerhasil}
+        onClose={() => {
+          setBerhasil(false);
+          router.push("/daftar-anggota/form-anggota/anggota-lama");
+        }}
+      >
         <div className="w-[98px] h-[98px] rounded-full bg-primary place-self-center relative">
           <svg
             width="43"
@@ -515,7 +577,7 @@ const Pinjaman = () => {
           className="w-[450px] px-[20px] py-[12px] text-white bg-primary rounded-lg mx-auto"
           onClick={(e) => {
             setBerhasil(false);
-            router.push("/status-pengajuan/pinjaman-anggota-lama");
+            router.push("/daftar-anggota/form-anggota/anggota-lama");
           }}
         >
           OK

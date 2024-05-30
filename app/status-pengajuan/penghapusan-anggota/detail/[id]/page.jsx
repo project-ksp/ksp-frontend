@@ -121,6 +121,12 @@ const DetailPenghapusanAnggota = () => {
     getMember();
   }, [status, session, id]);
 
+  const getNextMonth = (now) => {
+    const date = new Date(now);
+    date.setMonth(date.getMonth() + 1);
+    return date.toJSON().slice(0, 10);
+  };
+
   const countAge = (date) => {
     const today = new Date();
     const birthDate = new Date(date);
@@ -646,7 +652,7 @@ const DetailPenghapusanAnggota = () => {
               className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed"
             />
             <p className="text-filled-color text-sm mt-1">
-              *Minimal Rp.50.000,00/bulan
+              *Minimal Rp.5.000,00
             </p>
           </div>
           <div className="flex flex-col">
@@ -673,14 +679,18 @@ const DetailPenghapusanAnggota = () => {
                   name="simpananSelanjutnya"
                   id="simpananSelanjutnya"
                   placeholder="Auto Generated"
-                  defaultValue={member.deposit.createdAt.slice(0, 10)}
+                  value={
+                    member.deposit.updatedAt
+                      ? getNextMonth(member.deposit.updatedAt.slice(0, 10))
+                      : ""
+                  }
                   disabled
                   className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed"
                 />
               </div>
             </div>
             <p className="text-filled-color text-sm mt-1">
-              *Minimal Rp.50.000,00/bulan
+              *Minimal Rp.5.000,00
             </p>
           </div>
           <div className="flex-1">
@@ -713,7 +723,7 @@ const DetailPenghapusanAnggota = () => {
                   type="text"
                   name="cabang"
                   id="cabang"
-                  value={member.branchId}
+                  value={loan.branchId}
                   disabled
                   className={`w-full flex justify-between py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] text-start text-black bg-transparent focus:outline-none disabled:cursor-not-allowed`}
                 />
@@ -725,7 +735,7 @@ const DetailPenghapusanAnggota = () => {
                   name="jumlahPinjaman"
                   id="jumlahPinjaman"
                   placeholder="Isikan Jumlah Pinjaman"
-                  value={member.deposit.loans[index].loan}
+                  value={loan.loan}
                   disabled
                   className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
                 />
@@ -739,7 +749,7 @@ const DetailPenghapusanAnggota = () => {
                     id="awalPinjaman"
                     placeholder="Isi ID Ketua Kelompok"
                     disabled
-                    value={member.deposit.loans[index].createdAt.slice(0, 10)}
+                    value={loan.startDate}
                     className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
                   />
                 </div>
@@ -753,7 +763,7 @@ const DetailPenghapusanAnggota = () => {
                     id="akhirPinjaman"
                     placeholder="Isi ID Ketua Kelompok"
                     disabled
-                    defaultValue={"hello"}
+                    value={loan.endDate}
                     className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
                   />
                 </div>
@@ -766,7 +776,7 @@ const DetailPenghapusanAnggota = () => {
                   id="idKetuaKelompok"
                   placeholder="Isi ID Ketua Kelompok"
                   disabled
-                  value={member.leader.id}
+                  value={loan.leaderId}
                   className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
                 />
               </div>
