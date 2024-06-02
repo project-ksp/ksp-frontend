@@ -11,6 +11,7 @@ import Modal from "./Modal";
 import crypto from "crypto";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { on } from "events";
 
 const Sidebar = () => {
   const [showProsesData, setProsesData] = useState(false);
@@ -61,6 +62,7 @@ const Sidebar = () => {
       <LogoutModal
         isVisible={showProsesData}
         onClose={() => setProsesData(false)}
+        session={session}
       />
     </>
   );
@@ -216,7 +218,7 @@ const ButtonKeluar = ({ click }) => {
   );
 };
 
-const LogoutModal = ({ isVisible, onClose }) => {
+const LogoutModal = ({ isVisible, onClose, session }) => {
   const router = useRouter();
   function decrypt(data) {
     const buffer = Buffer.from(data, "base64");
@@ -248,6 +250,7 @@ const LogoutModal = ({ isVisible, onClose }) => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${session.token}`,
           },
           body: JSON.stringify({
             userId: localStorage.getItem("ownerId"),
@@ -265,6 +268,7 @@ const LogoutModal = ({ isVisible, onClose }) => {
         });
         if (resOwner.ok) {
           localStorage.removeItem("ownerId");
+          onClose();
           router.push("/dashboard");
         } else {
           toast.error("Gagal mengakses akun");
