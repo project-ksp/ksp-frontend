@@ -653,10 +653,9 @@ const DetailPenghapusanAnggota = () => {
             />
           </div>
           <div className="flex flex-col">
-            <label htmlFor="simpananWajib">Simpanan Wajib</label>
             <div className="flex mt-2 gap-3">
               <div className="w-1/2">
-                <label htmlFor="bulan1">Total Simpanan</label>
+                <label htmlFor="bulan1">Total Simpanan Wajib</label>
                 <input
                   type="number"
                   name="bulan1"

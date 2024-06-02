@@ -71,7 +71,8 @@ const Pinjaman = () => {
       localStorage.getItem("education") || "Pilih Pendidikan Terakhir";
     const storedPhoneNumber = localStorage.getItem("phoneNumber") || "";
     const storedIdPictureUrl = localStorage.getItem("idPictureUrl") || "";
-    const storedLeaderId = localStorage.getItem("leaderId") || "";
+    const storedLeaderId =
+      localStorage.getItem("leaderId") || "Pilih Ketua Kelompok";
     const storedSpouse = localStorage.getItem("spouse") || "";
     const storedBranchId = session.user.branchId;
 
@@ -107,6 +108,7 @@ const Pinjaman = () => {
       member.gender === "Pilih Jenis Kelamin" ||
       member.religion === "Pilih Agama" ||
       member.education === "Pilih Pendidikan Terakhir" ||
+      member.leaderId === "Pilih Ketua Kelompok" ||
       member.name === "" ||
       member.nik === "" ||
       member.birthPlace === "" ||
@@ -359,7 +361,7 @@ const Pinjaman = () => {
               <div className="flex-1">
                 <label htmlFor="tanggalMasuk">Tanggal Masuk Anggota</label>
                 <input
-                  type="text"
+                  type="date"
                   disabled
                   placeholder="Auto Generated"
                   className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed"
@@ -367,15 +369,11 @@ const Pinjaman = () => {
                   id="tanggalMasuk"
                   value={
                     member.droppingDate
-                      ? new Date(
-                          new Date(member.droppingDate).setDate(
-                            new Date(member.droppingDate).getDate() - 7
-                          )
-                        ).toLocaleDateString("en-US", {
-                          month: "2-digit",
-                          day: "2-digit",
-                          year: "numeric",
-                        })
+                      ? (() => {
+                          const date = new Date();
+                          date.setDate(date.getDate() - 7);
+                          return date.toJSON().slice(0, 10);
+                        })()
                       : ""
                   }
                 />
@@ -383,7 +381,7 @@ const Pinjaman = () => {
               <div className="flex-1">
                 <label htmlFor="tanggalPermohonan">Tanggal Permohonan</label>
                 <input
-                  type="text"
+                  type="date"
                   disabled
                   placeholder="Auto Generated"
                   className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed"
@@ -391,15 +389,11 @@ const Pinjaman = () => {
                   id="tanggalPermohonan"
                   value={
                     member.droppingDate
-                      ? new Date(
-                          new Date(member.droppingDate).setDate(
-                            new Date(member.droppingDate).getDate() - 7
-                          )
-                        ).toLocaleDateString("en-US", {
-                          month: "2-digit",
-                          day: "2-digit",
-                          year: "numeric",
-                        })
+                      ? (() => {
+                          const date = new Date();
+                          date.setDate(date.getDate() - 7);
+                          return date.toJSON().slice(0, 10);
+                        })()
                       : ""
                   }
                 />

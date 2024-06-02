@@ -63,7 +63,8 @@ const Simpanan = () => {
       localStorage.getItem("education") || "Pilih Pendidikan Terakhir";
     const storedPhoneNumber = localStorage.getItem("phoneNumber") || "";
     const storedIdPictureUrl = localStorage.getItem("idPictureUrl") || "";
-    const storedLeaderId = localStorage.getItem("leaderId") || "";
+    const storedLeaderId =
+      localStorage.getItem("leaderId") || "Pilih Ketua Kelompok";
     const storedSpouse = localStorage.getItem("spouse") || "";
 
     setMember({
@@ -106,7 +107,7 @@ const Simpanan = () => {
       member.city === "" ||
       member.phoneNumber === "" ||
       member.idPictureUrl === "" ||
-      member.leaderId === ""
+      member.leaderId === "Pilih Ketua Kelompok"
     ) {
       toast.error("Mohon lengkapi data anggota terlebih dahulu");
       setProsesData(false);
