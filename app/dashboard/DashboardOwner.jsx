@@ -151,6 +151,7 @@ const DashboardOwner = () => {
         redirect: false,
       });
       if (resBranch.ok) {
+        localStorage.setItem("ownerId", session.user.id);
         router.push("/dashboard");
       } else {
         toast.error("Gagal mengakses cabang");

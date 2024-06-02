@@ -62,10 +62,10 @@ const DashboardKepalaCabangDanTeller = () => {
   if (status === "loading") return <Loading />;
   return (
     <div className="flex flex-col gap-[13px]">
-      <div className="bg-gradient-to-r from-[#134cb0] from-0% via-[#007daa] via-35% to-[#00358f] h-[215px] py-[74px] px-[77px] text-white relative rounded-2xl overflow-hidden">
-        <h2 className="font-bold text-2xl">Hi, {session.user.name}</h2>
+      <div className="bg-gradient-to-r from-[#134cb0] from-0% via-[#007daa] via-35% to-[#00358f] h-[215px] py-[74px] px-[77px] text-white relative rounded-2xl overflow-hidden -z-20">
+        <h2 className="font-bold text-2xl relative">Hi, {session.user.name}</h2>
         <p className="text-lg">Selamat Pagi, Selamat Beraktivitas!</p>
-        <div className="absolute w-[180px] h-[180px] rounded-full bg-gradient-to-r from-[#007daa] to-[#00358f] right-[500px] -top-16 -rotate-[20deg]"></div>
+        <div className="absolute w-[180px] h-[180px] rounded-full bg-gradient-to-r from-[#007daa] to-[#00358f] right-[500px] -top-16 -rotate-[20deg] -z-10"></div>
         <div className="absolute w-[92px] h-[92px] rounded-full bg-gradient-to-r from-[#007daa] to-[#00358f] right-[250px] -top-16"></div>
         <div className="absolute w-[92px] h-[92px] rounded-full bg-gradient-to-r from-[#007daa] to-[#00358f] right-[380px] -bottom-10 -rotate-[20deg]"></div>
         <div className="absolute w-[200px] h-[200px] rounded-full bg-gradient-to-r from-[#007daa] to-[#00358f] -right-[20px] -bottom-12 -rotate-[20deg]"></div>
