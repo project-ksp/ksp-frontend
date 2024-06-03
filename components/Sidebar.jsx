@@ -1,13 +1,17 @@
 "use client";
 
-import { use, useState } from "react";
-import { signOut } from "next-auth/react";
+import { useState } from "react";
+import { signOut, signIn } from "next-auth/react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { SIDENAV_ITEMS } from "@/data/constants";
 import Modal from "./Modal";
+import crypto from "crypto";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
+import { on } from "events";
 
 const Sidebar = () => {
   const [showProsesData, setProsesData] = useState(false);
@@ -58,6 +62,7 @@ const Sidebar = () => {
       <LogoutModal
         isVisible={showProsesData}
         onClose={() => setProsesData(false)}
+        session={session}
       />
     </>
   );
@@ -213,12 +218,80 @@ const ButtonKeluar = ({ click }) => {
   );
 };
 
-const LogoutModal = ({ isVisible, onClose }) => {
+const LogoutModal = ({ isVisible, onClose, session }) => {
+  const router = useRouter();
+  function decrypt(data) {
+    const buffer = Buffer.from(data, "base64");
+    const [ivBase64, encrypted] = buffer.toString("utf8").split(".");
+    if (!ivBase64 || !encrypted) {
+      throw new Error("Invalid data");
+    }
+    const iv = Buffer.from(ivBase64, "base64");
+    const key = crypto.pbkdf2Sync(
+      process.env.NEXT_PUBLIC_APP_KEY,
+      iv,
+      2000,
+      32,
+      "sha256"
+    );
+
+    const decipher = crypto.createDecipheriv("aes-256-cbc", key, iv);
+    const decrypted =
+      decipher.update(encrypted, "base64", "utf8") + decipher.final("utf8");
+
+    return decrypted;
+  }
+
+  const logout = async () => {
+    if (localStorage.getItem("ownerId")) {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}auth/access-owner`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${session.token}`,
+          },
+          body: JSON.stringify({
+            userId: localStorage.getItem("ownerId"),
+          }),
+        }
+      );
+      console.log(localStorage.getItem("ownerId"));
+      const data = await res.json();
+
+      if (res.ok) {
+        const resOwner = await signIn("credentials", {
+          username: data.data.username,
+          password: decrypt(data.data.password),
+          redirect: false,
+        });
+        if (resOwner.ok) {
+          localStorage.removeItem("ownerId");
+          onClose();
+          router.push("/dashboard");
+        } else {
+          toast.error("Gagal mengakses akun");
+          return;
+        }
+      } else {
+        toast.error(data.message);
+        return;
+      }
+    } else {
+      signOut({
+        callbackUrl: `/login`,
+        redirect: true,
+      });
+    }
+  };
+
   return (
     <Modal isVisible={isVisible} onClose={onClose}>
       <h3 className="text-xl text-center font-bold text-black">Keluar?</h3>
       <p className="text-base text-black font-regular text-center mb-4">
-        Apakah Anda yakin untuk Keluar?
+        Apakah Anda yakin untuk{" "}
+        {localStorage.getItem("ownerId") ? "kembali ke akun owner" : "keluar"}?
       </p>
       <div className="flex gap-3">
         <button
@@ -234,10 +307,7 @@ const LogoutModal = ({ isVisible, onClose }) => {
           type="submit"
           className="w-[224px] px-[20px] py-[12px] text-white bg-green-status-1 rounded-lg mx-auto"
           onClick={(e) => {
-            signOut({
-              callbackUrl: `/login`,
-              redirect: true,
-            });
+            logout();
           }}
         >
           Ya

@@ -19,6 +19,8 @@ const TambahAnggota = () => {
   const [agamaOpen, setAgamaOpen] = useState(false);
   const [jenisKelaminOpen, setJenisKelaminOpen] = useState(false);
   const [statusPernikahanOpen, setStatusPernikahanOpen] = useState(false);
+  const [ketuaKelompokOpen, setKetuaKelompokOpen] = useState(false);
+  const [leaderName, setLeaderName] = useState("Pilih Ketua Kelompok");
 
   const [member, setMember] = useState({
     name: "",
@@ -37,8 +39,10 @@ const TambahAnggota = () => {
     education: "Pilih Pendidikan Terakhir",
     phoneNumber: "",
     idPictureUrl: "",
-    leaderId: "",
+    leaderId: "Pilih Ketua Kelompok",
   });
+
+  const [leader, setLeader] = useState();
 
   const countAge = (date) => {
     const today = new Date();
@@ -100,7 +104,8 @@ const TambahAnggota = () => {
       localStorage.getItem("education") || "Pilih Pendidikan Terakhir";
     const storedPhoneNumber = localStorage.getItem("phoneNumber") || "";
     const storedIdPictureUrl = localStorage.getItem("idPictureUrl") || "";
-    const storedLeaderId = localStorage.getItem("leaderId") || "";
+    const storedLeaderId =
+      localStorage.getItem("leaderId") || "Pilih Ketua Kelompok";
     const storedSpouse = localStorage.getItem("spouse") || "";
 
     setMember({
@@ -127,7 +132,23 @@ const TambahAnggota = () => {
       leaderId: storedLeaderId,
       spouse: storedSpouse,
     });
-  }, [status]);
+
+    const getKetuaKelompok = async () => {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}leaders`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${session.token}`,
+        },
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setLeader(data.data);
+      } else {
+        toast.error(data.message);
+      }
+    };
+    getKetuaKelompok();
+  }, [status, session, leader]);
 
   if (status === "loading") return <Loading />;
 
@@ -153,20 +174,52 @@ const TambahAnggota = () => {
               </div>
             </div>
             <div className="w-2/3">
-              <label htmlFor="idKetuaKelompok">ID Ketua Kelompok</label>
-              <input
-                type="text"
-                id="idKetuaKelompok"
-                name="idKetuaKelompok"
-                placeholder="Isi ID Ketua Kelompok"
-                defaultValue={member.leaderId}
-                onChange={(e) => {
-                  setMember({ ...member, leaderId: e.target.value });
-                  localStorage.setItem("leaderId", e.target.value);
-                }}
-                required
-                className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
-              />
+              <label htmlFor="ketuaKelompok">Nama Ketua Kelompok</label>
+              <button
+                type="button"
+                name="ketuaKelompok"
+                id="ketuaKelompok"
+                className={`w-full flex justify-between py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] text-start text-[#d9d9d9] bg-transparent focus:outline-none ${
+                  member.leaderId === "Pilih Ketua Kelompok"
+                    ? "text-[#d9d9d9]"
+                    : "text-primary"
+                }`}
+                onClick={() => setKetuaKelompokOpen(!ketuaKelompokOpen)}
+              >
+                {member.leaderId === "Pilih Ketua Kelompok"
+                  ? "Pilih Ketua Kelompok"
+                  : leader?.find((item) => item.id === member.leaderId).name}
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M17.2902 9.31002C17.1977 9.21732 17.0878 9.14377 16.9668 9.09359C16.8459 9.04341 16.7162 9.01758 16.5852 9.01758C16.4543 9.01758 16.3246 9.04341 16.2036 9.09359C16.0826 9.14377 15.9727 9.21732 15.8802 9.31002L12.0002 13.19L8.12022 9.31002C7.93324 9.12304 7.67965 9.018 7.41522 9.018C7.1508 9.018 6.8972 9.12304 6.71022 9.31002C6.52324 9.497 6.4182 9.7506 6.4182 10.015C6.4182 10.2794 6.52324 10.533 6.71022 10.72L11.3002 15.31C11.3927 15.4027 11.5026 15.4763 11.6236 15.5265C11.7446 15.5766 11.8743 15.6025 12.0052 15.6025C12.1362 15.6025 12.2659 15.5766 12.3868 15.5265C12.5078 15.4763 12.6177 15.4027 12.7102 15.31L17.3002 10.72C17.6802 10.34 17.6802 9.70002 17.2902 9.31002Z"
+                    fill="black"
+                  />
+                </svg>
+              </button>
+              {ketuaKelompokOpen && (
+                <div className="w-full relative">
+                  <DropdownSelector
+                    selected={(option) => {
+                      const selectedLeader = leader.find(
+                        (item) => item.name === option
+                      );
+                      setMember({
+                        ...member,
+                        leaderId: selectedLeader.id,
+                      });
+                      localStorage.setItem("leaderId", selectedLeader.id);
+                    }}
+                    options={leader.map((item) => item.name)}
+                    onClose={() => setKetuaKelompokOpen(false)}
+                  />
+                </div>
+              )}
             </div>
           </div>
           <div className="flex w-full gap-2">

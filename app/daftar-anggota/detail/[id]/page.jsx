@@ -129,7 +129,11 @@ const DetailAnggotaBaru = () => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${session.token}`,
         },
-        body: JSON.stringify({ ...member }),
+        body: JSON.stringify({
+          member,
+          deposit: member.deposit,
+          loans: member.deposit.loans,
+        }),
       }
     );
 
@@ -698,22 +702,6 @@ const DetailAnggotaBaru = () => {
             </div>
           </div>
         </div>
-        <div className="flex mt-2">
-          <button
-            type="button"
-            className="w-[228px] px-[20px] py-[12px] text-white bg-primary rounded-lg ml-auto disabled:bg-primary/50"
-            disabled={!allowEdit}
-            onClick={(e) => {
-              if (formRef.current.checkValidity()) {
-                setProsesData(true);
-              } else {
-                formRef.current.reportValidity();
-              }
-            }}
-          >
-            Simpan
-          </button>
-        </div>
         <div className="bg-white p-[20px] rounded-xl">
           <p className="text-black font-bold text-lg mb-[10px]">
             Detail Simpanan
@@ -727,23 +715,40 @@ const DetailAnggotaBaru = () => {
                 id="simpananPokok"
                 placeholder="Auto Generated"
                 value={member.deposit.principalDeposit}
-                disabled
-                className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed"
+                disabled={!allowEdit || session.user.role === "teller"}
+                onChange={(e) => {
+                  setMember({
+                    ...member,
+                    deposit: {
+                      ...member.deposit,
+                      principalDeposit: parseInt(e.target.value),
+                    },
+                  });
+                }}
+                className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed disabled:bg-black/5"
               />
             </div>
             <div className="flex flex-col">
-              <label htmlFor="simpananWajib">Simpanan Wajib</label>
               <div className="flex mt-2 gap-3">
                 <div className="w-1/2">
-                  <label htmlFor="bulan1">Total Simpanan</label>
+                  <label htmlFor="bulan1">Total Simpanan Wajib</label>
                   <input
                     type="number"
                     name="bulan1"
                     id="bulan1"
                     placeholder="Auto Generated"
                     value={member.deposit.mandatoryDeposit}
-                    disabled
-                    className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed"
+                    disabled={!allowEdit || session.user.role === "teller"}
+                    onChange={(e) => {
+                      setMember({
+                        ...member,
+                        deposit: {
+                          ...member.deposit,
+                          mandatoryDeposit: parseInt(e.target.value),
+                        },
+                      });
+                    }}
+                    className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed disabled:bg-black/5"
                   />
                 </div>
                 <div className="w-1/2">
@@ -761,7 +766,7 @@ const DetailAnggotaBaru = () => {
                         : ""
                     }
                     disabled
-                    className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed"
+                    className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed disabled:bg-black/5"
                   />
                 </div>
               </div>
@@ -773,13 +778,19 @@ const DetailAnggotaBaru = () => {
                 name="simpananSukarela"
                 id="simpananSukarela"
                 placeholder="Auto Generated"
-                disabled
+                disabled={!allowEdit || session.user.role === "teller"}
                 value={member.deposit.voluntaryDeposit}
-                className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed"
+                onChange={(e) => {
+                  setMember({
+                    ...member,
+                    deposit: {
+                      ...member.deposit,
+                      voluntaryDeposit: parseInt(e.target.value),
+                    },
+                  });
+                }}
+                className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed disabled:bg-black/5"
               />
-              <p className="text-filled-color text-sm mt-1">
-                Diambil dari pinjaman
-              </p>
             </div>
           </div>
         </div>
@@ -797,8 +808,21 @@ const DetailAnggotaBaru = () => {
                     name="cabang"
                     id="cabang"
                     value={loan.branchId}
-                    disabled
-                    className={`w-full flex justify-between py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] text-start text-black bg-transparent focus:outline-none disabled:cursor-not-allowed`}
+                    disabled={!allowEdit || session.user.role === "teller"}
+                    onChange={(e) => {
+                      setMember({
+                        ...member,
+                        deposit: {
+                          ...member.deposit,
+                          loans: member.deposit.loans.map((item, i) =>
+                            i === index
+                              ? { ...item, branchId: parseInt(e.target.value) }
+                              : item
+                          ),
+                        },
+                      });
+                    }}
+                    className={`w-full flex justify-between py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] text-start text-black bg-transparent focus:outline-none disabled:cursor-not-allowed disabled:bg-black/5`}
                   />
                 </div>
                 <div className="w-1/3">
@@ -809,8 +833,21 @@ const DetailAnggotaBaru = () => {
                     id="jumlahPinjaman"
                     placeholder="Isikan Jumlah Pinjaman"
                     value={member.deposit.loans[index].loan}
-                    disabled
-                    className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
+                    disabled={!allowEdit || session.user.role === "teller"}
+                    onChange={(e) => {
+                      setMember({
+                        ...member,
+                        deposit: {
+                          ...member.deposit,
+                          loans: member.deposit.loans.map((item, i) =>
+                            i === index
+                              ? { ...item, loan: parseInt(e.target.value) }
+                              : item
+                          ),
+                        },
+                      });
+                    }}
+                    className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed disabled:bg-black/5"
                   />
                 </div>
                 <div className="w-1/3">
@@ -823,7 +860,7 @@ const DetailAnggotaBaru = () => {
                       placeholder="Isi ID Ketua Kelompok"
                       disabled
                       value={loan.startDate}
-                      className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
+                      className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed disabled:bg-black/5"
                     />
                   </div>
                 </div>
@@ -837,7 +874,7 @@ const DetailAnggotaBaru = () => {
                       placeholder="Isi ID Ketua Kelompok"
                       disabled
                       value={loan.endDate}
-                      className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
+                      className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed disabled:bg-black/5"
                     />
                   </div>
                 </div>
@@ -849,9 +886,22 @@ const DetailAnggotaBaru = () => {
                       name="idKetuaKelompok"
                       id="idKetuaKelompok"
                       placeholder="Isi ID Ketua Kelompok"
-                      disabled
+                      disabled={!allowEdit || session.user.role === "teller"}
                       value={loan.leaderId}
-                      className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none"
+                      onChange={(e) => {
+                        setMember({
+                          ...member,
+                          deposit: {
+                            ...member.deposit,
+                            loans: member.deposit.loans.map((item, i) =>
+                              i === index
+                                ? { ...item, leaderId: e.target.value }
+                                : item
+                            ),
+                          },
+                        });
+                      }}
+                      className="w-full py-[10px] px-[20px] border border-[#d9d9d9] rounded-md mt-[8px] bg-white focus:outline-none disabled:cursor-not-allowed disabled:bg-black/5"
                     />
                   </div>
                 </div>
@@ -859,11 +909,24 @@ const DetailAnggotaBaru = () => {
             ))}
           </div>
         )}
+        <div className="flex mt-2">
+          <button
+            type="button"
+            className="w-[228px] px-[20px] py-[12px] text-white bg-primary rounded-lg ml-auto disabled:bg-primary/50"
+            disabled={!allowEdit}
+            onClick={(e) => {
+              if (formRef.current.checkValidity()) {
+                setProsesData(true);
+              } else {
+                formRef.current.reportValidity();
+              }
+            }}
+          >
+            Simpan
+          </button>
+        </div>
         {member.droppingDate && (
           <div className="bg-white p-[20px] rounded-xl">
-            <p className="text-black font-bold text-lg mb-[10px]">
-              Detail Antidatir
-            </p>
             <div className="flex flex-col gap-3">
               <div className="flex-1">
                 <label htmlFor="tanggalMasuk">Tanggal Masuk Anggota</label>
