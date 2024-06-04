@@ -7,6 +7,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Loading from "@/components/Loading";
 import toast from "react-hot-toast";
+import { get } from "http";
 
 const Pinjaman = () => {
   const { data: session, status } = useSession();
@@ -193,6 +194,12 @@ const Pinjaman = () => {
     });
   };
 
+  const getMin7days = (now) => {
+    const date = new Date(now);
+    date.setDate(date.getDate() - 7);
+    return date.toJSON().slice(0, 10);
+  };
+
   if (status === "loading") return <Loading />;
 
   return (
@@ -368,13 +375,7 @@ const Pinjaman = () => {
                   name="tanggalMasuk"
                   id="tanggalMasuk"
                   value={
-                    member.droppingDate
-                      ? (() => {
-                          const date = new Date();
-                          date.setDate(date.getDate() - 7);
-                          return date.toJSON().slice(0, 10);
-                        })()
-                      : ""
+                    member.droppingDate ? getMin7days(member.droppingDate) : ""
                   }
                 />
               </div>
@@ -388,13 +389,7 @@ const Pinjaman = () => {
                   name="tanggalPermohonan"
                   id="tanggalPermohonan"
                   value={
-                    member.droppingDate
-                      ? (() => {
-                          const date = new Date();
-                          date.setDate(date.getDate() - 7);
-                          return date.toJSON().slice(0, 10);
-                        })()
-                      : ""
+                    member.droppingDate ? getMin7days(member.droppingDate) : ""
                   }
                 />
               </div>
