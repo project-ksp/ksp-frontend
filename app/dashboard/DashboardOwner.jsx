@@ -194,7 +194,6 @@ const DashboardOwner = () => {
   });
 
   const toggleSort = (column) => {
-    console.log(column);
     setSortConfig((prevState) => {
       if (prevState.key === column) {
         return {
@@ -211,7 +210,7 @@ const DashboardOwner = () => {
     });
   };
 
-  const sortedBranches = filteredBranches.sort((a, b) => {
+  const sortedBranches = [...filteredBranches].sort((a, b) => {
     if (sortConfig.key) {
       const aValue = sortConfig.key
         .split(".")
@@ -552,14 +551,14 @@ const DashboardOwner = () => {
                         style: "currency",
                         currency: "IDR",
                         maximumFractionDigits: 0,
-                      }).format(data.totalLoanSum)}
+                      }).format(data.totalSavingSum)}
                     </td>
                     <td className="px-[10px]">
                       {Intl.NumberFormat("id-ID", {
                         style: "currency",
                         currency: "IDR",
                         maximumFractionDigits: 0,
-                      }).format(data.totalSavingSum)}
+                      }).format(data.totalLoanSum)}
                     </td>
                     <td className="px-[10px]">{data.publishAmount}</td>
                     <td className="px-[10px]">
