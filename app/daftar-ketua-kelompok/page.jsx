@@ -115,7 +115,7 @@ const DaftarKetuaKelompok = () => {
                   <td className="px-[10px]">{item.age}</td>
                   <td className="px-[10px]">
                     {" "}
-                    {item.gender === "laku-laki" ? "L" : "P"}
+                    {item.gender === "laki-laki" ? "L" : "P"}
                   </td>
                   <td className="px-[10px]">{item.city}</td>
                   <td className="px-[10px]">{item.phoneNumber}</td>
