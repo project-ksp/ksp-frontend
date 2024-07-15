@@ -148,7 +148,7 @@ const TambahAnggota = () => {
       }
     };
     getKetuaKelompok();
-  }, [status, session, leader]);
+  }, [status, session]);
 
   if (status === "loading") return <Loading />;
 
