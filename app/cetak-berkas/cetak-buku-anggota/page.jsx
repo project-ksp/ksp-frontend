@@ -156,7 +156,7 @@ const CetakBukuAnggota = () => {
                   </td>
                   <td className="px-3 border-r border-[#dde1e6] break-words text-sm text-center">
                     {item?.deleteRequests?.status === "disetujui" &&
-                      member.deleteRequests.reason}
+                      item.deleteRequests.reason}
                   </td>
                   <td className="px-3 border-r border-[#dde1e6] break-words text-sm text-center">
                     {item?.deleteRequests?.status === "disetujui" && (
