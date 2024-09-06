@@ -11,6 +11,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "api-testing.kspsentosamakmurjatim.id",
       },
+      {
+        protocol: "https",
+        hostname: "api.kspsentosamakmurjatim.id",
+      },
     ],
   },
 };
