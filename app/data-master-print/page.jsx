@@ -11,19 +11,16 @@ const PrintDataMaster = () => {
   useEffect(() => {
     const getMembers = async () => {
       if (status === "loading") return;
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}members?page=${1}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${session.token}`,
-          },
-        }
-      );
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}members`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session.token}`,
+        },
+      });
       const data = await res.json();
       if (res.ok) {
-        setMembers(data.data.members);
+        setMembers(data.data);
       } else {
         toast.error(data.message);
       }
