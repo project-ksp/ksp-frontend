@@ -194,13 +194,14 @@ const DetailPenghapusanAnggota = () => {
             />
           </div>
         </div>
-        <Image
-          src={`${process.env.NEXT_PUBLIC_BASE_URL}public/${deleteReq.proofUrl}`}
-          alt="Foto pendukung"
-          width={500}
-          height={1000}
-          className="object-cover rounded-md mt-[20px]"
-        />
+        <div className="max-w-2xl mt-[20px]">
+          <img
+            src={`${process.env.NEXT_PUBLIC_BASE_URL}public/${deleteReq.proofUrl}`}
+            alt="Foto pendukung"
+            sizes="100vw"
+            className="object-cover rounded-md"
+          />
+        </div>
       </div>
       <Modal isVisible={showProsesData} onClose={() => setProsesData(false)}>
         <h3 className="text-xl text-center font-bold text-black">
